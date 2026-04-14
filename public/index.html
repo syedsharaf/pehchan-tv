@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PehchanTV – Embrace Your Identity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="/assets/css/style.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</head>
+<body>
+<!-- ─── NAVBAR ──────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="/assets/images/pehchantv-logo.png" alt="PehchanTV Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <span style="display:none; font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:#fff; letter-spacing:.06em">PEHCHAN<span style="color:var(--green)">TV</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="#about-us">About Us</a></li>
+    <li><a href="#media">Media Channel</a></li>
+    <li><a href="#event-management">Event Management</a></li>
+    <li><a href="#advertise">Advertise</a></li>
+    <li><a href="#community">Community</a></li>
+    <div class="nav-icons">
+      <div class="lang-switch">
+      <button class="icon-btn" id="langBtn"><i class="fa-solid fa-globe"></i></button>
+
+      <div class="lang-dropdown" id="langDropdown">
+      <div onclick="setLang('en')">English</div>
+      <div onclick="setLang('ur')">اردو</div>
+      </div>
+      </div>
+
+      <!-- hidden google element -->
+      <div id="google_translate_element"></div>
+      <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+    <li class="nav-cta"><a href="#contact">Get In Touch</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/" onclick="closeMobile()">Home</a>
+  <a href="#about-us" onclick="closeMobile()">About Us</a>
+  <a href="#media" onclick="closeMobile()">Media</a>
+  <a href="#event-management" onclick="closeMobile()">Event Management</a>
+  <a href="#advertise" onclick="closeMobile()">Advertise</a>
+  <a href="#community" onclick="closeMobile()">Community</a>
+  <a href="#career" onclick="closeMobile()">Career</a>
+  <a href="#contact" onclick="closeMobile()" style="color:var(--green)">Get In Touch →</a>
+</div>
+
+<!-- ─── HERO ─────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-visual">
+    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="200" r="180" stroke="#2ecc40" stroke-width="1"/>
+      <circle cx="200" cy="200" r="130" stroke="#2ecc40" stroke-width="0.5"/>
+      <circle cx="200" cy="200" r="80" stroke="#2ecc40" stroke-width="0.5"/>
+      <line x1="20" y1="200" x2="380" y2="200" stroke="#2ecc40" stroke-width="0.5"/>
+      <line x1="200" y1="20" x2="200" y2="380" stroke="#2ecc40" stroke-width="0.5"/>
+      <ellipse cx="200" cy="200" rx="180" ry="70" stroke="#2ecc40" stroke-width="0.5"/>
+      <ellipse cx="200" cy="200" rx="180" ry="110" stroke="#2ecc40" stroke-width="0.5"/>
+    </svg>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+      <span class="hero-urdu">اپنی پہچان کو گلے لگائیں</span>
+      </div>
+      <h1 class="hero-title">
+        YOUR IDENTITY<br>
+        <span class="line2">YOUR </span><span id="typing" class="line2">VOICE</span><br>
+        YOUR PLATFORM
+      </h1>
+      <p class="hero-desc">
+        Australia's premier Pakistani and South Asian media platform — bringing culture, community news, entertainment, and professional events to the diaspora worldwide.
+      </p>
+      <div class="hero-btns">
+        <a href="#media" class="btn btn-green">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Watch Now
+        </a>
+        <a href="#events" class="btn btn-outline">Plan an Event <i class="fa-solid fa-calendar"></i></a>
+      </div>
+      
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">50K+</div>
+          <div class="hero-stat-label">Facebook Followers</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">2000+</div>
+          <div class="hero-stat-label">Videos Published</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">100+</div>
+          <div class="hero-stat-label">Events Managed</div>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+  <div class="hero-scroll" id="scrollBtn">
+    <div class="hero-scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- ─── TICKER ─────────────────────────────────────── -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>🎬 Pakistani & South Asian Stories</span>
+    <span class="ticker-dot"></span>
+    <span>🌏 Connecting Diaspora Worldwide</span>
+    <span class="ticker-dot"></span>
+    <span>🎤 Cultural Events in Australia</span>
+    <span class="ticker-dot"></span>
+    <span>📺 YouTube Channel – Subscribe Now</span>
+    <span class="ticker-dot"></span>
+    <span>🎉 Corporate & Community Event Management</span>
+    <span class="ticker-dot"></span>
+    <span>🇦🇺 Based in Australia, Heart in South Asia</span>
+    <span class="ticker-dot"></span>
+    <!-- repeat for seamless loop -->
+    <span>🎬 Pakistani & South Asian Stories</span>
+    <span class="ticker-dot"></span>
+    <span>🌏 Connecting Diaspora Worldwide</span>
+    <span class="ticker-dot"></span>
+    <span>🎤 Cultural Events in Australia</span>
+    <span class="ticker-dot"></span>
+    <span>📺 YouTube Channel – Subscribe Now</span>
+    <span class="ticker-dot"></span>
+    <span>🎉 Corporate & Community Event Management</span>
+    <span class="ticker-dot"></span>
+    <span>🇦🇺 Based in Australia, Heart in South Asia</span>
+    <span class="ticker-dot"></span>
+  </div>
+</div>
+
+<!-- ─── MEDIA CHANNEL ────────────────────────────────── -->
+<section id="media" class="section">
+  <div class="container">
+    <div class="media-header">
+      <span class="tag fade-up">Our Channel</span>
+      <h2 class="section-title fade-up">LATEST FROM <span>PEHCHANTV</span></h2>
+      <p class="section-sub fade-up">Authentic stories. Familiar faces. Your community — on screen.</p>
+    </div>
+    <!-- BLOCK 1 -->
+    <div class="media-block">
+      <h3>News</h3>
+      <div class="swiper media-swiper">
+        <div class="swiper-wrapper" id="news-container"></div>
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+
+    <!-- BLOCK 2 -->
+    <div class="media-block">
+      <h3>News2</h3>
+      <div class="swiper media-swiper">
+        <div class="swiper-wrapper reels" id="news2-container"></div>
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+
+    <!-- BLOCK 3 -->
+    <div class="media-block">
+      <h3>News3</h3>
+      <div class="swiper media-swiper last-swiper">
+        <div class="swiper-wrapper wide" id="news3-container"></div>
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+
+    <div class="yt-cta fade-up">
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.04em;">
+        1500+ Videos on our <span style="color:var(--green)">YouTube Channel</span>
+      </h3>
+      <p>Subscribe to stay connected with the latest news, culture, and community stories from across the South Asian diaspora.</p>
+      <a href="https://youtube.com/@PehchanTV" target="_blank" class="btn btn-green" style="margin-top:24px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.63 12.63 0 00-8.45 0A4.83 4.83 0 014.41 6.69C3.09 8 3 12 3 12s.09 4 1.41 5.31a4.83 4.83 0 003.77 2.75 12.63 12.63 0 008.45 0 4.83 4.83 0 003.77-2.75C21.91 16 22 12 22 12s-.09-4-1.41-5.31zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+        Subscribe on YouTube
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── ABOUT ──────────────────────────────────────── -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <div class="about-img-box">
+          <div class="about-globe">
+            <div class="about-globe-inner"><i class="fa-solid fa-globe"></i></div>
+          </div>
+        </div>
+        <div class="about-badge shine-box">
+          <strong>2018</strong>
+          Est. Since
+        </div>
+      </div>
+      <div>
+        <span class="tag fade-up">Who We Are</span>
+        <h2 class="section-title fade-up">BRIDGING <span>CULTURES,</span><br>BUILDING COMMUNITY</h2>
+        <p style="color:var(--muted);line-height:1.8;margin-bottom:32px;" class="fade-up">
+          PehchanTV was born from a simple belief: every immigrant deserves to see themselves reflected in media. We are a proudly Australian platform celebrating Pakistani, Indian, Bangladeshi, and South Asian communities — telling authentic stories, preserving cultural heritage, and creating belonging.
+        </p>
+        <div class="about-features">
+          <div class="about-feat fade-up">
+            <div class="about-feat-icon"><i class="fa-solid fa-tv"></i></div>
+            <div>
+              <div class="about-feat-title">Original Media Content</div>
+              <div class="about-feat-text">News, interviews, entertainment, and cultural programs created for the diaspora, by the diaspora.</div>
+            </div>
+          </div>
+          <div class="about-feat fade-up">
+            <div class="about-feat-icon"><i class="fa-solid fa-calendar-days"></i></i></div>
+            <div>
+              <div class="about-feat-title">Professional Event Management</div>
+              <div class="about-feat-text">From Eid galas to corporate multicultural forums — we craft unforgettable experiences.</div>
+            </div>
+          </div>
+          <div class="about-feat fade-up">
+            <div class="about-feat-icon"><i class="fa-solid fa-people-group"></i></i></div>
+            <div>
+              <div class="about-feat-title">Community Platform</div>
+              <div class="about-feat-text">A trusted space for announcements, community voices, and cultural conversations.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ────────────────────────────────────── -->
+<section id="services" class="section">
+  <div class="container">
+    <div style="text-align:center;max-width:620px;margin:0 auto 56px;">
+      <span class="tag fade-up">What We Do</span>
+      <h2 class="section-title fade-up">TWO PILLARS OF <span>EXCELLENCE</span></h2>
+      <p class="section-sub fade-up" style="margin:0 auto;">Our dual-focused mission: world-class media content and seamless event experiences for Australia's South Asian community.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card featured fade-up">
+        <span class="service-icon"><i class="fa-solid fa-tv"></i></span>
+        <div class="service-title">YouTube Media Channel</div>
+        <p class="service-desc">Our flagship platform delivering news, culture, entertainment, and conversations that matter to South Asian Australians.</p>
+        <ul class="service-list">
+          <li>Breaking community news & analysis</li>
+          <li>Cultural shows & lifestyle programming</li>
+          <li>Celebrity interviews & exclusive content</li>
+          <li>Pakistani drama & music coverage</li>
+          <li>Immigration & settlement guides</li>
+          <li>Urdu, Hindi & English content</li>
+        </ul>
+        <a href="#media" class="btn btn-green" style="margin-top:28px;font-size:.85rem;padding:10px 22px;">Watch Videos →</a>
+      </div>
+      <div class="service-card fade-up">
+        <span class="service-icon"><i class="fa-solid fa-calendar-days"></i></span>
+        <div class="service-title">Event Management</div>
+        <p class="service-desc">End-to-end event production for cultural festivals, community galas, and corporate multicultural events across Australia.</p>
+        <ul class="service-list">
+          <li>Eid, Diwali & cultural festivals</li>
+          <li>Corporate diversity events</li>
+          <li>Community award ceremonies</li>
+          <li>Concert & entertainment shows</li>
+          <li>Wedding & social celebrations</li>
+          <li>Media coverage & live streaming</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline" style="margin-top:28px;font-size:.85rem;padding:10px 22px;">Plan Your Event →</a>
+      </div>
+      <div class="service-card fade-up">
+        <span class="service-icon"><i class="fa-solid fa-bullhorn"></i></span>
+        <div class="service-title">Advertising & Sponsorship</div>
+        <p class="service-desc">Reach Australia's growing South Asian demographic through targeted media placements and event sponsorships.</p>
+        <ul class="service-list">
+          <li>Pre-roll & mid-roll video ads</li>
+          <li>Sponsored content segments</li>
+          <li>Event booth & branding packages</li>
+          <li>Social media promotions</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline" style="margin-top:28px;font-size:.85rem;padding:10px 22px;">Advertise With Us →</a>
+      </div>
+      <div class="service-card fade-up">
+        <span class="service-icon"><i class="fa-solid fa-globe"></i></span>
+        <div class="service-title">Community Hub</div>
+        <p class="service-desc">Your notice board for job postings, visa news, community announcements and settlement resources.</p>
+        <ul class="service-list">
+          <li>Immigration news updates</li>
+          <li>Business directory & referrals</li>
+          <li>Community classifieds</li>
+          <li>Cultural calendar of events</li>
+        </ul>
+      </div>
+      <div class="service-card fade-up" style="grid-column: span 2;">
+        <div style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <span class="service-icon"><i class="fa-solid fa-book-open"></i></span>
+            <div class="service-title">Storytelling Workshops</div>
+            <p class="service-desc">We offer media literacy and storytelling workshops for South Asian youth in Australia — empowering the next generation of voices.</p>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <ul class="service-list">
+              <li>Video production basics</li>
+              <li>On-camera confidence training</li>
+              <li>Social media content creation</li>
+              <li>Journalism & reporting skills</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline" style="margin-top:24px;font-size:.85rem;padding:10px 22px;">Register Interest →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EVENTS ──────────────────────────────────────── -->
+<section id="events" class="section">
+  <div class="container">
+    <span class="tag fade-up">Events</span>
+    <h2 class="section-title fade-up">EVENTS THAT <span>CELEBRATE</span><br>WHO WE ARE</h2>
+    <p class="section-sub fade-up">From intimate community gatherings to large-scale cultural festivals — we plan, produce, and execute events that leave a lasting impression.</p>
+    <div class="events-grid">
+      <div>
+        <div class="events-list">
+          <div class="event-card fade-up">
+            <div class="event-date">
+              <div class="event-date-day">15</div>
+              <div class="event-date-mon">Jun</div>
+            </div>
+            <div class="event-body">
+              <h4>Pakistan Independence Day Gala 2025 – Sydney</h4>
+              <p>Grand celebration with live music, cultural performances, traditional food stalls, and community awards.</p>
+              <div class="event-tags">
+                <span class="event-tag">Cultural</span>
+                <span class="event-tag">Sydney</span>
+                <span class="event-tag">All Ages</span>
+              </div>
+            </div>
+          </div>
+          <div class="event-card fade-up">
+            <div class="event-date">
+              <div class="event-date-day">20</div>
+              <div class="event-date-mon">Jul</div>
+            </div>
+            <div class="event-body">
+              <h4>Multicultural Business Forum 2025 – Melbourne</h4>
+              <p>Connecting South Asian entrepreneurs with mainstream Australian business networks. Keynotes, panels, and networking.</p>
+              <div class="event-tags">
+                <span class="event-tag">Business</span>
+                <span class="event-tag">Melbourne</span>
+                <span class="event-tag">Corporate</span>
+              </div>
+            </div>
+          </div>
+          <div class="event-card fade-up">
+            <div class="event-date">
+              <div class="event-date-day">02</div>
+              <div class="event-date-mon">Aug</div>
+            </div>
+            <div class="event-body">
+              <h4>Desi Fusion Night – Live Concert & Dinner</h4>
+              <p>An evening of Bollywood, Punjabi, and modern fusion music with international artists performing live.</p>
+              <div class="event-tags">
+                <span class="event-tag">Concert</span>
+                <span class="event-tag">Brisbane</span>
+                <span class="event-tag">18+</span>
+              </div>
+            </div>
+          </div>
+          <div class="event-card fade-up">
+            <div class="event-date">
+              <div class="event-date-day">30</div>
+              <div class="event-date-mon">Aug</div>
+            </div>
+            <div class="event-body"> 
+              <h4>Youth Leadership & Career Summit 2025</h4>
+              <p>Empowering second-generation South Asian Australians with mentorship, career guidance, and networking opportunities.</p>
+              <div class="event-tags">
+                <span class="event-tag">Youth</span>
+                <span class="event-tag">Sydney</span>
+                <span class="event-tag">Free Entry</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="events-info">
+        <div class="events-info-box fade-up">
+          <h3>Planning an Event?<br><span style="color:var(--green)">We've Got You.</span></h3>
+          <p>Whether it's a 50-person community iftar or a 2,000-person festival, our team handles every detail — venue, logistics, AV production, media coverage, and more.</p>
+          <div class="events-services">
+            <div class="ev-service"><span>🏟️</span><span>Venue Sourcing & Management</span></div>
+            <div class="ev-service"><span>🎤</span><span>MC & Entertainment Booking</span></div>
+            <div class="ev-service"><span>🎥</span><span>Photography & Videography</span></div>
+            <div class="ev-service"><span>📡</span><span>Live Streaming & Broadcasting</span></div>
+            <div class="ev-service"><span>🎨</span><span>Decoration & Stage Design</span></div>
+            <div class="ev-service"><span>📣</span><span>Marketing & Promotions</span></div>
+          </div>
+          <a href="#contact" class="btn btn-green" style="width:100%;justify-content:center;">Request a Quote →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── COMMUNITY ────────────────────────────────────── -->
+<section id="community" class="section">
+  <div class="container">
+    <span class="tag fade-up">Our Community</span>
+    <h2 class="section-title fade-up" style="text-align:center;">ONE PLATFORM, <span>MANY ROOTS</span></h2>
+    <p class="section-sub fade-up" style="margin:0 auto 44px;text-align:center;">We proudly serve South Asian diaspora communities across Australia and the Western world.</p>
+    <div class="community-flags fade-up">
+      <div class="flag-chip"><span>🇵🇰</span><span>Pakistani</span></div>
+      <div class="flag-chip"><span>🇮🇳</span><span>Indian</span></div>
+      <div class="flag-chip"><span>🇧🇩</span><span>Bangladeshi</span></div>
+      <div class="flag-chip"><span>🇱🇰</span><span>Sri Lankan</span></div>
+      <div class="flag-chip"><span>🇳🇵</span><span>Nepali</span></div>
+      <div class="flag-chip"><span>🇦🇫</span><span>Afghan</span></div>
+      <div class="flag-chip"><span>🇦🇺</span><span>Australian</span></div>
+      <div class="flag-chip"><span>🇬🇧</span><span>UK Diaspora</span></div>
+      <div class="flag-chip"><span>🇺🇸</span><span>US Diaspora</span></div>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial fade-up">
+        <p class="testimonial-text">PehchanTV gave me a sense of home when I first arrived in Sydney. Their immigration videos helped me navigate the PR process step by step.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">AK</div>
+          <div>
+            <div class="testimonial-name">Ayesha Khan</div>
+            <div class="testimonial-loc"><i class="fa-solid fa-location-dot"></i> Sydney, NSW</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-up">
+        <p class="testimonial-text">They organised our community's Eid celebration last year and it was absolutely flawless. 500 guests, perfect execution. We couldn't have asked for better.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MR</div>
+          <div>
+            <div class="testimonial-name">Mohammed Raza</div>
+            <div class="testimonial-loc"><i class="fa-solid fa-location-dot"></i> Melbourne, VIC</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-up">
+        <p class="testimonial-text">Watching PehchanTV keeps me connected to my roots while building my life here in Brisbane. Their content is authentic and truly represents us.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SP</div>
+          <div>
+            <div class="testimonial-name">Sunita Patel</div>
+            <div class="testimonial-loc"><i class="fa-solid fa-location-dot"></i> Brisbane, QLD</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ──────────────────────────────────────── -->
+<section id="contact" class="section">
+  <div class="container">
+    <span class="tag fade-up">Contact Us</span>
+    <h2 class="section-title fade-up">LET'S CREATE SOMETHING <span>TOGETHER</span></h2>
+    <p class="section-sub fade-up">Whether you want to advertise, book our event services, collaborate, or simply say salaam — we'd love to hear from you.</p>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-details">
+          <div class="contact-detail fade-up">
+            <div class="cd-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div>
+              <div class="cd-label">Location</div>
+              <div class="cd-val">Sydney, New South Wales, Australia</div>
+            </div>
+          </div>
+          <div class="contact-detail fade-up">
+            <div class="cd-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div>
+              <div class="cd-label">Email</div>
+              <div class="cd-val">info@pehchantv.com.au</div>
+            </div>
+          </div>
+          <div class="contact-detail fade-up">
+            <div class="cd-icon"><i class="fa-solid fa-phone"></i></div>
+            <div>
+              <div class="cd-label">Phone / WhatsApp</div>
+              <div class="cd-val">+61 4XX XXX XXX</div>
+            </div>
+          </div>
+          <div class="contact-detail fade-up">
+            <div class="cd-icon"><i class="fa-solid fa-clock"></i></div>
+            <div>
+              <div class="cd-label">Business Hours</div>
+              <div class="cd-val">Mon–Fri 9am–6pm AEST</div>
+            </div>
+          </div>
+          <div class="contact-detail fade-up">
+            <div class="cd-icon"><i class="fa-brands fa-youtube"></i></div>
+            <div>
+              <div class="cd-label">YouTube</div>
+              <div class="cd-val">youtube.com/@PehchanTV</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group fade-up">
+              <label>FULL NAME</label>
+              <input type="text" placeholder="Your full name" required>
+            </div>
+            <div class="form-group fade-up">
+              <label>EMAIL</label>
+              <input type="email" placeholder="you@email.com" required>
+            </div>
+          </div>
+          <div class="form-group fade-up">
+            <label>PHONE (OPTIONAL)</label>
+            <input type="tel" placeholder="+61 4XX XXX XXX">
+          </div>
+          <div class="form-group fade-up">
+            <label>ENQUIRY TYPE</label>
+            <select>
+              <option value="">Select enquiry type…</option>
+              <option>Media / Advertising</option>
+              <option>Event Management</option>
+              <option>Sponsorship / Partnership</option>
+              <option>Content Collaboration</option>
+              <option>Community Announcement</option>
+              <option>General Enquiry</option>
+            </select>
+          </div>
+          <div class="form-group fade-up">
+            <label>MESSAGE</label>
+            <textarea placeholder="Tell us about your project or enquiry…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-green fade-up" style="width:100%;justify-content:center;padding:15px;">
+            Send Message →
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SOCIAL STRIP ─────────────────────────────────── -->
+<div class="social-strip">
+  <div class="container">
+    <h2>FOLLOW US EVERYWHERE</h2>
+    <p>Stay connected — never miss a story, event, or community update.</p>
+    <div class="social-icons">
+      <a href="https://youtube.com/@PehchanTV" target="_blank" class="social-icon-btn">
+        <i class="fa-brands fa-youtube"></i>
+        YouTube
+      </a>
+      <a href="#" class="social-icon-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        Instagram
+      </a>
+      <a href="#" class="social-icon-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </a>
+      <a href="#" class="social-icon-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        WhatsApp
+      </a>
+      <a href="#" class="social-icon-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Twitter / X
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="/assets/images/pehchantv-logo.png" alt="PehchanTV" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span style="display:none; font-family:'Bebas Neue',sans-serif; font-size:1.7rem; color:#fff; letter-spacing:.06em; margin-bottom:16px; display:none">PEHCHAN<span style="color:var(--green)">TV</span></span>
+        <p>Australia's premier South Asian media platform. Bridging cultures, building community, and celebrating identity since 2018.</p>
+        <div style="margin-top:20px; color:var(--green); font-style:italic; font-size:.95rem; font-family:'Noto Nastaliq Urdu',serif; direction:rtl;">اپنی پہچان کو گلے لگائیں</div>
+      </div>
+      <div class="footer-col">
+        <h5>Media</h5>
+        <ul>
+          <li><a href="#media">Latest Videos</a></li>
+          <li><a href="#media">News</a></li>
+          <li><a href="#media">Culture</a></li>
+          <li><a href="#media">Entertainment</a></li>
+          <li><a href="#media">Immigration Guides</a></li>
+          <li><a href="#media">YouTube Channel</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Events</h5>
+        <ul>
+          <li><a href="#events">Upcoming Events</a></li>
+          <li><a href="#events">Cultural Festivals</a></li>
+          <li><a href="#events">Corporate Events</a></li>
+          <li><a href="#events">Concerts & Shows</a></li>
+          <li><a href="#contact">Book Our Services</a></li>
+          <li><a href="#contact">Sponsorships</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Our Services</a></li>
+          <li><a href="#community">Community</a></li>
+          <li><a href="#contact">Advertise</a></li>
+          <li><a href="#contact">Careers</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 PehchanTV. All rights reserved. Made with 🤍 for the diaspora.</span>
+      <span><a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── BACK TO TOP ──────────────────────────────── -->
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- ─── SCRIPTS ──────────────────────────────────── -->
+<script src="/assets/js/main.js">
+</script>
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'en,ur',
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+<script>
+document.querySelectorAll('.media-swiper').forEach(swiperEl => {
+
+  const isLast = swiperEl.classList.contains('last-swiper');
+
+  new Swiper(swiperEl, {
+
+    // Default (mobile first)
+    slidesPerView: isLast ? 1.1 : 1.2,
+    spaceBetween: isLast ? 30 : 30,
+
+    // Responsive breakpoints
+    breakpoints: {
+
+      // 📲 Tablet
+      768: {
+        slidesPerView: isLast ? 2.5 : 2.1,
+        spaceBetween: isLast ? 30 : 20
+      },
+
+      // 💻 Small Laptop
+      1024: {
+        slidesPerView: isLast ? 2.7 : 3.5,
+        spaceBetween: isLast ? 30 : 30
+      },
+
+      // 🖥 Desktop
+      1400: {
+        slidesPerView: isLast ? 2.3 : 2.7,
+        spaceBetween: isLast ? 30 : 30
+      }
+
+    },
+
+    navigation: {
+      nextEl: swiperEl.querySelector('.swiper-button-next'),
+      prevEl: swiperEl.querySelector('.swiper-button-prev'),
+    },
+
+    grabCursor: true
+
+  });
+
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // 🔁 Load category function
+  async function loadCategory(txtFile, containerId) {
+    const container = document.getElementById(containerId);
+
+    try {
+      const res = await fetch(txtFile);
+      const text = await res.text();
+
+      const lines = text
+        .split("\n")
+        .map(l => l.trim())
+        .filter(l => l !== "");
+
+      // ❌ No data
+      if (lines.length === 0) {
+        addNoVideos(container);
+        return;
+      }
+
+      // ✅ Loop lines
+      lines.forEach(line => {
+        let type = "auto";
+        let url = line;
+
+        // अगर type दिया है
+        if (line.includes("|")) {
+          const parts = line.split("|");
+          type = parts[0].trim();
+          url = parts[1].trim();
+        }
+
+        let iframeSrc = "";
+
+        // 🎯 TYPE HANDLING
+        if (type === "reel") {
+          iframeSrc = `https://www.facebook.com/plugins/video.php?href=${url}`;
+        } 
+        else if (type === "image") {
+          iframeSrc = `https://www.facebook.com/plugins/post.php?href=${url}`;
+        } 
+        else {
+          // AUTO DETECT
+          if (url.includes("/reel/") || url.includes("/videos/")) {
+            iframeSrc = `https://www.facebook.com/plugins/video.php?href=${url}`;
+          } else {
+            iframeSrc = `https://www.facebook.com/plugins/post.php?href=${url}`;
+          }
+        }
+
+        // 🎬 Slide create
+        const slide = document.createElement("div");
+        slide.className = "swiper-slide";
+
+        slide.innerHTML = `
+          <div class="media-card">
+            <div class="media-video-wrap reel">
+              <iframe loading="lazy"
+                src="${iframeSrc}"
+                allowfullscreen">
+              </iframe>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(slide);
+      });
+
+      // 👁 SEE MORE
+      addSeeMore(container);
+
+    } catch (err) {
+      console.error("Error loading:", txtFile);
+      addNoVideos(container);
+    }
+
+    // 🔄 Swiper update after load
+    refreshSwiper();
+  }
+
+
+  // 👁 SEE MORE CARD
+  function addSeeMore(container) {
+    const slide = document.createElement("div");
+    slide.className = "swiper-slide";
+
+    slide.innerHTML = `
+      <div class="media-card see-more-card" onclick="window.location.href='/media-page'">
+        <div class="see-more-content">
+          <span>👁</span>
+          <h4>See More Videos</h4>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(slide);
+  }
+
+
+  // ⚠️ NO VIDEOS
+  function addNoVideos(container) {
+    const slide = document.createElement("div");
+    slide.className = "swiper-slide";
+
+    slide.innerHTML = `
+      <div class="media-card see-more-card">
+        <div class="see-more-content">
+          <span>⚠️</span>
+          <h4>No Videos Available</h4>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(slide);
+  }
+
+
+  // 🔄 Swiper refresh fix
+  function refreshSwiper() {
+    document.querySelectorAll('.media-swiper').forEach(swiperEl => {
+      if (swiperEl.swiper) {
+        swiperEl.swiper.update();
+      }
+    });
+  }
+
+
+  // 🚀 LOAD ALL CATEGORIES
+  loadCategory('/data/news.txt', 'news-container');
+  loadCategory('/data/news2.txt', 'news2-container');
+  loadCategory('/data/news3.txt', 'news3-container');
+
+});
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
