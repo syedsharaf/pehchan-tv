@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events – PehchanTV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+
+/* ══════════════════════════════
+   ROOT & RESET
+══════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #051526;
+  --navy2:  #091f35;
+  --green:  #2ecc40;
+  --green2: #27ae35;
+  --white:  #f5f8fa;
+  --muted:  #8aa0b4;
+  --card:   #0d2840;
+  --border: rgba(46,204,64,.18);
+  --glow:   0 0 40px rgba(46,204,64,.22);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px; line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════
+   UTILITIES
+══════════════════════════════ */
+.container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+.section    { padding: 100px 0; }
+.section-sm { padding: 60px 0; }
+
+.tag {
+  display: inline-block;
+  background: var(--green); color: var(--navy);
+  font-weight: 700; font-size: .72rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 4px 14px; border-radius: 2px; margin-bottom: 18px;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  line-height: 1; letter-spacing: .02em; margin-bottom: 16px;
+}
+.section-title span { color: var(--green); }
+.section-sub { color: var(--muted); font-size: 1.05rem; max-width: 560px; margin-bottom: 48px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 30px; font-family: 'Outfit', sans-serif;
+  font-size: .95rem; font-weight: 600; border-radius: 4px;
+  cursor: pointer; text-decoration: none; transition: all .25s ease; border: none;
+}
+.btn-green  { background: var(--green); color: var(--navy); }
+.btn-green:hover  { background: var(--green2); transform: translateY(-2px); box-shadow: var(--glow); }
+.btn-outline { border: 1.5px solid var(--green); color: var(--green); background: transparent; }
+.btn-outline:hover { background: rgba(46,204,64,.08); transform: translateY(-2px); }
+
+.fade-up { opacity: 0; transform: translateY(32px); transition: opacity .65s ease, transform .65s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.d1{transition-delay:.1s} .d2{transition-delay:.2s}
+.d3{transition-delay:.3s} .d4{transition-delay:.4s}
+.d5{transition-delay:.5s} .d6{transition-delay:.6s}
+
+/* ══════════════════════════════
+   NAVBAR
+══════════════════════════════ */
+nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 90px;
+    background: rgba(5,21,38,.5);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .nav-logo img { height: 50px; }
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-weight: 500;
+    font-size: 1rem; letter-spacing: .02em;
+    transition: color .2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 2px; background: var(--green); transform: scaleX(0);
+    transition: transform .25s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-links .nav-cta a {
+    background: var(--green); color: var(--navy); padding: 12px 20px;
+    border-radius: 4px; font-weight: 700;
+  }
+  .active {
+    color: var(--white) !important;
+  }
+  .nav-links .nav-cta a::after { display: none; }
+  .nav-links .nav-cta a:hover { background: var(--green2); }
+  .hamburger {
+    display: none; flex-direction: column;
+    cursor: pointer; border: none; background: none; padding: 4px;
+  }
+  .hamburger span {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: all .3s ease;
+}
+
+/* spacing between lines */
+.hamburger span:not(:last-child) {
+  margin-bottom: 6px;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+  .mobile-menu {
+    display: none; position: fixed; inset: 70px 0 0 0; z-index: 998;
+    background: var(--navy2); padding: 32px 24px;
+    flex-direction: column; gap: 24px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--white); text-decoration: none;
+    font-size: 1.3rem; font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 16px;
+  }
+  @media(max-width:820px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  .skiptranslate {
+  display: none;
+}
+
+@media(max-width:600px) {
+    nav {
+        padding: 0 16px;
+        height: 80px;
+    }
+}
+
+@media(max-width:840px) {
+    .nav-icons.m {
+    display: flex;
+}
+}
+
+.lang-switch {
+  position: relative;
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: none;
+  min-width: 120px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.lang-dropdown div {
+  padding: 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.lang-dropdown div:hover {
+  background: var(--green);
+  color: #000;
+}
+
+/* show dropdown */
+.lang-switch.active .lang-dropdown {
+  display: block;
+}
+
+/* hide google UI */
+#google_translate_element {
+  display: none;
+}
+
+.goog-te-banner-frame {
+  display: none !important;
+}
+.nav-logo {
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .nav-icons {
+  display: flex;
+  gap: 10px;
+  }
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+  background: var(--green);
+  color: var(--navy);
+  border-color: var(--green);
+}
+
+.nav-icons.m {
+    display: none;
+}
+
+/* ══════════════════════════════
+   PAGE HERO
+══════════════════════════════ */
+.page-hero {
+  padding: 150px 0 90px;
+  position: relative; overflow: hidden;
+  background-image: url('/assets/images/event-management-banner-01.jpg');
+  background-size: cover; background-position: center;
+}
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-color: var(--navy2);
+  opacity: .7;
+  pointer-events: none;
+}
+/* big watermark */
+.page-hero::after {
+  content: 'EVENTS';
+  position: absolute; right: -30px; bottom: -40px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(8rem, 20vw, 18rem);
+  color: rgba(46,204,64,.03);
+  line-height: 1; pointer-events: none; user-select: none; white-space: nowrap;
+}
+.hero-layout {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-size: .75rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 20px;
+}
+.hero-eyebrow::before { content:''; width:28px; height:1px; background:var(--green); }
+.page-hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.8rem, 9vw, 7.5rem);
+  line-height: .9; letter-spacing: .02em; margin-bottom: 28px;
+}
+.page-hero h1 span { color: var(--green); }
+.hero-desc { color: #e8e8e8; font-size: 1.08rem; max-width: 480px; line-height: 1.8; margin-bottom: 36px; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+/* right side: stat boxes */
+.hero-stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.hstat-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 28px 24px;
+  transition: border-color .3s, transform .3s;
+}
+.hstat-box:hover { border-color: var(--green); transform: translateY(-4px); }
+.hstat-box:first-child {
+  grid-column: span 2;
+  background: linear-gradient(135deg, #0a3020, #062040);
+  border-color: rgba(46,204,64,.3);
+  display: flex; align-items: center; gap: 20px;
+}
+.hstat-icon { font-size: 2.4rem; }
+.hstat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem; color: var(--green); line-height: 1;
+}
+.hstat-lbl { color: var(--muted); font-size: .82rem; margin-top: 4px; }
+@media(max-width:860px) {
+  .hero-layout { grid-template-columns: 1fr; gap: 48px; }
+  .hero-stats-grid { display: none; }
+  .page-hero { padding: 120px 0 72px; }
+}
+
+/* ══════════════════════════════
+   TICKER
+══════════════════════════════ */
+.ticker {
+  background: var(--green); color: var(--navy);
+  padding: 10px 0; overflow: hidden; white-space: nowrap;
+}
+.ticker-inner {
+  display: inline-block;
+  animation: ticker 32s linear infinite;
+  font-weight: 700; font-size: .88rem; letter-spacing: .06em; text-transform: uppercase;
+}
+.ticker-inner span { margin: 0 36px; }
+.ticker-dot { display: inline-block; width: 5px; height: 5px; background: var(--navy); border-radius: 50%; vertical-align: middle; }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ══════════════════════════════
+   WHY CHOOSE US
+══════════════════════════════ */
+.why-section { background: var(--navy2); }
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+}
+.why-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 36px 28px;
+  position: relative; overflow: hidden; transition: all .3s;
+}
+.why-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--green); transform: scaleX(0); transform-origin: left; transition: transform .35s;
+}
+.why-card:hover { border-color: var(--green); transform: translateY(-5px); box-shadow: var(--glow); }
+.why-card:hover::before { transform: scaleX(1); }
+.why-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem; color: rgba(46,204,64,.06);
+  line-height: 1; position: absolute; top: -8px; right: 16px;
+  pointer-events: none;
+}
+.why-icon {
+  width: 54px; height: 54px;
+  background: rgba(46,204,64,.1); border: 1px solid rgba(46,204,64,.25);
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; margin-bottom: 22px;
+}
+.why-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem; letter-spacing: .04em; margin-bottom: 10px;
+}
+.why-desc { color: var(--muted); font-size: .9rem; line-height: 1.72; }
+@media(max-width:860px) { .why-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:560px) { .why-grid { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════════
+   SERVICES WE OFFER
+══════════════════════════════ */
+.services-section { background: var(--navy); }
+.services-layout {
+  display: grid; grid-template-columns: 1fr 1.2fr; gap: 72px; align-items: start;
+}
+.services-sticky { position: sticky; top: 90px; }
+.services-sticky h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.4rem,5vw,3.8rem); line-height:1; letter-spacing:.02em; margin-bottom:16px; }
+.services-sticky h2 span { color: var(--green); }
+.services-sticky p { color: var(--muted); font-size:1rem; line-height:1.8; margin-bottom:28px; }
+.services-cta-mini { display:flex; flex-direction:column; gap:12px; }
+.services-cta-mini .btn { justify-content: center; }
+
+.services-list { display: flex; flex-direction: column; gap: 14px; }
+.service-row {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; transition: all .3s; overflow: hidden;
+}
+.service-row:hover { border-color: var(--green); box-shadow: var(--glow); }
+.service-row-header {
+  display: flex; align-items: center; gap: 18px;
+  padding: 22px 24px; cursor: pointer;
+}
+.service-row-icon {
+  width: 48px; height: 48px; min-width: 48px;
+  background: rgba(46,204,64,.1); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+}
+.service-row-title { font-weight: 700; font-size: 1.02rem; flex: 1; }
+.service-row-arrow {
+  color: var(--green); font-size: 1.1rem; transition: transform .3s;
+}
+.service-row.open .service-row-arrow { transform: rotate(90deg); }
+.service-row-body {
+  max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s ease;
+  padding: 0 24px;
+}
+.service-row.open .service-row-body { max-height: 300px; padding: 0 24px 22px; }
+.service-row-body p { color: var(--muted); font-size: .9rem; line-height: 1.75; margin-bottom: 14px; }
+.service-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  font-size: .75rem; font-weight: 600; padding: 4px 12px;
+  background: rgba(46,204,64,.1); color: var(--green);
+  border-radius: 30px; border: 1px solid rgba(46,204,64,.2);
+}
+@media(max-width:900px) {
+  .services-layout { grid-template-columns: 1fr; gap: 48px; }
+  .services-sticky { position: static; }
+}
+
+/* ══════════════════════════════
+   UPCOMING EVENTS
+══════════════════════════════ */
+.upcoming-section { background: var(--navy2); }
+
+/* filter tabs — same as media page */
+.ev-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+.ev-cat {
+  padding: 7px 18px; border: 1px solid var(--border);
+  border-radius: 30px; font-size: .85rem; font-weight: 500;
+  cursor: pointer; transition: all .2s;
+  background: transparent; color: var(--muted);
+  font-family: 'Outfit', sans-serif;
+}
+.ev-cat.active, .ev-cat:hover {
+  background: var(--green); color: var(--navy); border-color: var(--green); font-weight: 700;
+}
+
+.events-grid-main {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+}
+.ev-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  transition: all .3s; cursor: pointer; position: relative;
+}
+.ev-card::before {
+  content: ''; position: absolute; top:0; left:0; right:0; height: 3px;
+  background: var(--green); transform: scaleX(0); transform-origin: left; transition: transform .35s;
+}
+.ev-card:hover { transform: translateY(-5px); border-color: rgba(46,204,64,.4); box-shadow: var(--glow); }
+.ev-card:hover::before { transform: scaleX(1); }
+
+.ev-thumb {
+  width: 100%; aspect-ratio: 16/8;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem; position: relative; overflow: hidden;
+}
+.ev-thumb-1 { background: linear-gradient(135deg, #0d2840, #0a3a1a); }
+.ev-thumb-2 { background: linear-gradient(135deg, #1a0d30, #0d2840); }
+.ev-thumb-3 { background: linear-gradient(135deg, #0d3020, #1a2210); }
+.ev-thumb-4 { background: linear-gradient(135deg, #1a2a0d, #0d1f3a); }
+.ev-thumb-5 { background: linear-gradient(135deg, #0d1f3a, #0a2a10); }
+.ev-thumb-6 { background: linear-gradient(135deg, #1a2010, #0d2840); }
+
+.ev-date-badge {
+  position: absolute; top: 14px; left: 14px;
+  background: var(--green); color: var(--navy);
+  border-radius: 6px; padding: 8px 12px; text-align: center;
+  min-width: 52px;
+}
+.ev-date-day { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; line-height: 1; }
+.ev-date-mon { font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+.ev-status {
+  position: absolute; top: 14px; right: 14px;
+  font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+  padding: 4px 10px; border-radius: 2px; text-transform: uppercase;
+}
+.ev-status.open { background: rgba(46,204,64,.9); color: var(--navy); }
+.ev-status.soon { background: rgba(255,165,0,.9); color: #1a0d00; }
+.ev-status.sold { background: rgba(200,50,50,.9); color: #fff; }
+
+.ev-info { padding: 20px 22px; }
+.ev-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.ev-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 2px;
+  background: rgba(46,204,64,.1); color: var(--green);
+}
+.ev-info h3 { font-weight: 700; font-size: 1.02rem; line-height: 1.4; margin-bottom: 8px; }
+.ev-info p { color: var(--muted); font-size: .87rem; line-height: 1.65; margin-bottom: 14px; }
+.ev-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+.ev-meta span { color: var(--muted); font-size: .82rem; display: flex; align-items: center; gap: 6px; }
+.ev-meta span strong { color: var(--white); font-weight: 500; }
+
+@media(max-width:960px) { .events-grid-main { grid-template-columns: 1fr 1fr; } }
+@media(max-width:580px) { .events-grid-main { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════════
+   PROCESS / HOW IT WORKS
+══════════════════════════════ */
+.process-section { background: var(--navy); position: relative; overflow: hidden; }
+.process-section::before {
+  content: 'PROCESS';
+  position: absolute; right: -40px; top: 50%; transform: translateY(-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(8rem, 18vw, 16rem);
+  color: rgba(46,204,64,.025); line-height: 1;
+  pointer-events: none; user-select: none; white-space: nowrap;
+}
+.process-header { text-align: center; max-width: 600px; margin: 0 auto 64px; }
+.process-steps {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 0; position: relative;
+}
+/* connector line between steps */
+.process-steps::before {
+  content: '';
+  position: absolute; top: 36px; left: 10%; right: 10%;
+  height: 1px; background: linear-gradient(to right, transparent, var(--green) 20%, var(--green) 80%, transparent);
+  z-index: 0;
+}
+.process-step {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 0 16px; position: relative; z-index: 1;
+}
+.step-circle {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--card); border: 2px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; margin-bottom: 20px;
+  position: relative; transition: all .3s;
+  box-shadow: 0 0 0 8px var(--navy);
+}
+.process-step:hover .step-circle { background: rgba(46,204,64,.15); transform: scale(1.1); box-shadow: 0 0 0 8px var(--navy), var(--glow); }
+.step-num {
+  position: absolute; top: -8px; right: -8px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--green); color: var(--navy);
+  font-size: .72rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-title { font-weight: 700; font-size: .95rem; margin-bottom: 8px; }
+.step-desc { color: var(--muted); font-size: .82rem; line-height: 1.65; }
+@media(max-width:860px) {
+  .process-steps { grid-template-columns: 1fr 1fr; gap: 36px; }
+  .process-steps::before { display: none; }
+  .step-circle { box-shadow: none; }
+}
+@media(max-width:480px) { .process-steps { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════════
+   PAST EVENTS GALLERY
+══════════════════════════════ */
+.gallery-section { background: var(--navy2); }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 14px;
+}
+.gallery-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden; cursor: pointer;
+  position: relative; transition: all .3s;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem;
+}
+.gallery-item:hover { border-color: rgba(46,204,64,.5); transform: scale(1.02); z-index: 2; }
+.gallery-item::after {
+  content: '🔍';
+  position: absolute; inset: 0;
+  background: rgba(46,204,64,.85);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  opacity: 0; transition: opacity .25s;
+}
+.gallery-item:hover::after { opacity: 1; }
+/* span featured item */
+.gallery-item.span2 { grid-column: span 2; grid-row: span 2; font-size: 5rem; }
+/* height control */
+.gallery-item { min-height: 160px; }
+.gallery-item.span2 { min-height: 334px; }
+
+.g1  { background: linear-gradient(145deg, #0d2840, #0a3a1a); }
+.g2  { background: linear-gradient(145deg, #1a0d30, #0d2840); }
+.g3  { background: linear-gradient(145deg, #0d3020, #1a2210); }
+.g4  { background: linear-gradient(145deg, #1a2a0d, #0d1f3a); }
+.g5  { background: linear-gradient(145deg, #0d1f3a, #0a2a10); }
+.g6  { background: linear-gradient(145deg, #1a2010, #0d2840); }
+.g7  { background: linear-gradient(145deg, #0a1a30, #0d3020); }
+
+.gallery-label {
+  position: absolute; bottom: 10px; left: 10px;
+  background: rgba(0,0,0,.7); color: var(--white);
+  font-size: .72rem; font-weight: 600; padding: 3px 10px; border-radius: 3px;
+  z-index: 1;
+}
+@media(max-width:800px) {
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item.span2 { grid-column: span 2; }
+}
+@media(max-width:500px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-item.span2 { grid-column: span 1; grid-row: span 1; }
+}
+
+/* ══════════════════════════════
+   TESTIMONIALS
+══════════════════════════════ */
+.testimonials-section { background: var(--navy); }
+.testi-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+}
+.testi-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 30px 28px; transition: border-color .25s;
+}
+.testi-card:hover { border-color: rgba(46,204,64,.35); }
+.testi-stars { color: var(--green); font-size: 1rem; letter-spacing: 3px; margin-bottom: 16px; }
+.testi-quote {
+  color: var(--muted); font-size: .93rem; line-height: 1.75;
+  font-style: italic; margin-bottom: 22px; position: relative;
+}
+.testi-quote::before {
+  content: '"';
+  color: var(--green); font-size: 3rem; line-height: 0;
+  vertical-align: -.6rem; margin-right: 4px; font-style: normal;
+}
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--green); color: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: .9rem;
+}
+.testi-name { font-weight: 600; font-size: .93rem; }
+.testi-role { color: var(--muted); font-size: .78rem; }
+@media(max-width:860px) { .testi-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:540px) { .testi-grid { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════════
+   PACKAGES / PRICING
+══════════════════════════════ */
+.pricing-section { background: var(--navy2); }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: start;
+}
+.pricing-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 36px 30px;
+  position: relative; transition: all .3s;
+}
+.pricing-card:hover { transform: translateY(-6px); border-color: rgba(46,204,64,.4); }
+.pricing-card.featured {
+  background: linear-gradient(160deg, #0a3020, #062040);
+  border-color: var(--green);
+  box-shadow: var(--glow);
+}
+.pricing-popular {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--green); color: var(--navy);
+  font-size: .68rem; font-weight: 800; letter-spacing: .1em;
+  padding: 4px 16px; border-radius: 30px; text-transform: uppercase; white-space: nowrap;
+}
+.pricing-tier {
+  font-size: .78rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 10px;
+}
+.pricing-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem; letter-spacing: .04em; margin-bottom: 6px;
+}
+.pricing-desc { color: var(--muted); font-size: .88rem; margin-bottom: 24px; line-height: 1.6; }
+.pricing-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.2rem; color: var(--green); line-height: 1; margin-bottom: 4px;
+}
+.pricing-price sub { font-size: 1.2rem; vertical-align: .4rem; }
+.pricing-from { color: var(--muted); font-size: .78rem; margin-bottom: 28px; }
+.pricing-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.pricing-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.pricing-feat {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: .88rem; color: var(--muted);
+}
+.pricing-feat::before {
+  content: '✓'; color: var(--green); font-weight: 700;
+  font-size: .9rem; flex-shrink: 0; margin-top: 1px;
+}
+.pricing-feat.dim { opacity: .45; }
+.pricing-feat.dim::before { content: '✕'; color: var(--muted); }
+.pricing-card .btn { width: 100%; justify-content: center; }
+@media(max-width:860px) {
+  .pricing-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .pricing-card.featured { transform: none; }
+}
+
+/* ══════════════════════════════
+   ENQUIRY / CTA FORM
+══════════════════════════════ */
+.enquiry-section { background: var(--navy); }
+.enquiry-layout {
+  display: grid; grid-template-columns: 1fr 1.3fr; gap: 72px; align-items: start;
+}
+.enquiry-info h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  line-height: 1; letter-spacing: .02em; margin-bottom: 16px;
+}
+.enquiry-info h2 span { color: var(--green); }
+.enquiry-info p { color: var(--muted); line-height: 1.8; margin-bottom: 32px; }
+.enquiry-details { display: flex; flex-direction: column; gap: 14px; }
+.eq-detail {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 16px 18px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 6px; transition: border-color .25s;
+}
+.eq-detail:hover { border-color: var(--green); }
+.eq-icon {
+  width: 38px; height: 38px; min-width: 38px;
+  background: rgba(46,204,64,.1); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+}
+.eq-label { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 2px; }
+.eq-val { font-weight: 500; font-size: .93rem; }
+
+/* form */
+.enquiry-form { display: flex; flex-direction: column; gap: 18px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-group { display: flex; flex-direction: column; gap: 7px; }
+.form-group label {
+  font-size: .78rem; font-weight: 700;
+  color: var(--muted); letter-spacing: .06em; text-transform: uppercase;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--white); border-radius: 6px;
+  padding: 13px 16px; font-family: 'Outfit', sans-serif; font-size: .95rem;
+  transition: border-color .2s, box-shadow .2s; outline: none;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--green); box-shadow: 0 0 0 3px rgba(46,204,64,.1);
+}
+.form-group select option { background: var(--navy2); }
+.form-group textarea { resize: vertical; min-height: 110px; }
+@media(max-width:860px) {
+  .enquiry-layout { grid-template-columns: 1fr; gap: 48px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════
+   FOOTER  — exact homepage
+══════════════════════════════ */
+footer {
+  background: #020c17;
+  position: relative; overflow: hidden;
+}
+footer::before {
+  content: 'PEHCHAN';
+  position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(6rem, 18vw, 14rem);
+  color: rgba(46,204,64,.03);
+  white-space: nowrap; pointer-events: none; user-select: none; letter-spacing: .1em;
+}
+.footer-cta-band {
+  background: linear-gradient(100deg, #0a2a14 0%, #062040 100%);
+  border-bottom: 1px solid var(--border); padding: 48px 0;
+}
+.footer-cta-inner {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+.footer-cta-inner h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem); letter-spacing: .04em; line-height: 1.1;
+}
+.footer-cta-inner h3 span { color: var(--green); }
+.footer-cta-inner p { color: var(--muted); font-size: .93rem; margin-top: 6px; }
+.footer-cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.footer-body { padding: 64px 0 0; position: relative; z-index: 1; }
+.footer-top-row {
+  display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 48px; padding-bottom: 52px; border-bottom: 1px solid var(--border);
+}
+.f-brand-logo img { height: 50px; display: block; }
+.f-brand-logo .f-logo-text {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+  letter-spacing: .08em; color: var(--white);
+}
+.f-brand-logo .f-logo-text span { color: var(--green); }
+.f-tagline-urdu {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  direction: rtl; font-size: 1.1rem; color: var(--green); opacity: .85;
+  margin: 14px 0 16px; display: block;
+}
+.f-brand-desc { color: var(--muted); font-size: .88rem; line-height: 1.75; max-width: 270px; margin-bottom: 28px; }
+.f-socials { display: flex; gap: 10px; flex-wrap: wrap; }
+.f-social {
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  color: var(--muted); text-decoration: none; transition: all .22s;
+}
+.f-social:hover { background: var(--green); border-color: var(--green); color: var(--navy); transform: translateY(-3px); }
+.f-social svg { width: 17px; height: 17px; }
+.f-nav-col h6 {
+  font-size: .72rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.f-nav-col h6::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.f-nav-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.f-nav-col ul li a {
+  color: var(--muted); text-decoration: none; font-size: .9rem;
+  display: flex; align-items: center; gap: 7px; transition: color .2s, gap .2s;
+}
+.f-nav-col ul li a::before { content: '›'; color: var(--green); font-size: 1rem; opacity: 0; transition: opacity .2s; }
+.f-nav-col ul li a:hover { color: var(--white); gap: 10px; }
+.f-nav-col ul li a:hover::before { opacity: 1; }
+.footer-contact-bar {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+}
+.f-contact-item {
+  background: #020c17; padding: 28px 32px;
+  display: flex; gap: 16px; align-items: flex-start; transition: background .2s;
+}
+.f-contact-item:hover { background: #041422; }
+.f-ci-icon {
+  width: 44px; height: 44px; min-width: 44px;
+  background: rgba(46,204,64,.1); border: 1px solid var(--border);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+.f-ci-label { color: var(--muted); font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.f-ci-val { color: var(--white); font-size: .93rem; font-weight: 500; }
+.footer-bottom-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0; flex-wrap: wrap; gap: 14px; border-top: 1px solid var(--border);
+}
+.fbb-copy { color: var(--muted); font-size: .82rem; }
+.fbb-copy strong { color: var(--green); font-weight: 600; }
+.fbb-links { display: flex; gap: 20px; }
+.fbb-links a { color: var(--muted); text-decoration: none; font-size: .82rem; transition: color .2s; }
+.fbb-links a:hover { color: var(--white); }
+.fbb-made { color: var(--muted); font-size: .8rem; display: flex; align-items: center; gap: 5px; }
+.fbb-made span { color: #e74c3c; }
+@media(max-width:1024px) {
+  .footer-top-row { grid-template-columns: 1fr 1fr; gap: 36px; }
+  .footer-contact-bar { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:640px) {
+  .footer-top-row { grid-template-columns: 1fr; }
+  .footer-contact-bar { grid-template-columns: 1fr; }
+  .footer-cta-inner { flex-direction: column; }
+  .footer-bottom-bar { flex-direction: column; align-items: center; text-align: center; }
+  .fbb-links { justify-content: center; }
+}
+
+/* ══════════════════════════════
+   BACK TO TOP
+══════════════════════════════ */
+#btt {
+  position: fixed; bottom: 28px; right: 28px; z-index: 900;
+  width: 46px; height: 46px; background: var(--green);
+  color: var(--navy); border: none; border-radius: 50%;
+  cursor: pointer; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(46,204,64,.35);
+  opacity: 0; transition: opacity .3s, transform .3s;
+  transform: translateY(12px);
+}
+#btt.show { opacity: 1; transform: translateY(0); }
+#btt:hover { background: var(--green2); }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="/assets/images/pehchantv-logo.png" alt="PehchanTV Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <span style="display:none; font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:#fff; letter-spacing:.06em">PEHCHAN<span style="color:var(--green)">TV</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="#about-us">About Us</a></li>
+    <li><a href="#media">Media Channel</a></li>
+    <li><a href="#event-management">Event Management</a></li>
+    <li><a href="#advertise">Advertise</a></li>
+    <li><a href="#community">Community</a></li>
+    <div class="nav-icons">
+      <div class="lang-switch">
+      <button class="icon-btn" id="langBtn"><i class="fa-solid fa-globe"></i></button>
+
+      <div class="lang-dropdown" id="langDropdown">
+      <div onclick="setLang('en')">English</div>
+      <div onclick="setLang('ur')">اردو</div>
+      </div>
+      </div>
+
+      <!-- hidden google element -->
+      <div id="google_translate_element"></div>
+      <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+    <li class="nav-cta"><a href="#contact">Get In Touch</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/" onclick="closeMobile()">Home</a>
+  <a href="#about-us" onclick="closeMobile()">About Us</a>
+  <a href="#media" onclick="closeMobile()">Media</a>
+  <a href="#event-management" onclick="closeMobile()">Event Management</a>
+  <a href="#advertise" onclick="closeMobile()">Advertise</a>
+  <a href="#community" onclick="closeMobile()">Community</a>
+  <a href="#career" onclick="closeMobile()">Career</a>
+  <a href="#contact" onclick="closeMobile()" style="color:var(--green)">Get In Touch →</a>
+</div>
+
+<!-- ══════════ PAGE HERO ══════════ -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-layout">
+      <div>
+        <div class="hero-eyebrow fade-up">Event Management</div>
+        <h1 class="fade-up d1">EVENTS THAT<br><span>LEAVE A</span><br>MARK</h1>
+        <p class="hero-desc fade-up d2">From intimate community gatherings to 2,000-person cultural galas — PehchanTV Events delivers end-to-end event production that celebrates who we are.</p>
+        <div class="hero-btns fade-up d3">
+          <a href="#enquiry"  class="btn btn-green">Book Your Event →</a>
+          <a href="#upcoming" class="btn btn-outline">View Upcoming</a>
+        </div>
+      </div>
+      <div class="hero-stats-grid fade-up d2">
+        <div class="hstat-box">
+          <div class="hstat-icon">🎪</div>
+          <div>
+            <div class="hstat-num">10+</div>
+            <div class="hstat-lbl">Events successfully managed across Australia</div>
+          </div>
+        </div>
+        <div class="hstat-box">
+          <div class="hstat-num">5K+</div>
+          <div class="hstat-lbl">Total Attendees Served</div>
+        </div>
+        <div class="hstat-box">
+          <div class="hstat-num">4</div>
+          <div class="hstat-lbl">Australian Cities</div>
+        </div>
+        <div class="hstat-box">
+          <div class="hstat-num">100%</div>
+          <div class="hstat-lbl">Client Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TICKER ══════════ -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>🎪 End-to-End Event Management</span><span class="ticker-dot"></span>
+    <span>🎤 MC &amp; Entertainment Booking</span><span class="ticker-dot"></span>
+    <span>🎥 Live Streaming &amp; Videography</span><span class="ticker-dot"></span>
+    <span>🌙 Eid &amp; Cultural Galas</span><span class="ticker-dot"></span>
+    <span>💼 Corporate Multicultural Events</span><span class="ticker-dot"></span>
+    <span>🏆 Community Awards Nights</span><span class="ticker-dot"></span>
+    <span>🎵 Concerts &amp; Live Shows</span><span class="ticker-dot"></span>
+    <span>📡 Full AV Production</span><span class="ticker-dot"></span>
+    <span>🎪 End-to-End Event Management</span><span class="ticker-dot"></span>
+    <span>🎤 MC &amp; Entertainment Booking</span><span class="ticker-dot"></span>
+    <span>🎥 Live Streaming &amp; Videography</span><span class="ticker-dot"></span>
+    <span>🌙 Eid &amp; Cultural Galas</span><span class="ticker-dot"></span>
+    <span>💼 Corporate Multicultural Events</span><span class="ticker-dot"></span>
+    <span>🏆 Community Awards Nights</span><span class="ticker-dot"></span>
+    <span>🎵 Concerts &amp; Live Shows</span><span class="ticker-dot"></span>
+    <span>📡 Full AV Production</span><span class="ticker-dot"></span>
+  </div>
+</div>
+
+<!-- ══════════ WHY CHOOSE US ══════════ -->
+<section class="why-section section">
+  <div class="container">
+    <div style="text-align:center;max-width:620px;margin:0 auto 56px;">
+      <span class="tag fade-up">Why PEHCHAN TV Events</span>
+      <h2 class="section-title fade-up d1">WE DON'T JUST PLAN<br><span>EVENTS — WE FEEL THEM</span></h2>
+      <p class="section-sub fade-up d2" style="margin:0 auto 0;">We are part of this community. That's what makes the difference.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card fade-up d1">
+        <div class="why-num">01</div>
+        <div class="why-icon">🌏</div>
+        <div class="why-title">Cultural Authenticity</div>
+        <div class="why-desc">We are South Asians planning events for South Asians. We understand the traditions, the sensitivities, and the expectations — no briefing required.</div>
+      </div>
+      <div class="why-card fade-up d2">
+        <div class="why-num">02</div>
+        <div class="why-icon">📺</div>
+        <div class="why-title">Built-in Media Coverage</div>
+        <div class="why-desc">Every event we manage gets exclusive PehchanTV coverage — professional photography, videography, and social media promotion to 50K+ followers.</div>
+      </div>
+      <div class="why-card fade-up d3">
+        <div class="why-num">03</div>
+        <div class="why-icon">🤝</div>
+        <div class="why-title">Community Network</div>
+        <div class="why-desc">Access our deep network of community organisations, sponsors, performers, and vendors to make your event larger than you imagined possible.</div>
+      </div>
+      <div class="why-card fade-up d1">
+        <div class="why-num">04</div>
+        <div class="why-icon">🎯</div>
+        <div class="why-title">End-to-End Delivery</div>
+        <div class="why-desc">From the first concept call to post-event recap videos, we handle everything — venue, logistics, entertainment, catering coordination, and cleanup.</div>
+      </div>
+      <div class="why-card fade-up d2">
+        <div class="why-num">05</div>
+        <div class="why-icon">💰</div>
+        <div class="why-title">Transparent Pricing</div>
+        <div class="why-desc">No hidden costs, no surprises. Clear packages and itemised quotes so you always know exactly where your budget is going.</div>
+      </div>
+      <div class="why-card fade-up d3">
+        <div class="why-num">06</div>
+        <div class="why-icon">⭐</div>
+        <div class="why-title">Proven Track Record</div>
+        <div class="why-desc">100% client satisfaction across every event we've managed — from 50-person iftars to 2,000-person Independence Day galas.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SERVICES WE OFFER ══════════ -->
+<section class="services-section section" id="services">
+  <div class="container">
+    <div class="services-layout">
+      <div class="services-sticky">
+        <span class="tag fade-up">What We Offer</span>
+        <h2 class="fade-up d1">EVERY DETAIL<br><span>COVERED</span></h2>
+        <p class="fade-up d2">Whether you need just one service or the full package, our team steps in wherever you need us — and does it properly.</p>
+        <div class="services-cta-mini fade-up d3">
+          <a href="#enquiry" class="btn btn-green">Request a Quote →</a>
+          <a href="#packages" class="btn btn-outline">View Packages</a>
+        </div>
+      </div>
+      <div class="services-list fade-up d2" id="serviceAccordion">
+
+        <div class="service-row open">
+          <div class="service-row-header" onclick="toggleService(this)">
+            <div class="service-row-icon">🏟️</div>
+            <div class="service-row-title">Venue Sourcing &amp; Management</div>
+            <div class="service-row-arrow">›</div>
+          </div>
+          <div class="service-row-body">
+            <p>We scout, book, and manage venues across Sydney, Melbourne, Brisbane, and Perth — from intimate banquet halls to large arenas. Includes floor-plan design, vendor coordination, and on-day venue management.</p>
+            <div class="service-pills">
+              <span class="pill">Hall Booking</span><span class="pill">Floor Planning</span>
+              <span class="pill">Vendor Liaison</span><span class="pill">On-Day Management</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-row-header" onclick="toggleService(this)">
+            <div class="service-row-icon">🎤</div>
+            <div class="service-row-title">MC &amp; Entertainment Booking</div>
+            <div class="service-row-arrow">›</div>
+          </div>
+          <div class="service-row-body">
+            <p>Access our exclusive roster of bilingual MCs, live performers, musicians, Qawwali artists, stand-up comedians, and cultural dance troupes. We handle all contracts and logistics.</p>
+            <div class="service-pills">
+              <span class="pill">Bilingual MCs</span><span class="pill">Live Bands</span>
+              <span class="pill">Qawwali</span><span class="pill">Cultural Dancers</span><span class="pill">Comedians</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-row-header" onclick="toggleService(this)">
+            <div class="service-row-icon">🎥</div>
+            <div class="service-row-title">Photography &amp; Videography</div>
+            <div class="service-row-arrow">›</div>
+          </div>
+          <div class="service-row-body">
+            <p>Professional photo and video coverage with same-week delivery. Includes highlight reels, full event recording, drone footage (where permitted), and exclusive PehchanTV channel feature.</p>
+            <div class="service-pills">
+              <span class="pill">Event Photography</span><span class="pill">Highlight Reel</span>
+              <span class="pill">Drone Footage</span><span class="pill">YouTube Feature</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-row-header" onclick="toggleService(this)">
+            <div class="service-row-icon">📡</div>
+            <div class="service-row-title">Live Streaming &amp; AV Production</div>
+            <div class="service-row-arrow">›</div>
+          </div>
+          <div class="service-row-body">
+            <p>Broadcast your event live to our 50,000+ YouTube audience and your own social channels simultaneously. Includes professional stage lighting, PA systems, LED screens, and multi-camera setup.</p>
+            <div class="service-pills">
+              <span class="pill">YouTube Live</span><span class="pill">Multi-Camera</span>
+              <span class="pill">LED Screens</span><span class="pill">PA System</span><span class="pill">Lighting</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-row-header" onclick="toggleService(this)">
+            <div class="service-row-icon">🎨</div>
+            <div class="service-row-title">Decoration &amp; Stage Design</div>
+            <div class="service-row-arrow">›</div>
+          </div>
+          <div class="service-row-body">
+            <p>Complete event décor from entrance installations to stage backdrops, floral arrangements, lighting effects, and branded displays. Traditional and contemporary South Asian aesthetic expertise.</p>
+            <div class="service-pills">
+              <span class="pill">Stage Backdrop</span><span class="pill">Floral Design</span>
+              <span class="pill">Entrance Arch</span><span class="pill">Table Décor</span><span class="pill">Lighting Effects</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-row-header" onclick="toggleService(this)">
+            <div class="service-row-icon">📣</div>
+            <div class="service-row-title">Marketing &amp; Promotions</div>
+            <div class="service-row-arrow">›</div>
+          </div>
+          <div class="service-row-body">
+            <p>Full event marketing across PehchanTV's social platforms, community WhatsApp networks, and partner channels. Includes graphic design, promotional videos, ticketing pages, and post-event coverage.</p>
+            <div class="service-pills">
+              <span class="pill">Social Media</span><span class="pill">WhatsApp Campaigns</span>
+              <span class="pill">Graphic Design</span><span class="pill">Ticketing</span><span class="pill">Press Coverage</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-row-header" onclick="toggleService(this)">
+            <div class="service-row-icon">🍽️</div>
+            <div class="service-row-title">Catering Coordination</div>
+            <div class="service-row-arrow">›</div>
+          </div>
+          <div class="service-row-body">
+            <p>We partner with trusted halal caterers across Australia to provide authentic South Asian cuisine, buffet setups, live cooking stations, and refreshment packages for any size event.</p>
+            <div class="service-pills">
+              <span class="pill">Halal Certified</span><span class="pill">South Asian Cuisine</span>
+              <span class="pill">Buffet Setup</span><span class="pill">Live Stations</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ UPCOMING EVENTS ══════════ -->
+<section class="upcoming-section section" id="upcoming">
+  <div class="container">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:32px;">
+      <div>
+        <span class="tag fade-up">Calendar</span>
+        <h2 class="section-title fade-up d1">UPCOMING <span>EVENTS</span></h2>
+      </div>
+      <a href="#enquiry" class="btn btn-outline fade-up d2" style="font-size:.85rem;padding:9px 20px;">Host Your Own →</a>
+    </div>
+
+    <div class="ev-filter fade-up" id="evFilter">
+      <button class="ev-cat active" data-cat="all">All Events</button>
+      <button class="ev-cat" data-cat="cultural">🌙 Cultural</button>
+      <button class="ev-cat" data-cat="corporate">💼 Corporate</button>
+      <button class="ev-cat" data-cat="concert">🎵 Concert</button>
+      <button class="ev-cat" data-cat="community">🤝 Community</button>
+      <button class="ev-cat" data-cat="youth">🎓 Youth</button>
+    </div>
+
+    <div class="events-grid-main" id="eventsGrid">
+
+      <div class="ev-card fade-up d1" data-cat="cultural">
+        <div class="ev-thumb ev-thumb-1">🇵🇰
+          <div class="ev-date-badge"><div class="ev-date-day">14</div><div class="ev-date-mon">Aug</div></div>
+          <div class="ev-status open">Tickets Open</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-tags"><span class="ev-tag">Cultural</span><span class="ev-tag">Sydney</span></div>
+          <h3>Pakistan Independence Day Gala 2025</h3>
+          <p>Grand celebration with live performances, cultural displays, traditional food stalls, and community awards night.</p>
+          <div class="ev-meta">
+            <span>📍 <strong>ICC Sydney, Darling Harbour</strong></span>
+            <span>🕐 <strong>6:00 PM – 11:00 PM</strong></span>
+            <span>👥 <strong>Capacity: 1,500 guests</strong></span>
+          </div>
+          <a href="#enquiry" class="btn btn-green" style="font-size:.84rem;padding:10px 22px;">Get Tickets →</a>
+        </div>
+      </div>
+
+      <div class="ev-card fade-up d2" data-cat="corporate">
+        <div class="ev-thumb ev-thumb-2">💼
+          <div class="ev-date-badge"><div class="ev-date-day">20</div><div class="ev-date-mon">Jul</div></div>
+          <div class="ev-status soon">Selling Fast</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-tags"><span class="ev-tag">Corporate</span><span class="ev-tag">Melbourne</span></div>
+          <h3>Multicultural Business Forum 2025</h3>
+          <p>Connecting South Asian entrepreneurs with Australian business networks. Keynotes, panels, and high-value networking.</p>
+          <div class="ev-meta">
+            <span>📍 <strong>Melbourne Convention Centre</strong></span>
+            <span>🕐 <strong>9:00 AM – 5:00 PM</strong></span>
+            <span>👥 <strong>Capacity: 400 delegates</strong></span>
+          </div>
+          <a href="#enquiry" class="btn btn-green" style="font-size:.84rem;padding:10px 22px;">Register Now →</a>
+        </div>
+      </div>
+
+      <div class="ev-card fade-up d3" data-cat="concert">
+        <div class="ev-thumb ev-thumb-3">🎵
+          <div class="ev-date-badge"><div class="ev-date-day">02</div><div class="ev-date-mon">Aug</div></div>
+          <div class="ev-status open">Tickets Open</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-tags"><span class="ev-tag">Concert</span><span class="ev-tag">Brisbane</span></div>
+          <h3>Desi Fusion Night — Live Concert &amp; Dinner</h3>
+          <p>An electric evening of Bollywood, Punjabi pop, and modern fusion with international artists performing live on stage.</p>
+          <div class="ev-meta">
+            <span>📍 <strong>Fortitude Music Hall, Brisbane</strong></span>
+            <span>🕐 <strong>7:00 PM – 1:00 AM</strong></span>
+            <span>👥 <strong>Capacity: 800 guests · 18+</strong></span>
+          </div>
+          <a href="#enquiry" class="btn btn-green" style="font-size:.84rem;padding:10px 22px;">Get Tickets →</a>
+        </div>
+      </div>
+
+      <div class="ev-card fade-up d1" data-cat="youth">
+        <div class="ev-thumb ev-thumb-4">🎓
+          <div class="ev-date-badge"><div class="ev-date-day">30</div><div class="ev-date-mon">Aug</div></div>
+          <div class="ev-status open">Free Entry</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-tags"><span class="ev-tag">Youth</span><span class="ev-tag">Sydney</span><span class="ev-tag">Free</span></div>
+          <h3>Youth Leadership &amp; Career Summit 2025</h3>
+          <p>Mentorship, career workshops, and networking for second-generation South Asian Australians aged 18–35.</p>
+          <div class="ev-meta">
+            <span>📍 <strong>UNSW Roundhouse, Sydney</strong></span>
+            <span>🕐 <strong>10:00 AM – 6:00 PM</strong></span>
+            <span>👥 <strong>Capacity: 300 attendees</strong></span>
+          </div>
+          <a href="#enquiry" class="btn btn-green" style="font-size:.84rem;padding:10px 22px;">Reserve Your Spot →</a>
+        </div>
+      </div>
+
+      <div class="ev-card fade-up d2" data-cat="cultural">
+        <div class="ev-thumb ev-thumb-5">🌙
+          <div class="ev-date-badge"><div class="ev-date-day">15</div><div class="ev-date-mon">Sep</div></div>
+          <div class="ev-status open">Tickets Open</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-tags"><span class="ev-tag">Cultural</span><span class="ev-tag">Perth</span></div>
+          <h3>Perth Eid Mela 2025 — Family Festival</h3>
+          <p>A vibrant family festival celebrating Eid with rides, food stalls, live nasheeds, cultural performances, and children's activities.</p>
+          <div class="ev-meta">
+            <span>📍 <strong>Claremont Showgrounds, Perth</strong></span>
+            <span>🕐 <strong>11:00 AM – 9:00 PM</strong></span>
+            <span>👥 <strong>Capacity: 2,000 guests</strong></span>
+          </div>
+          <a href="#enquiry" class="btn btn-green" style="font-size:.84rem;padding:10px 22px;">Get Tickets →</a>
+        </div>
+      </div>
+
+      <div class="ev-card fade-up d3" data-cat="community">
+        <div class="ev-thumb ev-thumb-6">🏆
+          <div class="ev-date-badge"><div class="ev-date-day">18</div><div class="ev-date-mon">Oct</div></div>
+          <div class="ev-status open">Nominations Open</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-tags"><span class="ev-tag">Community</span><span class="ev-tag">Melbourne</span></div>
+          <h3>PehchanTV Community Awards Night 2025</h3>
+          <p>Annual gala honouring outstanding contributions of South Asians to Australian community, business, arts, and sport.</p>
+          <div class="ev-meta">
+            <span>📍 <strong>Crown Palladium, Melbourne</strong></span>
+            <span>🕐 <strong>7:00 PM – 12:00 AM</strong></span>
+            <span>👥 <strong>Capacity: 600 guests</strong></span>
+          </div>
+          <a href="#enquiry" class="btn btn-green" style="font-size:.84rem;padding:10px 22px;">Nominate / Attend →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<section class="process-section section" id="process">
+  <div class="container">
+    <div class="process-header">
+      <span class="tag fade-up">Our Process</span>
+      <h2 class="section-title fade-up d1">FROM IDEA TO<br><span>UNFORGETTABLE</span></h2>
+      <p class="section-sub fade-up d2" style="margin:0 auto;">Five simple steps from your first enquiry to a flawlessly executed event.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step fade-up d1">
+        <div class="step-circle">💬<div class="step-num">1</div></div>
+        <div class="step-title">Initial Consultation</div>
+        <div class="step-desc">Tell us your vision, date, budget, and guest count. We listen, advise, and shape the concept together.</div>
+      </div>
+      <div class="process-step fade-up d2">
+        <div class="step-circle">📋<div class="step-num">2</div></div>
+        <div class="step-title">Proposal &amp; Quote</div>
+        <div class="step-desc">We send a detailed, itemised proposal within 48 hours — no vague estimates, no surprises.</div>
+      </div>
+      <div class="process-step fade-up d3">
+        <div class="step-circle">🤝<div class="step-num">3</div></div>
+        <div class="step-title">Planning &amp; Booking</div>
+        <div class="step-desc">Venue, vendors, entertainment, catering — we lock everything in and keep you updated throughout.</div>
+      </div>
+      <div class="process-step fade-up d4">
+        <div class="step-circle">🎪<div class="step-num">4</div></div>
+        <div class="step-title">Event Day Execution</div>
+        <div class="step-desc">Our team is on-site from setup to shutdown. You enjoy the event — we handle every detail.</div>
+      </div>
+      <div class="process-step fade-up d5">
+        <div class="step-circle">🎬<div class="step-num">5</div></div>
+        <div class="step-title">Post-Event Coverage</div>
+        <div class="step-desc">Photos, highlight reel, and PehchanTV channel feature delivered within the week. Your event lives on.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PAST EVENTS GALLERY ══════════ -->
+<section class="gallery-section section">
+  <div class="container">
+    <div style="text-align:center;max-width:560px;margin:0 auto 48px;">
+      <span class="tag fade-up">Portfolio</span>
+      <h2 class="section-title fade-up d1">PAST EVENTS <span>GALLERY</span></h2>
+      <p class="section-sub fade-up d2" style="margin:0 auto;">A glimpse into the events we've brought to life across Australia.</p>
+    </div>
+    <div class="gallery-grid fade-up" id="galleryGrid"></div>
+
+<div style="text-align:center;margin-top:20px;">
+  <button class="btn btn-outline" id="loadMoreBtn">Load More</button>
+</div>
+</section>
+
+<!-- ══════════ TESTIMONIALS ══════════ -->
+<section class="testimonials-section section">
+  <div class="container">
+    <div style="text-align:center;max-width:560px;margin:0 auto 52px;">
+      <span class="tag fade-up">What Clients Say</span>
+      <h2 class="section-title fade-up d1">TRUSTED BY THE <span>COMMUNITY</span></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-up d1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">PehchanTV Events managed our Pakistan Independence Day Gala from start to finish. 600 guests, flawless execution, and the live coverage gave us thousands of views the next morning.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MR</div>
+          <div>
+            <div class="testi-name">Mohammed Raza</div>
+            <div class="testi-role">Pakistan Association of Australia, Sydney</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-up d2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">We hired them for our corporate diversity conference. Their bilingual MC, professional AV setup, and networking dinner were world-class. Our international guests were genuinely impressed.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SD</div>
+          <div>
+            <div class="testi-name">Sarah Davidson</div>
+            <div class="testi-role">HR Director, Multicultural Workforce Alliance</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-up d3">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">Our Eid Mela had 1,200 attendees — families, kids, elders — and everything ran perfectly. The decorations were stunning and the event was featured on PehchanTV. Absolutely recommend.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">FK</div>
+          <div>
+            <div class="testi-name">Fatima Khan</div>
+            <div class="testi-role">Event Organiser, Islamic Council NSW</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRICING PACKAGES ══════════ -->
+<section class="pricing-section section" id="packages">
+  <div class="container">
+    <div style="text-align:center;max-width:600px;margin:0 auto 56px;">
+      <span class="tag fade-up">Packages</span>
+      <h2 class="section-title fade-up d1">TRANSPARENT <span>PRICING</span></h2>
+      <p class="section-sub fade-up d2" style="margin:0 auto;">Every event is unique — but here's a guide to our starting packages. Custom quotes available for all sizes.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card fade-up d1">
+        <div class="pricing-tier">Starter</div>
+        <div class="pricing-name">Essential</div>
+        <div class="pricing-desc">Perfect for intimate community gatherings, iftars, and small cultural events up to 150 guests.</div>
+        <div class="pricing-price"><sub>from $</sub>2,500</div>
+        <div class="pricing-from">Starting price · Final quote varies</div>
+        <hr class="pricing-divider">
+        <div class="pricing-features">
+          <div class="pricing-feat">Event concept &amp; planning consultation</div>
+          <div class="pricing-feat">Venue sourcing &amp; booking</div>
+          <div class="pricing-feat">Basic AV setup (PA system)</div>
+          <div class="pricing-feat">Event photography (3 hours)</div>
+          <div class="pricing-feat">Social media promotion (1 post)</div>
+          <div class="pricing-feat dim">Live streaming</div>
+          <div class="pricing-feat dim">PehchanTV channel feature</div>
+          <div class="pricing-feat dim">Dedicated event manager</div>
+        </div>
+        <a href="#enquiry" class="btn btn-outline">Get a Quote →</a>
+      </div>
+
+      <div class="pricing-card featured fade-up d2">
+        <div class="pricing-popular">Most Popular</div>
+        <div class="pricing-tier">Professional</div>
+        <div class="pricing-name">Full Service</div>
+        <div class="pricing-desc">Our most popular package for galas, concerts, and community events of 150–600 guests.</div>
+        <div class="pricing-price"><sub>from $</sub>8,000</div>
+        <div class="pricing-from">Starting price · Final quote varies</div>
+        <hr class="pricing-divider">
+        <div class="pricing-features">
+          <div class="pricing-feat">Full event planning &amp; management</div>
+          <div class="pricing-feat">Venue sourcing, booking &amp; styling</div>
+          <div class="pricing-feat">Professional AV + LED screens</div>
+          <div class="pricing-feat">Photography &amp; videography</div>
+          <div class="pricing-feat">MC booking &amp; entertainment</div>
+          <div class="pricing-feat">Live streaming to YouTube</div>
+          <div class="pricing-feat">PehchanTV channel feature</div>
+          <div class="pricing-feat dim">Dedicated event manager</div>
+        </div>
+        <a href="#enquiry" class="btn btn-green">Get a Quote →</a>
+      </div>
+
+      <div class="pricing-card fade-up d3">
+        <div class="pricing-tier">Enterprise</div>
+        <div class="pricing-name">Grand Scale</div>
+        <div class="pricing-desc">Full white-glove production for large-scale festivals, galas, and corporate events of 600–2,000+ guests.</div>
+        <div class="pricing-price">Custom</div>
+        <div class="pricing-from">Bespoke pricing · All-inclusive</div>
+        <hr class="pricing-divider">
+        <div class="pricing-features">
+          <div class="pricing-feat">Everything in Full Service</div>
+          <div class="pricing-feat">Dedicated senior event manager</div>
+          <div class="pricing-feat">Multi-camera broadcast production</div>
+          <div class="pricing-feat">Full décor &amp; stage design</div>
+          <div class="pricing-feat">Catering coordination</div>
+          <div class="pricing-feat">Ticketing &amp; full marketing campaign</div>
+          <div class="pricing-feat">Sponsorship &amp; partnerships</div>
+          <div class="pricing-feat">Press &amp; media coverage</div>
+        </div>
+        <a href="#enquiry" class="btn btn-outline">Talk to Us →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ENQUIRY FORM ══════════ -->
+<section class="enquiry-section section" id="enquiry">
+  <div class="container">
+    <div class="enquiry-layout">
+      <div class="enquiry-info">
+        <span class="tag fade-up">Get In Touch</span>
+        <h2 class="fade-up d1">LET'S PLAN YOUR<br><span>NEXT EVENT</span></h2>
+        <p class="fade-up d2">Fill in the form and our events team will get back to you within 24 hours with a personalised consultation and quote.</p>
+        <div class="enquiry-details fade-up d3">
+          <div class="eq-detail">
+            <div class="eq-icon">📍</div>
+            <div><div class="eq-label">Location</div><div class="eq-val">Sydney, NSW — serving all of Australia</div></div>
+          </div>
+          <div class="eq-detail">
+            <div class="eq-icon">📧</div>
+            <div><div class="eq-label">Email</div><div class="eq-val">events@pehchantv.com.au</div></div>
+          </div>
+          <div class="eq-detail">
+            <div class="eq-icon">📱</div>
+            <div><div class="eq-label">Phone / WhatsApp</div><div class="eq-val">+61 4XX XXX XXX</div></div>
+          </div>
+          <div class="eq-detail">
+            <div class="eq-icon">🕐</div>
+            <div><div class="eq-label">Response Time</div><div class="eq-val">Within 24 hours, Mon–Fri</div></div>
+          </div>
+        </div>
+      </div>
+
+      <form class="enquiry-form fade-up d2" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="you@email.com" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone / WhatsApp</label>
+            <input type="tel" placeholder="+61 4XX XXX XXX">
+          </div>
+          <div class="form-group">
+            <label>Event City</label>
+            <select>
+              <option value="">Select city…</option>
+              <option>Sydney</option>
+              <option>Melbourne</option>
+              <option>Brisbane</option>
+              <option>Perth</option>
+              <option>Adelaide</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Event Type</label>
+            <select>
+              <option value="">Select type…</option>
+              <option>Cultural Festival</option>
+              <option>Corporate Event</option>
+              <option>Eid / Religious Celebration</option>
+              <option>Concert / Live Show</option>
+              <option>Community Awards Night</option>
+              <option>Wedding / Social</option>
+              <option>Youth / Educational</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Expected Guest Count</label>
+            <select>
+              <option value="">Select range…</option>
+              <option>Under 100</option>
+              <option>100 – 300</option>
+              <option>300 – 600</option>
+              <option>600 – 1,000</option>
+              <option>1,000 – 2,000</option>
+              <option>2,000+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Preferred Event Date</label>
+          <input type="date">
+        </div>
+        <div class="form-group">
+          <label>Tell Us About Your Event</label>
+          <textarea placeholder="Describe your event vision, services needed, budget range, and any special requirements…" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-green" style="width:100%;justify-content:center;padding:15px;font-size:1rem;">
+          Send Enquiry →
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-cta-band">
+    <div class="container">
+      <div class="footer-cta-inner">
+        <div>
+          <h3>Ready to Create Something<br><span>Unforgettable?</span></h3>
+          <p>Talk to our events team today — we respond within 24 hours.</p>
+        </div>
+        <div class="footer-cta-btns">
+          <a href="#enquiry" class="btn btn-green">Book Your Event →</a>
+          <a href="media.html" class="btn btn-outline">Watch Our Work</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-body">
+    <div class="container">
+      <div class="footer-top-row">
+        <div class="f-brand-logo">
+          <img src="76409.jpg" alt="PehchanTV" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <div class="f-logo-text" style="display:none">PEHCHAN<span>TV</span></div>
+          <span class="f-tagline-urdu">اپنی پہچان کو گلے لگائیں</span>
+          <p class="f-brand-desc">Australia's premier Pakistani & South Asian media platform — bridging cultures, building community, and celebrating identity since 2018.</p>
+          <div class="f-socials">
+            <a href="https://youtube.com/@PehchanTV" target="_blank" class="f-social" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.63 12.63 0 00-8.45 0A4.83 4.83 0 014.41 6.69C3.09 8 3 12 3 12s.09 4 1.41 5.31a4.83 4.83 0 003.77 2.75 12.63 12.63 0 008.45 0 4.83 4.83 0 003.77-2.75C21.91 16 22 12 22 12s-.09-4-1.41-5.31zM10 15.5v-7l6 3.5-6 3.5z"/></svg></a>
+            <a href="#" class="f-social" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+            <a href="#" class="f-social" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            <a href="#" class="f-social" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></a>
+            <a href="#" class="f-social" title="Twitter/X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="#" class="f-social" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-1.77-.33V10a7.18 7.18 0 01-4.15-1.31v5.93A5.76 5.76 0 018 20.38a5.76 5.76 0 01-5.76-5.76 5.76 5.76 0 015.76-5.76c.22 0 .43.01.64.04v3.22a2.62 2.62 0 00-.64-.08 2.62 2.62 0 00-2.62 2.62 2.62 2.62 0 002.62 2.62 2.62 2.62 0 002.62-2.62V3h3.09a4.83 4.83 0 004.83 4.84v-.15z"/></svg></a>
+          </div>
+        </div>
+        <div class="f-nav-col">
+          <h6>Events</h6>
+          <ul>
+            <li><a href="#upcoming">Upcoming Events</a></li>
+            <li><a href="#services">Our Services</a></li>
+            <li><a href="#packages">Pricing Packages</a></li>
+            <li><a href="#process">How It Works</a></li>
+            <li><a href="#enquiry">Book an Event</a></li>
+            <li><a href="#enquiry">Sponsorships</a></li>
+          </ul>
+        </div>
+        <div class="f-nav-col">
+          <h6>Media</h6>
+          <ul>
+            <li><a href="media.html">Watch Videos</a></li>
+            <li><a href="media.html">News & Analysis</a></li>
+            <li><a href="media.html">Event Highlights</a></li>
+            <li><a href="https://youtube.com/@PehchanTV" target="_blank">YouTube ↗</a></li>
+          </ul>
+        </div>
+        <div class="f-nav-col">
+          <h6>Company</h6>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="index.html#community">Community</a></li>
+            <li><a href="index.html#contact">Advertise</a></li>
+            <li><a href="index.html#contact">Careers</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-contact-bar">
+      <div class="f-contact-item"><div class="f-ci-icon">📍</div><div><div class="f-ci-label">Location</div><div class="f-ci-val">Sydney, New South Wales, Australia</div></div></div>
+      <div class="f-contact-item"><div class="f-ci-icon">📧</div><div><div class="f-ci-label">Events Email</div><div class="f-ci-val">events@pehchantv.com.au</div></div></div>
+      <div class="f-contact-item"><div class="f-ci-icon">📱</div><div><div class="f-ci-label">Phone / WhatsApp</div><div class="f-ci-val">+61 4XX XXX XXX</div></div></div>
+    </div>
+
+    <div class="container">
+      <div class="footer-bottom-bar">
+        <div class="fbb-copy">© 2025 <strong>PehchanTV</strong>. All rights reserved.</div>
+        <div class="fbb-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Advertise</a>
+          <a href="#">Sitemap</a>
+        </div>
+        <div class="fbb-made">Made with <span>♥</span> for the diaspora</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- ══════════ SCRIPTS ══════════ -->
+<script>
+  // Navbar
+  document.getElementById('hamburger').addEventListener('click', () =>
+    document.getElementById('mobileMenu').classList.toggle('open'));
+  function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.boxShadow =
+      scrollY > 60 ? '0 4px 32px rgba(0,0,0,.4)' : 'none';
+  });
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+  // Back to top
+  const btt = document.getElementById('btt');
+  window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 400));
+
+  // Service accordion
+  function toggleService(header) {
+    const row = header.parentElement;
+    const isOpen = row.classList.contains('open');
+    document.querySelectorAll('.service-row').forEach(r => r.classList.remove('open'));
+    if (!isOpen) row.classList.add('open');
+  }
+
+  // Event category filter
+  const evCards = Array.from(document.querySelectorAll('.ev-card'));
+  document.getElementById('evFilter').addEventListener('click', e => {
+    const btn = e.target.closest('.ev-cat');
+    if (!btn) return;
+    document.querySelectorAll('.ev-cat').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    evCards.forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+    });
+  });
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = '✓ Enquiry Received! We\'ll contact you within 24 hours.';
+    btn.style.background = 'var(--green2)';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Send Enquiry →';
+      btn.disabled = false;
+      btn.style.background = '';
+      e.target.reset();
+    }, 5000);
+  }
+</script>
+
+<!-- ═══════════════════════════════════════════
+     PAST EVENT GALLERY POPUP
+═══════════════════════════════════════════ -->
+<style>
+/* overlay */
+.ev-popup-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(3,10,20,.92);
+  backdrop-filter: blur(14px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s ease;
+}
+.ev-popup-overlay.open { opacity: 1; pointer-events: all; }
+
+/* modal box */
+.ev-popup {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 100%; max-width: 1060px;
+  max-height: 92vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  transform: translateY(28px) scale(.97);
+  transition: transform .35s cubic-bezier(.22,.68,0,1.2);
+  position: relative;
+}
+.ev-popup-overlay.open .ev-popup { transform: translateY(0) scale(1); }
+
+/* close btn */
+.ev-popup-close {
+  position: absolute; top: 16px; right: 16px; z-index: 10;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(5,21,38,.85); border: 1px solid var(--border);
+  color: var(--muted); font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s; line-height: 1;
+}
+.ev-popup-close:hover { background: var(--green); color: var(--navy); border-color: var(--green); }
+
+/* scrollable body */
+.ev-popup-body {
+  overflow-y: auto; flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) var(--card);
+}
+.ev-popup-body::-webkit-scrollbar { width: 4px; }
+.ev-popup-body::-webkit-scrollbar-track { background: var(--card); }
+.ev-popup-body::-webkit-scrollbar-thumb { background: var(--green); border-radius: 4px; }
+
+/* hero */
+.ep-hero {
+  width: 100%; aspect-ratio: 16/7;
+  background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 7rem; position: relative; overflow: hidden; flex-shrink: 0;
+}
+.ep-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(9,31,53,.95) 0%, transparent 55%);
+}
+.ep-hero-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 36px; }
+.ep-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.ep-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; padding: 3px 12px; border-radius: 2px;
+  background: var(--green); color: var(--navy);
+}
+.ep-tag.outline {
+  background: transparent; color: var(--green);
+  border: 1px solid rgba(46,204,64,.5);
+}
+.ep-hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: .03em; line-height: 1; margin-bottom: 8px;
+}
+.ep-hero-date { color: var(--muted); font-size: .88rem; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.ep-hero-date span { display: flex; align-items: center; gap: 5px; }
+
+/* content */
+.ep-content { padding: 36px; }
+
+/* desc + stats */
+.ep-top { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+.ep-desc-block h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: .04em; margin-bottom: 12px; color: var(--green);
+}
+.ep-desc-block p { color: var(--muted); font-size: .93rem; line-height: 1.78; margin-bottom: 14px; }
+.ep-highlights { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; list-style: none; }
+.ep-highlight {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: .88rem; color: var(--muted);
+}
+.ep-highlight::before { content: '✦'; color: var(--green); font-size: .6rem; margin-top: 5px; flex-shrink: 0; }
+
+/* stats — reuses num-cell feel from homepage */
+.ep-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; align-self: start;
+}
+.ep-stat { background: var(--card); padding: 22px 20px; text-align: center; transition: background .2s; }
+.ep-stat:hover { background: rgba(46,204,64,.06); }
+.ep-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem; color: var(--green); line-height: 1;
+}
+.ep-stat-lbl { color: var(--muted); font-size: .78rem; margin-top: 4px; }
+
+/* gallery header */
+.ep-gallery-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px; flex-wrap: wrap; gap: 10px;
+}
+.ep-gallery-head h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: .04em; color: var(--green);
+}
+.ep-photo-count {
+  font-size: .8rem; color: var(--muted);
+  background: var(--card); padding: 4px 12px;
+  border-radius: 30px; border: 1px solid var(--border);
+}
+
+/* lightbox viewer */
+.ep-lightbox {
+  position: relative; width: 100%; aspect-ratio: 16/9;
+  border-radius: 10px; overflow: hidden;
+  background: var(--card); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 6rem; margin-bottom: 12px; transition: background .3s;
+}
+.ep-lb-caption { font-size: .82rem; color: var(--muted); text-align: center; margin-bottom: 28px; }
+.ep-lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(5,21,38,.8); border: 1px solid var(--border);
+  color: var(--white); font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; user-select: none;
+}
+.ep-lb-nav:hover { background: var(--green); color: var(--navy); border-color: var(--green); }
+.ep-lb-nav.prev { left: 12px; }
+.ep-lb-nav.next { right: 12px; }
+.ep-lb-counter {
+  position: absolute; bottom: 12px; right: 14px;
+  background: rgba(0,0,0,.65); color: var(--white);
+  font-size: .75rem; padding: 3px 10px; border-radius: 30px;
+}
+
+/* thumbnails */
+.ep-thumbs {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+  margin-bottom: 36px;
+}
+.ep-thumb-item {
+  aspect-ratio: 4/3; border-radius: 6px; overflow: hidden;
+  cursor: pointer; position: relative;
+  border: 2px solid transparent;
+  transition: border-color .2s, transform .2s;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+}
+.ep-thumb-item:hover { border-color: var(--green); transform: scale(1.05); }
+.ep-thumb-item.active { border-color: var(--green); box-shadow: 0 0 0 2px rgba(46,204,64,.25); }
+
+/* popup footer */
+.ep-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 22px 36px;
+  border-top: 1px solid var(--border);
+  background: rgba(5,21,38,.5); flex-wrap: wrap;
+}
+.ep-footer p { color: var(--muted); font-size: .88rem; }
+.ep-footer-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* gallery item hover overlay — replaces old ::after emoji */
+.gallery-item::after { display: none !important; }
+.gl-hover-label {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(46,204,64,.88); opacity: 0; transition: opacity .25s; gap: 6px;
+}
+.gallery-item:hover .gl-hover-label { opacity: 1; }
+.gl-hover-label span {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
+  color: var(--navy); letter-spacing: .08em;
+}
+.gl-hover-label small {
+  font-size: .72rem; font-weight: 700;
+  color: rgba(5,21,38,.7); letter-spacing: .1em; text-transform: uppercase;
+}
+
+/* responsive */
+@media(max-width:720px) {
+  .ep-top { grid-template-columns: 1fr; }
+  .ep-thumbs { grid-template-columns: repeat(4, 1fr); }
+  .ep-content { padding: 22px; }
+  .ep-footer { padding: 18px 22px; }
+  .ep-hero-info { padding: 18px 22px; }
+}
+@media(max-width:480px) {
+  .ep-thumbs { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+
+<!-- popup HTML -->
+<div class="ev-popup-overlay" id="evPopupOverlay" onclick="handleOverlayClick(event)">
+  <div class="ev-popup" id="evPopup">
+    <button class="ev-popup-close" onclick="closeEventGallery()" aria-label="Close">✕</button>
+    <div class="ev-popup-body" id="evPopupBody">
+
+      <!-- hero -->
+      <div class="ep-hero" id="epHero">
+        <div id="epHeroEmoji" style="position:relative;z-index:1;">🇵🇰</div>
+        <div class="ep-hero-overlay"></div>
+        <div class="ep-hero-info">
+          <div class="ep-hero-tags" id="epHeroTags"></div>
+          <div class="ep-hero-title" id="epHeroTitle"></div>
+          <div class="ep-hero-date" id="epHeroDate"></div>
+        </div>
+      </div>
+
+      <!-- content -->
+      <div class="ep-content">
+        <div class="ep-top">
+          <div class="ep-desc-block">
+            <h4>About This Event</h4>
+            <p id="epDesc"></p>
+            <p id="epDesc2"></p>
+            <ul class="ep-highlights" id="epHighlights"></ul>
+          </div>
+          <div class="ep-stats" id="epStats"></div>
+        </div>
+
+        <div class="ep-gallery-head">
+          <h4>Event Gallery</h4>
+          <div class="ep-photo-count" id="epPhotoCount"></div>
+        </div>
+
+        <!-- lightbox -->
+        <div class="ep-lightbox" id="epLightbox">
+          <div id="epLbImage"></div>
+          <button class="ep-lb-nav prev" onclick="lbNav(-1)">‹</button>
+          <button class="ep-lb-nav next" onclick="lbNav(+1)">›</button>
+          <div class="ep-lb-counter" id="epLbCounter"></div>
+        </div>
+        <div class="ep-lb-caption" id="epLbCaption"></div>
+
+        <!-- thumbnails -->
+        <div class="ep-thumbs" id="epThumbs"></div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="ep-footer">
+      <p id="epFooterText"></p>
+      <div class="ep-footer-btns">
+        <a href="#enquiry" class="btn btn-green" onclick="closeEventGallery()" style="font-size:.85rem;padding:10px 22px;">Book Your Event →</a>
+        <button class="btn btn-outline" onclick="closeEventGallery()" style="font-size:.85rem;padding:10px 22px;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'en,ur',
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+<script>
+let EVENTS = [];
+let visibleCount = 6;
+let currentEvent = null;
+let currentPhotoIdx = 0;
+
+// FETCH JSON
+async function loadEvents() {
+  const res = await fetch('/data/events.json');
+  EVENTS = await res.json();
+  renderEvents();
+}
+
+// RENDER GRID
+function renderEvents() {
+  const grid = document.getElementById('galleryGrid');
+
+  const items = EVENTS.slice(0, visibleCount).map((ev, i) => `
+    <div class="gallery-item g${(i%7)+1} ${i===0?'span2':''}" onclick="openEventGallery('${ev.id}')">
+      
+      <img src="${ev.thumbnail}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />
+
+      <div class="gallery-label">${ev.shortTitle}</div>
+
+      <div class="gl-hover-label">
+        <span>View Gallery</span>
+        <small>${ev.photos.length} Photos</small>
+      </div>
+    </div>
+  `).join('');
+
+  grid.innerHTML = items;
+}
+
+// LOAD MORE
+document.getElementById('loadMoreBtn').onclick = () => {
+  visibleCount += 6;
+  renderEvents();
+
+  if (visibleCount >= EVENTS.length) {
+    document.getElementById('loadMoreBtn').style.display = 'none';
+  }
+};
+
+// OPEN POPUP
+function openEventGallery(id) {
+  const ev = EVENTS.find(e => e.id === id);
+  if (!ev) return;
+
+  currentEvent = ev;
+  currentPhotoIdx = 0;
+
+  document.getElementById('epHero').style.background = ev.heroBg;
+  document.getElementById('epHeroTitle').textContent = ev.title;
+
+  document.getElementById('epHeroTags').innerHTML =
+    ev.tags.map(t => `<span class="ep-tag${t.solid?'':' outline'}">${t.label}</span>`).join('');
+
+  document.getElementById('epHeroDate').innerHTML = `
+    <span>📅 ${ev.date}</span>
+    <span>📍 ${ev.location}</span>
+    <span>👥 ${ev.guests}</span>
+  `;
+
+  document.getElementById('epDesc').textContent = ev.desc;
+  document.getElementById('epDesc2').textContent = ev.desc2;
+
+  document.getElementById('epHighlights').innerHTML =
+    ev.highlights.map(h => `<li class="ep-highlight">${h}</li>`).join('');
+
+  document.getElementById('epStats').innerHTML =
+    ev.stats.map(s => `
+      <div class="ep-stat">
+        <div class="ep-stat-num">${s.num}</div>
+        <div class="ep-stat-lbl">${s.lbl}</div>
+      </div>
+    `).join('');
+
+  document.getElementById('epPhotoCount').textContent = `${ev.photos.length} Photos`;
+
+  renderThumbs();
+  renderLightbox();
+
+  document.getElementById('evPopupOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// THUMBNAILS
+function renderThumbs() {
+  document.getElementById('epThumbs').innerHTML =
+    currentEvent.photos.map((p,i) => `
+      <div class="ep-thumb-item ${i===0?'active':''}" onclick="selectPhoto(${i})">
+        <img src="${p.img}" style="width:100%;height:100%;object-fit:cover;" />
+      </div>
+    `).join('');
+}
+
+// LIGHTBOX
+function renderLightbox() {
+  const p = currentEvent.photos[currentPhotoIdx];
+
+  document.getElementById('epLbImage').innerHTML =
+    `<img src="${p.img}" style="width:100%;height:100%;object-fit:cover;" />`;
+
+  document.getElementById('epLbCaption').textContent = p.caption;
+
+  document.getElementById('epLbCounter').textContent =
+    `${currentPhotoIdx+1} / ${currentEvent.photos.length}`;
+
+  document.querySelectorAll('.ep-thumb-item').forEach((el,i)=>{
+    el.classList.toggle('active', i===currentPhotoIdx);
+  });
+}
+
+function selectPhoto(i) {
+  currentPhotoIdx = i;
+  renderLightbox();
+}
+
+function lbNav(dir) {
+  currentPhotoIdx =
+    (currentPhotoIdx + dir + currentEvent.photos.length) % currentEvent.photos.length;
+
+  renderLightbox();
+}
+
+// CLOSE
+function closeEventGallery() {
+  document.getElementById('evPopupOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// INIT
+loadEvents();
+
+const menuBtn = document.getElementById("hamburger");
+
+menuBtn.addEventListener("click", () => {
+  menuBtn.classList.toggle("active");
+});
+
+const langBtn = document.getElementById("langBtn");
+const langSwitch = document.querySelector(".lang-switch");
+
+langBtn.onclick = () => {
+  langSwitch.classList.toggle("active");
+};
+
+function setLang(lang) {
+  let select = document.querySelector(".goog-te-combo");
+
+  if (select) {
+    select.value = lang;
+    select.dispatchEvent(new Event("change"));
+  }
+
+  langSwitch.classList.remove("active");
+}
+
+</script>
+</body>
+</html>
