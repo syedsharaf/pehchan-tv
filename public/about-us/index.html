@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 <style>
 
   /* ─── RESET & BASE ─── identical to homepage ────── */
@@ -466,6 +467,9 @@
 
   /* ─── TEAM CARDS ─────────────────────────────────── */
   .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .team-grid.swiper {
+  display: block !important;
+}
   .team-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: all .3s; }
   .team-card:hover { transform: translateY(-6px); border-color: rgba(46,204,64,.4); box-shadow: var(--glow); }
   .team-avatar { width: 100%; aspect-ratio: 1; background: linear-gradient(145deg, #0d2840, #0a3020); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
@@ -496,48 +500,183 @@
   .social-icon-btn svg { width: 20px; height: 20px; }
 
   /* ─── FOOTER ─── exact homepage redesigned footer ─── */
-  footer { background: #020c17; position: relative; overflow: hidden; }
-  footer::before { content: 'PEHCHAN'; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); font-family: 'Bebas Neue', sans-serif; font-size: clamp(6rem, 18vw, 14rem); color: rgba(46,204,64,.03); white-space: nowrap; pointer-events: none; user-select: none; letter-spacing: .1em; }
-  .footer-cta-band { background: linear-gradient(100deg, #0a2a14 0%, #062040 100%); border-bottom: 1px solid var(--border); padding: 48px 0; }
-  .footer-cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
-  .footer-cta-inner h3 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.6rem, 3.5vw, 2.6rem); letter-spacing: .04em; line-height: 1.1; }
+  footer {
+    background: #020c17;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* big watermark text behind footer */
+  footer::before {
+    content: 'PEHCHAN';
+    position: absolute;
+    bottom: -30px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(6rem, 18vw, 14rem);
+    color: rgba(46,204,64,.03);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: .1em;
+  }
+
+  /* ── top CTA band ── */
+  .footer-cta-band {
+    background: linear-gradient(100deg, #0a2a14 0%, #062040 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 0;
+  }
+  .footer-cta-inner {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-cta-inner h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    letter-spacing: .04em; line-height: 1.1;
+  }
   .footer-cta-inner h3 span { color: var(--green); }
   .footer-cta-inner p { color: var(--muted); font-size: .93rem; margin-top: 6px; }
   .footer-cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* ── main footer body ── */
   .footer-body { padding: 64px 0 0; position: relative; z-index: 1; }
-  .footer-top-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 52px; border-bottom: 1px solid var(--border); }
+
+  .footer-top-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 52px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* brand column */
   .f-brand-logo img { height: 50px; display: block; }
-  .f-brand-logo .f-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .08em; color: var(--white); }
+  .f-brand-logo .f-logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: .08em;
+    color: var(--white);
+  }
   .f-brand-logo .f-logo-text span { color: var(--green); }
-  .f-tagline-urdu { font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; font-size: 1.1rem; color: var(--green); opacity: .85; margin: 14px 0 16px; display: block; }
-  .f-brand-desc { color: var(--muted); font-size: .88rem; line-height: 1.75; max-width: 270px; margin-bottom: 28px; }
+  .f-tagline-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    direction: rtl; font-size: 1.1rem;
+    color: var(--green); opacity: .85;
+    margin: 14px 0 16px;
+    display: block;
+  }
+  .f-brand-desc {
+    color: var(--muted); font-size: .88rem;
+    line-height: 1.75; max-width: 270px;
+    margin-bottom: 28px;
+  }
+
+  /* social icons row */
   .f-socials { display: flex; gap: 10px; flex-wrap: wrap; }
-  .f-social { width: 38px; height: 38px; background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--muted); text-decoration: none; transition: all .22s; }
-  .f-social:hover { background: var(--green); border-color: var(--green); color: var(--navy); transform: translateY(-3px); }
+  .f-social {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); text-decoration: none;
+    transition: all .22s;
+  }
+  .f-social:hover {
+    background: var(--green); border-color: var(--green);
+    color: var(--navy); transform: translateY(-3px);
+  }
   .f-social svg { width: 17px; height: 17px; }
-  .f-nav-col h6 { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--green); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-  .f-nav-col h6::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* nav columns */
+  .f-nav-col h6 {
+    font-size: .72rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .f-nav-col h6::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--border);
+  }
   .f-nav-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
-  .f-nav-col ul li a { color: var(--muted); text-decoration: none; font-size: .9rem; display: flex; align-items: center; gap: 7px; transition: color .2s, gap .2s; }
-  .f-nav-col ul li a::before { content: '›'; color: var(--green); font-size: 1rem; opacity: 0; transition: opacity .2s; }
+  .f-nav-col ul li a {
+    color: var(--muted); text-decoration: none;
+    font-size: .9rem; display: flex; align-items: center; gap: 7px;
+    transition: color .2s, gap .2s;
+  }
+  .f-nav-col ul li a::before {
+    content: '›'; color: var(--green); font-size: 1rem;
+    opacity: 0; transition: opacity .2s;
+  }
   .f-nav-col ul li a:hover { color: var(--white); gap: 10px; }
   .f-nav-col ul li a:hover::before { opacity: 1; }
-  .footer-contact-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
-  .f-contact-item { background: #020c17; padding: 28px 32px; display: flex; gap: 16px; align-items: flex-start; transition: background .2s; }
+
+  /* ── contact bar ── */
+  .footer-contact-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin: 0 0 0;
+  }
+  .f-contact-item {
+    background: #020c17;
+    padding: 28px 32px;
+    display: flex; gap: 16px; align-items: flex-start; justify-content: center;
+    transition: background .2s;
+  }
   .f-contact-item:hover { background: #041422; }
-  .f-ci-icon { width: 44px; height: 44px; min-width: 44px; background: rgba(46,204,64,.1); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+  .f-ci-icon {
+    width: 44px; height: 44px; min-width: 44px;
+    background: rgba(46,204,64,.1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
   .f-ci-label { color: var(--muted); font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
   .f-ci-val { color: var(--white); font-size: .93rem; font-weight: 500; }
-  .footer-bottom-bar { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; flex-wrap: wrap; gap: 14px; border-top: 1px solid var(--border); }
+
+  /* ── bottom bar ── */
+  .footer-bottom-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0;
+    flex-wrap: wrap; gap: 14px;
+    border-top: 1px solid var(--border);
+  }
   .fbb-copy { color: var(--muted); font-size: .82rem; }
   .fbb-copy strong { color: var(--green); font-weight: 600; }
   .fbb-links { display: flex; gap: 20px; }
-  .fbb-links a { color: var(--muted); text-decoration: none; font-size: .82rem; transition: color .2s; }
+  .fbb-links a {
+    color: var(--muted); text-decoration: none; font-size: .82rem;
+    transition: color .2s;
+  }
   .fbb-links a:hover { color: var(--white); }
-  .fbb-made { color: var(--muted); font-size: .8rem; display: flex; align-items: center; gap: 5px; }
+  .fbb-made, .fbb-dev {
+    color: var(--muted); font-size: .8rem;
+    display: flex; align-items: center; gap: 5px;
+  }
   .fbb-made span { color: #e74c3c; }
-  @media(max-width:1024px) { .footer-top-row { grid-template-columns: 1fr 1fr; gap: 36px; } .footer-contact-bar { grid-template-columns: 1fr 1fr; } }
-  @media(max-width:640px)  { .footer-top-row { grid-template-columns: 1fr; } .footer-contact-bar { grid-template-columns: 1fr; } .footer-cta-inner { flex-direction: column; } .footer-bottom-bar { flex-direction: column; align-items: center; text-align: center; } .fbb-links { justify-content: center; } }
+
+  @media(max-width: 1024px) {
+    .footer-top-row { grid-template-columns: 1fr 1fr; gap: 36px; }
+    .footer-contact-bar { grid-template-columns: 1fr 1fr; }
+    .f-contact-item { justify-content: flex-start; }
+  }
+  @media(max-width: 640px) {
+    .footer-top-row { grid-template-columns: 1fr; gap: 36px; }
+    .footer-contact-bar { grid-template-columns: 1fr; }
+    .footer-cta-inner { flex-direction: column; }
+    .footer-bottom-bar { flex-direction: column; align-items: center; text-align: center; }
+    .fbb-links { justify-content: center; }
+  }
+  .footer-contact-bar a:-webkit-any-link, .fbb-dev a:-webkit-any-link {
+  color: inherit;
+  text-decoration: none;
+}
 
   /* ─── SCROLL REVEAL ─── same as homepage ──────────── */
   .fade-up { opacity: 0; transform: translateY(32px); transition: opacity .65s ease, transform .65s ease; }
@@ -555,19 +694,20 @@
 </head>
 <body>
 
-<!-- ══════ NAVBAR ══════ -->
+<header>
+<!-- ─── NAVBAR ──────────────────────────────────────── -->
 <nav id="navbar">
   <div class="nav-logo">
-    <img src="/assets/images/pehchantv-logo.png" alt="PehchanTV Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <a href="/"><img src="/assets/images/pehchantv-logo.png" alt="PehchanTV Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"></a>
     <span style="display:none; font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:#fff; letter-spacing:.06em">PEHCHAN<span style="color:var(--green)">TV</span></span>
   </div>
   <ul class="nav-links">
-    <li><a href="/" class="active">Home</a></li>
-    <li><a href="#about-us">About Us</a></li>
-    <li><a href="#media">Media Channel</a></li>
-    <li><a href="#event-management">Event Management</a></li>
-    <li><a href="#advertise">Advertise</a></li>
-    <li><a href="#community">Community</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about-us" class="active">About Us</a></li>
+    <li><a href="/media">Media Channel</a></li>
+    <li><a href="/event-management">Event Management</a></li>
+    <li><a href="/community">Community</a></li>
+    <li><a href="/#contact">Advertise</a></li>
     <div class="nav-icons">
       <div class="lang-switch">
       <button class="icon-btn" id="langBtn"><i class="fa-solid fa-globe"></i></button>
@@ -582,7 +722,7 @@
       <div id="google_translate_element"></div>
       <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
-    <li class="nav-cta"><a href="#contact">Get In Touch</a></li>
+    <li class="nav-cta"><a href="/#contact">Get In Touch</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -591,14 +731,14 @@
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="/" onclick="closeMobile()">Home</a>
-  <a href="#about-us" onclick="closeMobile()">About Us</a>
-  <a href="#media" onclick="closeMobile()">Media</a>
-  <a href="#event-management" onclick="closeMobile()">Event Management</a>
-  <a href="#advertise" onclick="closeMobile()">Advertise</a>
-  <a href="#community" onclick="closeMobile()">Community</a>
-  <a href="#career" onclick="closeMobile()">Career</a>
-  <a href="#contact" onclick="closeMobile()" style="color:var(--green)">Get In Touch →</a>
+  <a href="/about-us" onclick="closeMobile()">About Us</a>
+  <a href="/media" onclick="closeMobile()">Media</a>
+  <a href="/event-management" onclick="closeMobile()">Event Management</a>
+  <a href="/community" onclick="closeMobile()">Community</a>
+  <a href="/#contact" onclick="closeMobile()">Advertise</a>
+  <a href="/#contact" onclick="closeMobile()" style="color:var(--green)">Get In Touch →</a>
 </div>
+</header>
 
 <!-- ══════ HERO ══════ -->
 <section class="page-hero" id="hero">
@@ -617,8 +757,8 @@
           Born in Australia, rooted in South Asia — PehchanTV is more than a media channel. We are the heartbeat of the Pakistani and South Asian diaspora, telling our stories on our own terms.
         </p>
         <div class="hero-btns fade-up d3">
-          <a href="#story" class="btn btn-green">Our Story →</a>
-          <a href="#team"  class="btn btn-outline">Meet the Team</a>
+          <a href="/#story" class="btn btn-green">Our Story →</a>
+          <a href="/#team"  class="btn btn-outline">Meet the Team</a>
         </div>
         <div class="hero-stats fade-up d4">
           <div><div class="hero-stat-num">2018</div><div class="hero-stat-label">Founded in Sydney</div></div>
@@ -722,13 +862,13 @@
       <p class="section-sub fade-up d2" style="margin:0 auto;">Our reach, impact, and community footprint — growing every single day.</p>
     </div>
     <div class="numbers-strip fade-up d1">
-      <div class="num-cell"><div class="num-big">50K+</div><div class="num-label">YouTube Subscribers</div><div class="num-sub">Across all channels</div></div>
+      <div class="num-cell"><div class="num-big">100K+</div><div class="num-label">Followers</div><div class="num-sub">Across all channels</div></div>
       <div class="num-cell"><div class="num-big">2M+</div><div class="num-label">Total Video Views</div><div class="num-sub">And counting</div></div>
-      <div class="num-cell"><div class="num-big">200+</div><div class="num-label">Videos Published</div><div class="num-sub">News · Culture · Events</div></div>
-      <div class="num-cell"><div class="num-big">10+</div><div class="num-label">Events Managed</div><div class="num-sub">Across 4 Australian cities</div></div>
+      <div class="num-cell"><div class="num-big">2000+</div><div class="num-label">Videos Published</div><div class="num-sub">News · Culture · Events</div></div>
+      <div class="num-cell"><div class="num-big">100+</div><div class="num-label">Events Managed</div><div class="num-sub">Across 4 Australian cities</div></div>
     </div>
     <div class="numbers-strip fade-up d2" style="margin-top:14px;">
-      <div class="num-cell"><div class="num-big">7</div><div class="num-label">Years of Service</div><div class="num-sub">Est. 2018</div></div>
+      <div class="num-cell"><div class="num-big">8</div><div class="num-label">Years of Service</div><div class="num-sub">Est. 2018</div></div>
       <div class="num-cell"><div class="num-big">4</div><div class="num-label">Australian Cities</div><div class="num-sub">SYD · MEL · BNE · PER</div></div>
       <div class="num-cell"><div class="num-big">3</div><div class="num-label">Languages</div><div class="num-sub">Urdu · Hindi · English</div></div>
       <div class="num-cell"><div class="num-big">9+</div><div class="num-label">Community Groups</div><div class="num-sub">South Asian diaspora</div></div>
@@ -781,7 +921,7 @@
       <p style="font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:300;line-height:1.6;color:var(--white);max-width:760px;margin:0 auto 18px;font-style:italic;">
         "We exist so that <strong style="color:var(--green);font-style:normal;">every Pakistani, every South Asian, every immigrant</strong> living far from home can turn on their screen and see themselves — their language, their culture, their stories — reflected back with dignity and pride."
       </p>
-      <span style="color:var(--muted);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;">— The PehchanTV Founding Team</span>
+      <span style="color:var(--muted);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;">— The PEHCHAN TV Founding Team</span>
     </div>
   </div>
 </section>
@@ -826,7 +966,7 @@
       </div>
       <div class="tl-row right fade-up d2">
         <div class="tl-blank"></div><div class="tl-dot"></div>
-        <div class="tl-content"><div class="tl-year">2025</div><div class="tl-title">🌟 The Next Chapter</div><div class="tl-desc">New website, expanded programming, podcast series, and pan-diaspora partnerships across the US, UK, and Canada.</div></div>
+        <div class="tl-content"><div class="tl-year">2026</div><div class="tl-title">🌟 The Next Chapter</div><div class="tl-desc">New website, expanded programming, podcast series, and pan-diaspora partnerships across the US, UK, and Canada.</div></div>
       </div>
     </div>
   </div>
@@ -840,51 +980,93 @@
       <h2 class="section-title fade-up d1">MEET THE <span>TEAM</span></h2>
       <p class="section-sub fade-up d2" style="margin:0 auto;">The faces and voices behind PehchanTV — passionate storytellers, event producers, and community champions.</p>
     </div>
-    <div class="team-grid">
-      <div class="team-card fade-up d1">
-        <div class="team-avatar">👨‍💼</div>
-        <div class="team-info">
-          <div class="team-name">Ahmad Raza</div>
-          <div class="team-role">Founder &amp; CEO</div>
-          <div class="team-bio">Journalist by training, community builder by calling. Ahmad founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.</div>
-          <div class="team-links"><a href="#" class="team-link">in</a><a href="#" class="team-link">𝕏</a></div>
-        </div>
+    <div class="team-grid swiper">
+  <div class="swiper-wrapper">
+
+    <div class="team-card fade-up d1 swiper-slide">
+      <div class="team-avatar">
+        <img src="/assets/images/shafaq-jaffery.jpg" width="100%" alt="Shafaq Jaffery">
       </div>
-      <div class="team-card fade-up d2">
-        <div class="team-avatar">👩‍🎬</div>
-        <div class="team-info">
-          <div class="team-name">Sana Malik</div>
-          <div class="team-role">Head of Content</div>
-          <div class="team-bio">Former broadcast journalist with 8 years of experience. Sana leads editorial direction and manages PehchanTV's growing team of reporters and presenters.</div>
-          <div class="team-links"><a href="#" class="team-link">in</a><a href="#" class="team-link">ig</a></div>
+      <div class="team-info">
+        <div class="team-name">Shafaq Jaffery</div>
+        <div class="team-role">Founder &amp; CEO</div>
+        <div class="team-bio">
+          Journalist by training, community builder by calling. Shafaq founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.
         </div>
-      </div>
-      <div class="team-card fade-up d3">
-        <div class="team-avatar">👨‍🎤</div>
-        <div class="team-info">
-          <div class="team-name">Bilal Hussain</div>
-          <div class="team-role">Events Director</div>
-          <div class="team-bio">With a background in live production and hospitality, Bilal transforms PehchanTV events into unforgettable experiences — from iftars to 2,000-person galas.</div>
-          <div class="team-links"><a href="#" class="team-link">in</a><a href="#" class="team-link">ig</a></div>
-        </div>
-      </div>
-      <div class="team-card fade-up d4">
-        <div class="team-avatar">👩‍💻</div>
-        <div class="team-info">
-          <div class="team-name">Priya Sharma</div>
-          <div class="team-role">Digital &amp; Growth</div>
-          <div class="team-bio">Priya manages PehchanTV's digital ecosystem — from YouTube SEO and social media strategy to audience analytics and advertiser relations.</div>
-          <div class="team-links"><a href="#" class="team-link">in</a><a href="#" class="team-link">𝕏</a></div>
+        <div class="team-links">
+          <a href="https://www.instagram.com/shafaqarifjaffery" class="team-link"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/shafaq.jaffery.3" class="team-link"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://www.twitter.com/shafaqpaa" class="team-link"><i class="fa-brands fa-twitter"></i></a>
         </div>
       </div>
     </div>
+
+    <div class="team-card fade-up d2 swiper-slide">
+      <div class="team-avatar">
+        <img src="/assets/images/shafaq-jaffery.jpg" width="100%" alt="Shafaq JafferyTest">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Shafaq Jaffery</div>
+        <div class="team-role">Founder &amp; CEO</div>
+        <div class="team-bio">
+          Journalist by training, community builder by calling. Shafaq founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.
+        </div>
+        <div class="team-links">
+          <a href="https://www.instagram.com/shafaqarifjaffery" class="team-link"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/shafaq.jaffery.3" class="team-link"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://www.twitter.com/shafaqpaa" class="team-link"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up d3 swiper-slide">
+      <div class="team-avatar">
+        <img src="/assets/images/shafaq-jaffery.jpg" width="100%" alt="Shafaq Jaffery">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Shafaq Jaffery</div>
+        <div class="team-role">Founder &amp; CEO</div>
+        <div class="team-bio">
+          Journalist by training, community builder by calling. Shafaq founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.
+        </div>
+        <div class="team-links">
+          <a href="https://www.instagram.com/shafaqarifjaffery" class="team-link"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/shafaq.jaffery.3" class="team-link"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://www.twitter.com/shafaqpaa" class="team-link"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up d4 swiper-slide">
+      <div class="team-avatar">
+        <img src="/assets/images/shafaq-jaffery.jpg" width="100%" alt="Shafaq JafferyTest">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Shafaq Jaffery</div>
+        <div class="team-role">Founder &amp; CEO</div>
+        <div class="team-bio">
+          Journalist by training, community builder by calling. Shafaq founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.
+        </div>
+        <div class="team-links">
+          <a href="https://www.instagram.com/shafaqarifjaffery" class="team-link"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/shafaq.jaffery.3" class="team-link"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://www.twitter.com/shafaqpaa" class="team-link"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Pagination -->
+  <div class="swiper-pagination"></div>
+</div>
     <!-- join CTA — reuses .about-feat card style -->
     <div class="about-feat fade-up" style="margin-top:40px;flex-wrap:wrap;gap:16px;padding:28px;">
-      <div class="about-feat-icon" style="font-size:1.5rem;">🤝</div>
+      <div class="about-feat-icon" style="font-size:1.5rem;"><i class="fa-solid fa-handshake"></i></div>
       <div style="flex:1;min-width:200px;">
         <div class="about-feat-title" style="font-size:1rem;margin-bottom:8px;">Want to Join the Team?</div>
         <p style="color:var(--muted);font-size:.88rem;line-height:1.7;margin-bottom:16px;">We're always looking for passionate storytellers, camera operators, social media managers, and event coordinators based in Australia.</p>
-        <a href="index.html#contact" class="btn btn-green" style="font-size:.88rem;padding:10px 22px;">Get In Touch →</a>
+        <a href="/#contact" class="btn btn-green" style="font-size:.88rem;padding:10px 22px;">Get In Touch →</a>
       </div>
     </div>
   </div>
@@ -910,15 +1092,15 @@
     <div class="testimonials-grid">
       <div class="testimonial fade-up d1">
         <p class="testimonial-text">PehchanTV gave me a sense of home when I first arrived in Sydney. Their immigration videos helped me navigate the PR process step by step.</p>
-        <div class="testimonial-author"><div class="testimonial-avatar">AK</div><div><div class="testimonial-name">Ayesha Khan</div><div class="testimonial-loc">📍 Sydney, NSW</div></div></div>
+        <div class="testimonial-author"><div class="testimonial-avatar">AK</div><div><div class="testimonial-name">Ayesha Khan</div><div class="testimonial-loc"><i class="fa-solid fa-location-dot"></i> Sydney, NSW</div></div></div>
       </div>
       <div class="testimonial fade-up d2">
         <p class="testimonial-text">They organised our community's Eid celebration last year and it was absolutely flawless. 500 guests, perfect execution. Couldn't have asked for better.</p>
-        <div class="testimonial-author"><div class="testimonial-avatar">MR</div><div><div class="testimonial-name">Mohammed Raza</div><div class="testimonial-loc">📍 Melbourne, VIC</div></div></div>
+        <div class="testimonial-author"><div class="testimonial-avatar">MR</div><div><div class="testimonial-name">Mohammed Raza</div><div class="testimonial-loc"><i class="fa-solid fa-location-dot"></i> Melbourne, VIC</div></div></div>
       </div>
       <div class="testimonial fade-up d3">
         <p class="testimonial-text">Watching PehchanTV keeps me connected to my roots while building my life here in Brisbane. Their content is authentic and truly represents us.</p>
-        <div class="testimonial-author"><div class="testimonial-avatar">SP</div><div><div class="testimonial-name">Sunita Patel</div><div class="testimonial-loc">📍 Brisbane, QLD</div></div></div>
+        <div class="testimonial-author"><div class="testimonial-avatar">SP</div><div><div class="testimonial-name">Sunita Patel</div><div class="testimonial-loc"><i class="fa-solid fa-location-dot"></i> Brisbane, QLD</div></div></div>
       </div>
     </div>
   </div>
@@ -942,7 +1124,7 @@
       <div class="partner-chip"><span class="partner-chip-icon">🏥</span>South Asian Health Alliance</div>
     </div>
     <p class="fade-up" style="text-align:center;color:var(--muted);margin-top:28px;font-size:.88rem;">
-      Want to partner with PehchanTV? <a href="index.html#contact" style="color:var(--green);text-decoration:none;font-weight:600;">Get in touch →</a>
+      Want to partner with PehchanTV? <a href="/#contact" style="color:var(--green);text-decoration:none;font-weight:600;">Get in touch →</a>
     </p>
   </div>
 </section>
@@ -953,101 +1135,178 @@
     <h2>FOLLOW US EVERYWHERE</h2>
     <p>Stay connected — never miss a story, event, or community update.</p>
     <div class="social-icons">
-      <a href="https://youtube.com/@PehchanTV" target="_blank" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.63 12.63 0 00-8.45 0A4.83 4.83 0 014.41 6.69C3.09 8 3 12 3 12s.09 4 1.41 5.31a4.83 4.83 0 003.77 2.75 12.63 12.63 0 008.45 0 4.83 4.83 0 003.77-2.75C21.91 16 22 12 22 12s-.09-4-1.41-5.31zM10 15.5v-7l6 3.5-6 3.5z"/></svg>YouTube</a>
-      <a href="#" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a>
-      <a href="#" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook</a>
-      <a href="#" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>WhatsApp</a>
-      <a href="#" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Twitter / X</a>
+      <a href="https://youtube.com/@PehchanTVAU" target="_blank" class="social-icon-btn"><i class="fa-brands fa-youtube"></i>YouTube</a>
+      <a href="https://instagram.com/pehchantv" target="_blank" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a>
+      <a href="https://facebook.com/@pehchantvau" target="_blank" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook</a>
+      <a href="https://wa.me/61415724571" target="_blank" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>WhatsApp</a>
+      <a href="https://twitter.com/PehchanTVAU" target="_blank" class="social-icon-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Twitter / X</a>
     </div>
   </div>
 </div>
 
 <!-- ══════ FOOTER ══════ -->
 <footer>
+
+  <!-- CTA Band -->
   <div class="footer-cta-band">
     <div class="container">
       <div class="footer-cta-inner">
         <div>
-          <h3>Want to <span>Advertise</span> or<br>Book an <span>Event</span>?</h3>
+          <h3>Ready to <span>Advertise</span> or<br>Book an <span>Event</span>?</h3>
           <p>Join hundreds of businesses and community organisations who trust PehchanTV.</p>
         </div>
         <div class="footer-cta-btns">
-          <a href="index.html#contact" class="btn btn-green">Get In Touch →</a>
-          <a href="https://youtube.com/@PehchanTV" target="_blank" class="btn btn-outline">Watch Channel</a>
+          <a href="/#contact" class="btn btn-green">Get In Touch →</a>
+          <a href="https://youtube.com/@PehchanTVAU" target="_blank" class="btn btn-outline">Watch Channel</a>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Main Body -->
   <div class="footer-body">
     <div class="container">
       <div class="footer-top-row">
+
+        <!-- Brand -->
         <div class="f-brand-logo">
-          <img src="76409.jpg" alt="PehchanTV" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <a href="/">
+          <img src="/assets/images/pehchantv-logo.png" alt="PehchanTV"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            </a>
           <div class="f-logo-text" style="display:none">PEHCHAN<span>TV</span></div>
           <span class="f-tagline-urdu">اپنی پہچان کو گلے لگائیں</span>
           <p class="f-brand-desc">Australia's premier Pakistani & South Asian media platform — bridging cultures, building community, and celebrating identity since 2018.</p>
           <div class="f-socials">
-            <a href="https://youtube.com/@PehchanTV" target="_blank" class="f-social" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.63 12.63 0 00-8.45 0A4.83 4.83 0 014.41 6.69C3.09 8 3 12 3 12s.09 4 1.41 5.31a4.83 4.83 0 003.77 2.75 12.63 12.63 0 008.45 0 4.83 4.83 0 003.77-2.75C21.91 16 22 12 22 12s-.09-4-1.41-5.31zM10 15.5v-7l6 3.5-6 3.5z"/></svg></a>
-            <a href="#" class="f-social" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
-            <a href="#" class="f-social" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-            <a href="#" class="f-social" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></a>
-            <a href="#" class="f-social" title="Twitter/X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            <a href="#" class="f-social" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-1.77-.33V10a7.18 7.18 0 01-4.15-1.31v5.93A5.76 5.76 0 018 20.38a5.76 5.76 0 01-5.76-5.76 5.76 5.76 0 015.76-5.76c.22 0 .43.01.64.04v3.22a2.62 2.62 0 00-.64-.08 2.62 2.62 0 00-2.62 2.62 2.62 2.62 0 002.62 2.62 2.62 2.62 0 002.62-2.62V3h3.09a4.83 4.83 0 004.83 4.84v-.15z"/></svg></a>
+            <!-- YouTube -->
+            <a href="https://youtube.com/@PehchanTVAU" target="_blank" class="f-social" title="YouTube">
+              <svg viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="
+    M50,5
+    A45,45 0 1,1 49.9,5
+    M40,30
+    L70,50
+    L40,70
+    Z
+  "/>
+</svg>
+            <!-- Instagram -->
+            <a href="https://instagram.com/pehchantv" target="_blank" class="f-social" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <!-- Facebook -->
+            <a href="https://facebook.com/pehchantvau" target="_blank" class="f-social" title="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <!-- WhatsApp -->
+            <a href="https://wa.me/61415724571" target="_blank" class="f-social" title="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </a>
+            <!-- Twitter/X -->
+            <a href="https://twitter.com/pehchantvau" target="_blank" class="f-social" title="Twitter / X">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <!-- TikTok -->
+            <a href="https://linkedin.com/company/pehchan-tv" target="_blank" class="f-social" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 
+  0-2.13 1.44-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 
+  1.66-1.85 3.42-1.85 3.65 0 4.32 2.4 4.32 
+  5.52v6.22zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 
+  2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/>
+</svg>
+</a>
           </div>
         </div>
+
+        <!-- Nav: Media -->
         <div class="f-nav-col">
           <h6>Media</h6>
           <ul>
-            <li><a href="media.html">Latest Videos</a></li>
-            <li><a href="media.html">News &amp; Analysis</a></li>
-            <li><a href="media.html">Culture &amp; Lifestyle</a></li>
-            <li><a href="media.html">Entertainment</a></li>
-            <li><a href="media.html">Immigration Guides</a></li>
-            <li><a href="https://youtube.com/@PehchanTV" target="_blank">YouTube Channel ↗</a></li>
+            <li><a href="/media#catTabBar">Latest Videos</a></li>
+            <li><a href="/media#block-community-news">News & Analysis</a></li>
+            <li><a href="/media#block-interviews">Special Talks & Interviews</a></li>
+            <li><a href="/media#block-entertainment">Entertainment & Television</a></li>
+            <li><a href="/media#block-event-highlights">Event Highlights</a></li>
+            <li><a href="https://youtube.com/@PehchanTVAU" target="_blank">YouTube Channel ↗</a></li>
           </ul>
         </div>
+
+        <!-- Nav: Events -->
         <div class="f-nav-col">
           <h6>Events</h6>
           <ul>
-            <li><a href="events.html">Upcoming Events</a></li>
-            <li><a href="events.html">Cultural Festivals</a></li>
-            <li><a href="events.html">Corporate Events</a></li>
-            <li><a href="events.html">Concerts &amp; Shows</a></li>
-            <li><a href="events.html#enquiry">Book Our Services</a></li>
-            <li><a href="events.html#enquiry">Sponsorships</a></li>
+            <li><a href="/event-management#upcoming">Upcoming Events</a></li>
+            <li><a href="/event-management#gallery">Past Events Gallery</a></li>
+            <li><a href="/event-management#packages">Pricing Packages</a></li>
+            <li><a href="/event-management#enquiry">Book Our Services</a></li>
+            <li><a href="/#contact">Sponsorships</a></li>
           </ul>
         </div>
+
+        <!-- Nav: Company -->
         <div class="f-nav-col">
           <h6>Company</h6>
           <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="index.html#services">Our Services</a></li>
-            <li><a href="index.html#community">Community</a></li>
-            <li><a href="index.html#contact">Advertise With Us</a></li>
-            <li><a href="index.html#contact">Careers</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="/about-us">About Us</a></li>
+            <li><a href="/#services">Our Services</a></li>
+            <li><a href="/community">Community</a></li>
+            <li><a href="/#contact">Advertise With Us</a></li>
+            <li><a href="/careers">Careers</a></li>
+            <li><a href="/#contact">Contact</a></li>
           </ul>
         </div>
-      </div>
-    </div>
+
+      </div><!-- /footer-top-row -->
+    </div><!-- /container -->
+
+    <!-- Contact Bar -->
     <div class="footer-contact-bar">
-      <div class="f-contact-item"><div class="f-ci-icon">📍</div><div><div class="f-ci-label">Location</div><div class="f-ci-val">Sydney, New South Wales, Australia</div></div></div>
-      <div class="f-contact-item"><div class="f-ci-icon">📧</div><div><div class="f-ci-label">Email Us</div><div class="f-ci-val">info@pehchantv.com.au</div></div></div>
-      <div class="f-contact-item"><div class="f-ci-icon">📱</div><div><div class="f-ci-label">Phone / WhatsApp</div><div class="f-ci-val">+61 4XX XXX XXX</div></div></div>
+      <div class="f-contact-item">
+        <div class="f-ci-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div>
+          <div class="f-ci-label">Location</div>
+          <div class="f-ci-val">Sydney, New South Wales, Australia</div>
+        </div>
+      </div>
+      <a href="mailto:info@pehchantv.com.au">
+      <div class="f-contact-item">
+        <div class="f-ci-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div>
+          <div class="f-ci-label">Email Us</div>
+          <div class="f-ci-val">info@pehchantv.com.au</div>
+        </div>
+      </div>
+      </a>
+      <a href="tel:+61415724571">
+      <div class="f-contact-item">
+        <div class="f-ci-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+        <div>
+          <div class="f-ci-label">Phone / WhatsApp</div>
+          <div class="f-ci-val">+61 415 724 571</div>
+        </div>
+      </div>
+      </a>
     </div>
+
+    <!-- Bottom Bar -->
     <div class="container">
       <div class="footer-bottom-bar">
-        <div class="fbb-copy">© 2025 <strong>PehchanTV</strong>. All rights reserved.</div>
+        <div class="fbb-copy">© <script>document.write(new Date().getFullYear())</script> <strong>Pehchan Media Network</strong>. All rights reserved.<br>ABN: 49 638 445 253</div>
         <div class="fbb-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Advertise</a>
-          <a href="#">Sitemap</a>
+          <a href="/policies/privacy-policy/">Privacy Policy</a>
+          <a href="/policies/terms-of-use/">Terms of Use</a>
+          <a href="/policies/advertise/">Advertise</a>
+          <a href="/sitemap/">Sitemap</a>
         </div>
+        <div>
         <div class="fbb-made">Made with <span>♥</span> for the diaspora</div>
+        <div class="fbb-dev">Developed by <a href="https://wa.me/918859033391" target="_blank"><strong>SSR Developers</strong></a></div>
+        </div>
       </div>
     </div>
-  </div>
+
+  </div><!-- /footer-body -->
 </footer>
 
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
@@ -1161,5 +1420,31 @@ scrollBtn.addEventListener("click", () => {
 });
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+const teamSwiper = new Swiper('.team-grid', {
+  slidesPerView: 1,
+  spaceBetween: 20,
+  loop: true,
+
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+  },
+
+  breakpoints: {
+    640: {
+      slidesPerView: 1,
+    },
+    992: {
+      slidesPerView: 3,
+    },
+    1200: {
+      slidesPerView: 4,
+    }
+  }
+});
+</script>
 </body>
 </html>

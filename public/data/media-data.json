@@ -1,0 +1,162 @@
+[
+  {
+    "id": "community-news",
+    "icon": "📋",
+    "label": "News & Updates",
+    "title": "Community News",
+    "description": "Latest news and updates from Australia's South Asian community",
+    "color": "#3498db",
+    "items": [
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1472530291028981%2F&show_text=false&width=476&t=0",
+        "title": "Who is Javed Ahmed?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1268299812129258%2F&show_text=false&width=476&t=0",
+        "title": "Tahir Ashrafi viral video — What really happened?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1254127503132479%2F&show_text=false&width=476&t=0",
+        "title": "Iqrar ul hassan viral video — What really happened?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F954483607286732%2F&show_text=false&width=476&t=0",
+        "title": "Who was Arshad Pappu?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2377367326062633%2F&show_text=false&width=476&t=0",
+        "title": "Viral video of Amir Sohail — What really happened?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1636009974278968%2F&show_text=false&width=476&t=0",
+        "title": "Nehal Hashmi's viral video — What really happened?",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "id": "interviews",
+    "icon": "🎤",
+    "label": "Exclusive Interviews",
+    "title": "Special Talks & Interviews",
+    "description": "Exclusive interviews with community leaders, influencers and experts on topics that matter to South Asians in Australia",
+    "color": "#f39c12",
+    "items": [
+      {
+        "type": "video",
+        "url": "https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2049394839002049%2F&show_text=false&width=560&t=0",
+        "title": "EXCLUSIVE INTERVIEW WITH KHIZAR NIAZI | PEHCHAN WITH SHAFAQ JAFFERY",
+        "caption": ""
+      },
+      {
+        "type": "video",
+        "url": "https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Fpehchantvau%2Fvideos%2F1613240709959144%2F&show_text=false&width=560&t=0",
+        "title": "Special live show with Dr. Nadeem Siekh",
+        "caption": ""
+      },
+      {
+        "type": "video",
+        "url": "https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Fpehchantvau%2Fvideos%2F1727523464877519%2F&show_text=false&width=560&t=0",
+        "title": "Special Live Show with Khizar Niyazi",
+        "caption": ""
+      },
+      {
+        "type": "video",
+        "url": "https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1958898508166650%2F&show_text=false&width=560&t=0",
+        "title": "EXCLUSIVE DISCUSSION WITH DR NADEEM SHEIKH | PEHCHAN WITH SHAFAQ JAFFERY",
+        "caption": ""
+      },
+      {
+        "type": "video",
+        "url": "https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Fpehchantvau%2Fvideos%2F1663646164824645%2F&show_text=false&width=560&t=0",
+        "title": "Live Show with Special Guest Nadeem Sheikh",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "id": "entertainment",
+    "icon": "🎵",
+    "label": "News & Updates",
+    "title": "Entertainment & Television",
+    "description": "The latest in South Asian entertainment, TV shows, music and cultural events happening across Australia",
+    "color": "#9b59b6",
+    "items": [
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2068041027391438%2F&show_text=false&width=476&t=0",
+        "title": "Shahbaz Gill vs Waseem Abbas fight — What really happened?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1293135392762213%2F&show_text=false&width=476&t=0",
+        "title": "Meera & Captain Naveed Scandal — What really happened?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F948042284671190%2F&show_text=false&width=476&t=0",
+        "title": "Scripted interview? Paid podcast by Irshad Bhatti",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2529910170768911%2F&show_text=false&width=476&t=0",
+        "title": "Jameel Farooqui scandal — What really happened?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2471542413363120%2F&show_text=false&width=476&t=0",
+        "title": "Fiza Ali apologize?",
+        "caption": ""
+      },
+      {
+        "type": "square",
+        "url": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F3891868464301587%2F&show_text=false&width=476&t=0",
+        "title": "Fiza Ali's scandal",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "id": "event-highlights",
+    "icon": "🎪",
+    "label": "PehchanTV Events",
+    "title": "Event Highlights",
+    "description": "Relive the best moments from PehchanTV's community events across Australia",
+    "color": "#e74c3c",
+    "items": [
+      {
+        "type": "video",
+        "url": "https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1658645075320800%2F&show_text=false&width=560&t=0",
+        "title": "Mother’s Day Celebration – APWA Melbourne Chapter Launch 🌸 ✨ Mother I Salute You ✨",
+        "caption": ""
+      },
+      {
+        "type": "video",
+        "url": "https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2158147911629269%2F&show_text=false&width=560&t=0",
+        "title": "The Official Launch Of The Pakistani Mango & Multicultural Food Festival Set To Be ONE Of The Biggest And Most Vibrant Cultural Celebrations Of The Year.",
+        "caption": ""
+      },
+      {
+        "type": "video",
+        "url": "https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F962119509801056%2F&show_text=false&width=560&t=0",
+        "title": "Grand Launch of Pakistani Mango and Multicultural Food Festival 2026 Held in Melbourne 🎉🥭",
+        "caption": ""
+      }
+    ]
+  }
+]

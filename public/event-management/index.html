@@ -7,6 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<!-- Facebook SDK — required for all FB embeds -->
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0">
+</script>
 <style>
 
 /* ══════════════════════════════
@@ -462,6 +468,11 @@ nav {
   display: flex; align-items: center; justify-content: center;
   font-size: 3.5rem; position: relative; overflow: hidden;
 }
+.ev-thumb::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--navy2);
+  opacity: .1;
+}
 .ev-thumb-1 { background: linear-gradient(135deg, #0d2840, #0a3a1a); }
 .ev-thumb-2 { background: linear-gradient(135deg, #1a0d30, #0d2840); }
 .ev-thumb-3 { background: linear-gradient(135deg, #0d3020, #1a2210); }
@@ -653,6 +664,9 @@ nav {
 .pricing-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: start;
 }
+.pricing-grid.swiper {
+  display: block !important;
+}
 .pricing-card {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 12px; padding: 36px 30px;
@@ -701,6 +715,25 @@ nav {
 @media(max-width:860px) {
   .pricing-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
   .pricing-card.featured { transform: none; }
+}
+.swiper-pagination {
+  bottom: -5px !important;
+}
+
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(255,255,255,0.4);
+  opacity: 1;
+  margin: 0 5px !important;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  width: 26px;
+  border-radius: 20px;
+  background: #22c55e;
 }
 
 /* ══════════════════════════════
@@ -764,109 +797,378 @@ nav {
    FOOTER  — exact homepage
 ══════════════════════════════ */
 footer {
-  background: #020c17;
-  position: relative; overflow: hidden;
+    background: #020c17;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* big watermark text behind footer */
+  footer::before {
+    content: 'PEHCHAN';
+    position: absolute;
+    bottom: -30px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(6rem, 18vw, 14rem);
+    color: rgba(46,204,64,.03);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: .1em;
+  }
+
+  /* ── top CTA band ── */
+  .footer-cta-band {
+    background: linear-gradient(100deg, #0a2a14 0%, #062040 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 0;
+  }
+  .footer-cta-inner {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-cta-inner h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    letter-spacing: .04em; line-height: 1.1;
+  }
+  .footer-cta-inner h3 span { color: var(--green); }
+  .footer-cta-inner p { color: var(--muted); font-size: .93rem; margin-top: 6px; }
+  .footer-cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* ── main footer body ── */
+  .footer-body { padding: 64px 0 0; position: relative; z-index: 1; }
+
+  .footer-top-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 52px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* brand column */
+  .f-brand-logo img { height: 50px; display: block; }
+  .f-brand-logo .f-logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: .08em;
+    color: var(--white);
+  }
+  .f-brand-logo .f-logo-text span { color: var(--green); }
+  .f-tagline-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    direction: rtl; font-size: 1.1rem;
+    color: var(--green); opacity: .85;
+    margin: 14px 0 16px;
+    display: block;
+  }
+  .f-brand-desc {
+    color: var(--muted); font-size: .88rem;
+    line-height: 1.75; max-width: 270px;
+    margin-bottom: 28px;
+  }
+
+  /* social icons row */
+  .f-socials { display: flex; gap: 10px; flex-wrap: wrap; }
+  .f-social {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); text-decoration: none;
+    transition: all .22s;
+  }
+  .f-social:hover {
+    background: var(--green); border-color: var(--green);
+    color: var(--navy); transform: translateY(-3px);
+  }
+  .f-social svg { width: 17px; height: 17px; }
+
+  /* nav columns */
+  .f-nav-col h6 {
+    font-size: .72rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .f-nav-col h6::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--border);
+  }
+  .f-nav-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .f-nav-col ul li a {
+    color: var(--muted); text-decoration: none;
+    font-size: .9rem; display: flex; align-items: center; gap: 7px;
+    transition: color .2s, gap .2s;
+  }
+  .f-nav-col ul li a::before {
+    content: '›'; color: var(--green); font-size: 1rem;
+    opacity: 0; transition: opacity .2s;
+  }
+  .f-nav-col ul li a:hover { color: var(--white); gap: 10px; }
+  .f-nav-col ul li a:hover::before { opacity: 1; }
+
+  /* ── contact bar ── */
+  .footer-contact-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin: 0 0 0;
+  }
+  .f-contact-item {
+    background: #020c17;
+    padding: 28px 32px;
+    display: flex; gap: 16px; align-items: flex-start; justify-content: center;
+    transition: background .2s;
+  }
+  .f-contact-item:hover { background: #041422; }
+  .f-ci-icon {
+    width: 44px; height: 44px; min-width: 44px;
+    background: rgba(46,204,64,.1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .f-ci-label { color: var(--muted); font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+  .f-ci-val { color: var(--white); font-size: .93rem; font-weight: 500; }
+
+  /* ── bottom bar ── */
+  .footer-bottom-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0;
+    flex-wrap: wrap; gap: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .fbb-copy { color: var(--muted); font-size: .82rem; }
+  .fbb-copy strong { color: var(--green); font-weight: 600; }
+  .fbb-links { display: flex; gap: 20px; }
+  .fbb-links a {
+    color: var(--muted); text-decoration: none; font-size: .82rem;
+    transition: color .2s;
+  }
+  .fbb-links a:hover { color: var(--white); }
+  .fbb-made, .fbb-dev {
+    color: var(--muted); font-size: .8rem;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .fbb-made span { color: #e74c3c; }
+
+  @media(max-width: 1024px) {
+    .footer-top-row { grid-template-columns: 1fr 1fr; gap: 36px; }
+    .footer-contact-bar { grid-template-columns: 1fr 1fr; }
+    .f-contact-item { justify-content: flex-start; }
+  }
+  @media(max-width: 640px) {
+    .footer-top-row { grid-template-columns: 1fr; gap: 36px; }
+    .footer-contact-bar { grid-template-columns: 1fr; }
+    .footer-cta-inner { flex-direction: column; }
+    .footer-bottom-bar { flex-direction: column; align-items: center; text-align: center; }
+    .fbb-links { justify-content: center; }
+  }
+  .footer-contact-bar a:-webkit-any-link, .fbb-dev a:-webkit-any-link {
+  color: inherit;
+  text-decoration: none;
 }
-footer::before {
-  content: 'PEHCHAN';
-  position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+
+/* ════════════════════════════════════════
+   MAIN SLIDERS SECTION
+════════════════════════════════════════ */
+#sliders-section { background: var(--navy); }
+
+/* loading / error states */
+.sliders-loading {
+  text-align: center; padding: 80px 0; color: var(--muted);
+}
+.sliders-loading .spinner {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--green);
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.sliders-error {
+  text-align: center; padding: 80px 0;
+}
+.sliders-error p { color: var(--muted); margin-bottom: 20px; }
+
+/* ─── each category block ─── */
+.slider-block {
+  padding: 56px 0 48px;
+  border-bottom: 1px solid var(--border);
+}
+.slider-block:last-child { border-bottom: none; }
+.slider-block:nth-child(even) { background: var(--navy2); }
+
+/* block header */
+.slider-header {
+  display: flex; align-items: flex-end;
+  justify-content: space-between; gap: 16px;
+  margin-bottom: 28px; flex-wrap: wrap;
+}
+.slider-header-left {}
+.slider-cat-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; padding: 4px 14px; border-radius: 2px;
+  margin-bottom: 10px; background: var(--green); color: var(--navy);
+}
+.slider-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(6rem, 18vw, 14rem);
-  color: rgba(46,204,64,.03);
-  white-space: nowrap; pointer-events: none; user-select: none; letter-spacing: .1em;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  line-height: 1; letter-spacing: .03em;
 }
-.footer-cta-band {
-  background: linear-gradient(100deg, #0a2a14 0%, #062040 100%);
-  border-bottom: 1px solid var(--border); padding: 48px 0;
+.slider-desc { color: var(--muted); font-size: .9rem; margin-top: 6px; }
+.slider-nav-btns { display: flex; gap: 8px; }
+.slider-nav-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--muted); font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .22s; flex-shrink: 0;
 }
-.footer-cta-inner {
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+.slider-nav-btn:hover { background: var(--green); color: var(--navy); border-color: var(--green); }
+.slider-nav-btn:disabled { opacity: .3; cursor: not-allowed; }
+.slider-nav-btn:disabled:hover { background: var(--card); color: var(--muted); border-color: var(--border); }
+
+/* ─── scroll track ─── */
+.slider-track-wrap {
+  position: relative;
 }
-.footer-cta-inner h3 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.6rem, 3.5vw, 2.6rem); letter-spacing: .04em; line-height: 1.1;
+/* fade edges */
+.slider-track-wrap::before,
+.slider-track-wrap::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 48px; z-index: 2;
+  pointer-events: none;
 }
-.footer-cta-inner h3 span { color: var(--green); }
-.footer-cta-inner p { color: var(--muted); font-size: .93rem; margin-top: 6px; }
-.footer-cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-.footer-body { padding: 64px 0 0; position: relative; z-index: 1; }
-.footer-top-row {
-  display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
-  gap: 48px; padding-bottom: 52px; border-bottom: 1px solid var(--border);
+.slider-track-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--navy), transparent);
 }
-.f-brand-logo img { height: 50px; display: block; }
-.f-brand-logo .f-logo-text {
-  font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
-  letter-spacing: .08em; color: var(--white);
+.slider-track-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--navy), transparent);
 }
-.f-brand-logo .f-logo-text span { color: var(--green); }
-.f-tagline-urdu {
-  font-family: 'Noto Nastaliq Urdu', serif;
-  direction: rtl; font-size: 1.1rem; color: var(--green); opacity: .85;
-  margin: 14px 0 16px; display: block;
+.slider-block:nth-child(even) .slider-track-wrap::before {
+  background: linear-gradient(to right, var(--navy2), transparent);
 }
-.f-brand-desc { color: var(--muted); font-size: .88rem; line-height: 1.75; max-width: 270px; margin-bottom: 28px; }
-.f-socials { display: flex; gap: 10px; flex-wrap: wrap; }
-.f-social {
-  width: 38px; height: 38px;
-  background: rgba(255,255,255,.05); border: 1px solid var(--border);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  color: var(--muted); text-decoration: none; transition: all .22s;
+.slider-block:nth-child(even) .slider-track-wrap::after {
+  background: linear-gradient(to left, var(--navy2), transparent);
 }
-.f-social:hover { background: var(--green); border-color: var(--green); color: var(--navy); transform: translateY(-3px); }
-.f-social svg { width: 17px; height: 17px; }
-.f-nav-col h6 {
-  font-size: .72rem; font-weight: 700; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--green); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 8px;
+
+.slider-track {
+  display: flex; gap: 18px;
+  overflow-x: auto; scroll-behavior: smooth;
+  padding: 8px 4px 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) var(--card);
+  -webkit-overflow-scrolling: touch;
 }
-.f-nav-col h6::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.f-nav-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
-.f-nav-col ul li a {
-  color: var(--muted); text-decoration: none; font-size: .9rem;
-  display: flex; align-items: center; gap: 7px; transition: color .2s, gap .2s;
+.slider-track::-webkit-scrollbar { height: 4px; }
+.slider-track::-webkit-scrollbar-track { background: var(--card); border-radius: 4px; }
+.slider-track::-webkit-scrollbar-thumb { background: var(--green); border-radius: 4px; }
+
+/* ─── individual embed card ─── */
+.embed-card {
+  flex-shrink: 0;
+  width: 320px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color .25s, transform .25s, box-shadow .25s;
+  display: flex; flex-direction: column;
 }
-.f-nav-col ul li a::before { content: '›'; color: var(--green); font-size: 1rem; opacity: 0; transition: opacity .2s; }
-.f-nav-col ul li a:hover { color: var(--white); gap: 10px; }
-.f-nav-col ul li a:hover::before { opacity: 1; }
-.footer-contact-bar {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px; background: var(--border);
+.embed-card:hover {
+  border-color: rgba(46,204,64,.45);
+  transform: translateY(-4px);
+  box-shadow: var(--glow);
 }
-.f-contact-item {
-  background: #020c17; padding: 28px 32px;
-  display: flex; gap: 16px; align-items: flex-start; transition: background .2s;
+
+/* iframe container — keeps 9:16 for reels, 1:1 for posts */
+.embed-frame-wrap {
+  position: relative; width: 100%;
+  background: #000; overflow: hidden;
+  flex-shrink: 0;
 }
-.f-contact-item:hover { background: #041422; }
-.f-ci-icon {
-  width: 44px; height: 44px; min-width: 44px;
-  background: rgba(46,204,64,.1); border: 1px solid var(--border);
-  border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+.embed-frame-wrap.reel   { aspect-ratio: 9/16; max-height: 540px; }
+.embed-frame-wrap.post   { aspect-ratio: 4/5; }
+.embed-frame-wrap.video { aspect-ratio: 16/9; }
+.embed-frame-wrap.square{ aspect-ratio: 1/1; }
+
+/* loading placeholder inside the frame */
+.embed-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px; background: var(--card);
+  color: var(--muted); font-size: .85rem;
 }
-.f-ci-label { color: var(--muted); font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
-.f-ci-val { color: var(--white); font-size: .93rem; font-weight: 500; }
-.footer-bottom-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 22px 0; flex-wrap: wrap; gap: 14px; border-top: 1px solid var(--border);
+.embed-placeholder .ph-icon { font-size: 2.2rem; opacity: .35; }
+.embed-placeholder .ph-spinner {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid var(--border); border-top-color: var(--green);
+  animation: spin 1s linear infinite;
 }
-.fbb-copy { color: var(--muted); font-size: .82rem; }
-.fbb-copy strong { color: var(--green); font-weight: 600; }
-.fbb-links { display: flex; gap: 20px; }
-.fbb-links a { color: var(--muted); text-decoration: none; font-size: .82rem; transition: color .2s; }
-.fbb-links a:hover { color: var(--white); }
-.fbb-made { color: var(--muted); font-size: .8rem; display: flex; align-items: center; gap: 5px; }
-.fbb-made span { color: #e74c3c; }
-@media(max-width:1024px) {
-  .footer-top-row { grid-template-columns: 1fr 1fr; gap: 36px; }
-  .footer-contact-bar { grid-template-columns: 1fr 1fr; }
+
+.embed-frame-wrap iframe {
+  position: absolute; inset: 0;
+  width: 100% !important; height: 100% !important;
+  border: none; display: block;
 }
-@media(max-width:640px) {
-  .footer-top-row { grid-template-columns: 1fr; }
-  .footer-contact-bar { grid-template-columns: 1fr; }
-  .footer-cta-inner { flex-direction: column; }
-  .footer-bottom-bar { flex-direction: column; align-items: center; text-align: center; }
-  .fbb-links { justify-content: center; }
+
+/* card footer */
+.embed-card-info {
+  padding: 14px 16px 18px;
+  flex: 1; display: flex; flex-direction: column; gap: 6px;
+}
+.embed-card-type {
+  font-size: .65rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 2px;
+  display: flex; align-items: center; gap: 5px;
+}
+.embed-card-title {
+  font-weight: 600; font-size: .92rem; line-height: 1.4;
+  color: var(--white);
+}
+.embed-card-caption {
+  font-size: .8rem; color: var(--muted); line-height: 1.55;
+}
+
+/* ─── dot pagination ─── */
+.slider-dots {
+  display: flex; justify-content: center; gap: 6px; margin-top: 18px;
+}
+.slider-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--border); transition: all .2s; cursor: pointer; border: none;
+}
+.slider-dot.active {
+  background: var(--green); width: 20px; border-radius: 4px;
+}
+
+/* ─── empty state ─── */
+.slider-empty {
+  text-align: center; padding: 40px;
+  color: var(--muted); font-size: .9rem;
+  background: var(--card); border: 1px dashed var(--border);
+  border-radius: 8px;
+}
+/* ════════════════════════════════════════
+   RESPONSIVE SLIDER CARD WIDTH
+════════════════════════════════════════ */
+@media(max-width: 1024px) { .embed-card { width: 290px; } }
+@media(max-width: 768px)  { .embed-card { width: 260px; } }
+@media(max-width: 480px)  {
+  .embed-card { width: 80vw; max-width: 300px; }
+  .slider-header { flex-direction: column; align-items: flex-start; }
+}
+.slider-block.hidden {
+  display: none;
 }
 
 /* ══════════════════════════════
@@ -889,19 +1191,20 @@ footer::before {
 </head>
 <body>
 
-<!-- ══════════ NAVBAR ══════════ -->
+<header>
+<!-- ─── NAVBAR ──────────────────────────────────────── -->
 <nav id="navbar">
   <div class="nav-logo">
-    <img src="/assets/images/pehchantv-logo.png" alt="PehchanTV Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <a href="/"><img src="/assets/images/pehchantv-logo.png" alt="PehchanTV Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"></a>
     <span style="display:none; font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:#fff; letter-spacing:.06em">PEHCHAN<span style="color:var(--green)">TV</span></span>
   </div>
   <ul class="nav-links">
-    <li><a href="/" class="active">Home</a></li>
-    <li><a href="#about-us">About Us</a></li>
-    <li><a href="#media">Media Channel</a></li>
-    <li><a href="#event-management">Event Management</a></li>
-    <li><a href="#advertise">Advertise</a></li>
-    <li><a href="#community">Community</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about-us">About Us</a></li>
+    <li><a href="/media">Media Channel</a></li>
+    <li><a href="/event-management" class="active">Event Management</a></li>
+    <li><a href="/community">Community</a></li>
+    <li><a href="/#contact">Advertise</a></li>
     <div class="nav-icons">
       <div class="lang-switch">
       <button class="icon-btn" id="langBtn"><i class="fa-solid fa-globe"></i></button>
@@ -916,7 +1219,7 @@ footer::before {
       <div id="google_translate_element"></div>
       <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
-    <li class="nav-cta"><a href="#contact">Get In Touch</a></li>
+    <li class="nav-cta"><a href="/#contact">Get In Touch</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -925,14 +1228,14 @@ footer::before {
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="/" onclick="closeMobile()">Home</a>
-  <a href="#about-us" onclick="closeMobile()">About Us</a>
-  <a href="#media" onclick="closeMobile()">Media</a>
-  <a href="#event-management" onclick="closeMobile()">Event Management</a>
-  <a href="#advertise" onclick="closeMobile()">Advertise</a>
-  <a href="#community" onclick="closeMobile()">Community</a>
-  <a href="#career" onclick="closeMobile()">Career</a>
-  <a href="#contact" onclick="closeMobile()" style="color:var(--green)">Get In Touch →</a>
+  <a href="/about-us" onclick="closeMobile()">About Us</a>
+  <a href="/media" onclick="closeMobile()">Media</a>
+  <a href="/event-management" onclick="closeMobile()">Event Management</a>
+  <a href="/community" onclick="closeMobile()">Community</a>
+  <a href="/#contact" onclick="closeMobile()">Advertise</a>
+  <a href="/#contact" onclick="closeMobile()" style="color:var(--green)">Get In Touch →</a>
 </div>
+</header>
 
 <!-- ══════════ PAGE HERO ══════════ -->
 <section class="page-hero">
@@ -951,12 +1254,12 @@ footer::before {
         <div class="hstat-box">
           <div class="hstat-icon">🎪</div>
           <div>
-            <div class="hstat-num">10+</div>
+            <div class="hstat-num">100+</div>
             <div class="hstat-lbl">Events successfully managed across Australia</div>
           </div>
         </div>
         <div class="hstat-box">
-          <div class="hstat-num">5K+</div>
+          <div class="hstat-num">50K+</div>
           <div class="hstat-lbl">Total Attendees Served</div>
         </div>
         <div class="hstat-box">
@@ -1013,7 +1316,7 @@ footer::before {
         <div class="why-num">02</div>
         <div class="why-icon">📺</div>
         <div class="why-title">Built-in Media Coverage</div>
-        <div class="why-desc">Every event we manage gets exclusive PehchanTV coverage — professional photography, videography, and social media promotion to 50K+ followers.</div>
+        <div class="why-desc">Every event we manage gets exclusive PehchanTV coverage — professional photography, videography, and social media promotion to 100K+ followers.</div>
       </div>
       <div class="why-card fade-up d3">
         <div class="why-num">03</div>
@@ -1191,20 +1494,20 @@ footer::before {
     <div class="events-grid-main" id="eventsGrid">
 
       <div class="ev-card fade-up d1" data-cat="cultural">
-        <div class="ev-thumb ev-thumb-1">🇵🇰
-          <div class="ev-date-badge"><div class="ev-date-day">14</div><div class="ev-date-mon">Aug</div></div>
+        <a href="https://www.facebook.com/reel/1658645075320800"><div class="ev-thumb ev-thumb-1" style="background-image: url('/assets/images/melbourne-chapter.jpg'); background-size: cover; background-position: center;">
+          <div class="ev-date-badge"><div class="ev-date-day">10</div><div class="ev-date-mon">May</div></div>
           <div class="ev-status open">Tickets Open</div>
-        </div>
+        </div></a>
         <div class="ev-info">
-          <div class="ev-tags"><span class="ev-tag">Cultural</span><span class="ev-tag">Sydney</span></div>
-          <h3>Pakistan Independence Day Gala 2025</h3>
-          <p>Grand celebration with live performances, cultural displays, traditional food stalls, and community awards night.</p>
+          <div class="ev-tags"><span class="ev-tag">Cultural</span><span class="ev-tag">Melbourne</span></div>
+          <h3>Mother's Day Celebration – APWA Melbourne Chapter Launch</h3>
+          <p>Join APWA Melbourne Chapter as we celebrate the unconditional love, strength, and sacrifices of mothers everywhere.</p>
           <div class="ev-meta">
-            <span>📍 <strong>ICC Sydney, Darling Harbour</strong></span>
-            <span>🕐 <strong>6:00 PM – 11:00 PM</strong></span>
-            <span>👥 <strong>Capacity: 1,500 guests</strong></span>
+            <span>📍 <strong>Sussex Neighbourhood House, Melbourne</strong></span>
+            <span>🕐 <strong>12:00 PM – 03:00 PM</strong></span>
+            <span>👥 <strong>Capacity: 500 guests</strong></span>
           </div>
-          <a href="#enquiry" class="btn btn-green" style="font-size:.84rem;padding:10px 22px;">Get Tickets →</a>
+          <a href="https://apwa.org.au/contact/" class="btn btn-green" style="font-size:.84rem;padding:10px 22px;">Get Tickets →</a>
         </div>
       </div>
 
@@ -1341,7 +1644,7 @@ footer::before {
 </section>
 
 <!-- ══════════ PAST EVENTS GALLERY ══════════ -->
-<section class="gallery-section section">
+<section class="gallery-section section" id="gallery" style="display: none;">
   <div class="container">
     <div style="text-align:center;max-width:560px;margin:0 auto 48px;">
       <span class="tag fade-up">Portfolio</span>
@@ -1353,6 +1656,30 @@ footer::before {
 <div style="text-align:center;margin-top:20px;">
   <button class="btn btn-outline" id="loadMoreBtn">Load More</button>
 </div>
+</section>
+<!-- ════════ CATEGORY TAB BAR ════════ -->
+<div class="cat-tab-bar" id="catTabBar" style="display: none;">
+  <div class="container">
+    <div class="cat-tab-inner" id="catTabInner">
+      <!-- dynamically populated -->
+      <div style="padding:14px 22px;color:var(--muted);font-size:.85rem;">Loading categories…</div>
+    </div>
+  </div>
+</div>
+<section class="gallery-section section" id="events-slider">
+  <div class="container">
+    <div style="text-align:center;max-width:560px;margin:0 auto 48px;">
+      <span class="tag fade-up">Portfolio</span>
+      <h2 class="section-title fade-up d1">PAST EVENTS <span>Highlights</span></h2>
+      <p class="section-sub fade-up d2" style="margin:0 auto;">A glimpse into the events we've brought to life across Australia.</p>
+    </div>
+    <div id="slidersRoot">
+    <!-- loading state -->
+    <div class="sliders-loading" id="slidersLoading">
+      <div class="spinner"></div>
+      <p>Loading media content…</p>
+    </div>
+  </div>
 </section>
 
 <!-- ══════════ TESTIMONIALS ══════════ -->
@@ -1408,70 +1735,75 @@ footer::before {
       <h2 class="section-title fade-up d1">TRANSPARENT <span>PRICING</span></h2>
       <p class="section-sub fade-up d2" style="margin:0 auto;">Every event is unique — but here's a guide to our starting packages. Custom quotes available for all sizes.</p>
     </div>
-    <div class="pricing-grid">
+    <div class="pricing-grid swiper">
+  <div class="swiper-wrapper">
 
-      <div class="pricing-card fade-up d1">
-        <div class="pricing-tier">Starter</div>
-        <div class="pricing-name">Essential</div>
-        <div class="pricing-desc">Perfect for intimate community gatherings, iftars, and small cultural events up to 150 guests.</div>
-        <div class="pricing-price"><sub>from $</sub>2,500</div>
-        <div class="pricing-from">Starting price · Final quote varies</div>
-        <hr class="pricing-divider">
-        <div class="pricing-features">
-          <div class="pricing-feat">Event concept &amp; planning consultation</div>
-          <div class="pricing-feat">Venue sourcing &amp; booking</div>
-          <div class="pricing-feat">Basic AV setup (PA system)</div>
-          <div class="pricing-feat">Event photography (3 hours)</div>
-          <div class="pricing-feat">Social media promotion (1 post)</div>
-          <div class="pricing-feat dim">Live streaming</div>
-          <div class="pricing-feat dim">PehchanTV channel feature</div>
-          <div class="pricing-feat dim">Dedicated event manager</div>
-        </div>
-        <a href="#enquiry" class="btn btn-outline">Get a Quote →</a>
+    <div class="pricing-card fade-up d1 swiper-slide">
+      <div class="pricing-tier">Starter</div>
+      <div class="pricing-name">Essential</div>
+      <div class="pricing-desc">Perfect for intimate community gatherings, iftars, and small cultural events up to 150 guests.</div>
+      <div class="pricing-price"><sub>from $</sub>2,500</div>
+      <div class="pricing-from">Starting price · Final quote varies</div>
+      <hr class="pricing-divider">
+      <div class="pricing-features">
+        <div class="pricing-feat">Event concept &amp; planning consultation</div>
+        <div class="pricing-feat">Venue sourcing &amp; booking</div>
+        <div class="pricing-feat">Basic AV setup (PA system)</div>
+        <div class="pricing-feat">Event photography (3 hours)</div>
+        <div class="pricing-feat">Social media promotion (1 post)</div>
+        <div class="pricing-feat dim">Live streaming</div>
+        <div class="pricing-feat dim">PehchanTV channel feature</div>
+        <div class="pricing-feat dim">Dedicated event manager</div>
       </div>
-
-      <div class="pricing-card featured fade-up d2">
-        <div class="pricing-popular">Most Popular</div>
-        <div class="pricing-tier">Professional</div>
-        <div class="pricing-name">Full Service</div>
-        <div class="pricing-desc">Our most popular package for galas, concerts, and community events of 150–600 guests.</div>
-        <div class="pricing-price"><sub>from $</sub>8,000</div>
-        <div class="pricing-from">Starting price · Final quote varies</div>
-        <hr class="pricing-divider">
-        <div class="pricing-features">
-          <div class="pricing-feat">Full event planning &amp; management</div>
-          <div class="pricing-feat">Venue sourcing, booking &amp; styling</div>
-          <div class="pricing-feat">Professional AV + LED screens</div>
-          <div class="pricing-feat">Photography &amp; videography</div>
-          <div class="pricing-feat">MC booking &amp; entertainment</div>
-          <div class="pricing-feat">Live streaming to YouTube</div>
-          <div class="pricing-feat">PehchanTV channel feature</div>
-          <div class="pricing-feat dim">Dedicated event manager</div>
-        </div>
-        <a href="#enquiry" class="btn btn-green">Get a Quote →</a>
-      </div>
-
-      <div class="pricing-card fade-up d3">
-        <div class="pricing-tier">Enterprise</div>
-        <div class="pricing-name">Grand Scale</div>
-        <div class="pricing-desc">Full white-glove production for large-scale festivals, galas, and corporate events of 600–2,000+ guests.</div>
-        <div class="pricing-price">Custom</div>
-        <div class="pricing-from">Bespoke pricing · All-inclusive</div>
-        <hr class="pricing-divider">
-        <div class="pricing-features">
-          <div class="pricing-feat">Everything in Full Service</div>
-          <div class="pricing-feat">Dedicated senior event manager</div>
-          <div class="pricing-feat">Multi-camera broadcast production</div>
-          <div class="pricing-feat">Full décor &amp; stage design</div>
-          <div class="pricing-feat">Catering coordination</div>
-          <div class="pricing-feat">Ticketing &amp; full marketing campaign</div>
-          <div class="pricing-feat">Sponsorship &amp; partnerships</div>
-          <div class="pricing-feat">Press &amp; media coverage</div>
-        </div>
-        <a href="#enquiry" class="btn btn-outline">Talk to Us →</a>
-      </div>
-
+      <a href="#enquiry" class="btn btn-outline">Get a Quote →</a>
     </div>
+
+    <div class="pricing-card featured fade-up d2 swiper-slide">
+      <div class="pricing-popular">Most Popular</div>
+      <div class="pricing-tier">Professional</div>
+      <div class="pricing-name">Full Service</div>
+      <div class="pricing-desc">Our most popular package for galas, concerts, and community events of 150–600 guests.</div>
+      <div class="pricing-price"><sub>from $</sub>8,000</div>
+      <div class="pricing-from">Starting price · Final quote varies</div>
+      <hr class="pricing-divider">
+      <div class="pricing-features">
+        <div class="pricing-feat">Full event planning &amp; management</div>
+        <div class="pricing-feat">Venue sourcing, booking &amp; styling</div>
+        <div class="pricing-feat">Professional AV + LED screens</div>
+        <div class="pricing-feat">Photography &amp; videography</div>
+        <div class="pricing-feat">MC booking &amp; entertainment</div>
+        <div class="pricing-feat">Live streaming to YouTube</div>
+        <div class="pricing-feat">PehchanTV channel feature</div>
+        <div class="pricing-feat dim">Dedicated event manager</div>
+      </div>
+      <a href="#enquiry" class="btn btn-green">Get a Quote →</a>
+    </div>
+
+    <div class="pricing-card fade-up d3 swiper-slide">
+      <div class="pricing-tier">Enterprise</div>
+      <div class="pricing-name">Grand Scale</div>
+      <div class="pricing-desc">Full white-glove production for large-scale festivals, galas, and corporate events of 600–2,000+ guests.</div>
+      <div class="pricing-price">Custom</div>
+      <div class="pricing-from">Bespoke pricing · All-inclusive</div>
+      <hr class="pricing-divider">
+      <div class="pricing-features">
+        <div class="pricing-feat">Everything in Full Service</div>
+        <div class="pricing-feat">Dedicated senior event manager</div>
+        <div class="pricing-feat">Multi-camera broadcast production</div>
+        <div class="pricing-feat">Full décor &amp; stage design</div>
+        <div class="pricing-feat">Catering coordination</div>
+        <div class="pricing-feat">Ticketing &amp; full marketing campaign</div>
+        <div class="pricing-feat">Sponsorship &amp; partnerships</div>
+        <div class="pricing-feat">Press &amp; media coverage</div>
+      </div>
+      <a href="#enquiry" class="btn btn-outline">Talk to Us →</a>
+    </div>
+
+  </div>
+
+  <!-- Pagination -->
+  <div class="swiper-pagination"></div>
+</div>
   </div>
 </section>
 
@@ -1485,19 +1817,19 @@ footer::before {
         <p class="fade-up d2">Fill in the form and our events team will get back to you within 24 hours with a personalised consultation and quote.</p>
         <div class="enquiry-details fade-up d3">
           <div class="eq-detail">
-            <div class="eq-icon">📍</div>
+            <div class="eq-icon"><i class="fa-solid fa-location-dot"></i></div>
             <div><div class="eq-label">Location</div><div class="eq-val">Sydney, NSW — serving all of Australia</div></div>
           </div>
           <div class="eq-detail">
-            <div class="eq-icon">📧</div>
-            <div><div class="eq-label">Email</div><div class="eq-val">events@pehchantv.com.au</div></div>
+            <div class="eq-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div><div class="eq-label">Email</div><div class="eq-val">info@pehchantv.com.au</div></div>
           </div>
           <div class="eq-detail">
-            <div class="eq-icon">📱</div>
-            <div><div class="eq-label">Phone / WhatsApp</div><div class="eq-val">+61 4XX XXX XXX</div></div>
+            <div class="eq-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+            <div><div class="eq-label">Phone / WhatsApp</div><div class="eq-val">+61 415 724 571</div></div>
           </div>
           <div class="eq-detail">
-            <div class="eq-icon">🕐</div>
+            <div class="eq-icon"><i class="fa-solid fa-clock"></i></div>
             <div><div class="eq-label">Response Time</div><div class="eq-val">Within 24 hours, Mon–Fri</div></div>
           </div>
         </div>
@@ -1578,90 +1910,167 @@ footer::before {
 
 <!-- ══════════ FOOTER ══════════ -->
 <footer>
+
+  <!-- CTA Band -->
   <div class="footer-cta-band">
     <div class="container">
       <div class="footer-cta-inner">
         <div>
-          <h3>Ready to Create Something<br><span>Unforgettable?</span></h3>
-          <p>Talk to our events team today — we respond within 24 hours.</p>
+          <h3>Ready to <span>Advertise</span> or<br>Book an <span>Event</span>?</h3>
+          <p>Join hundreds of businesses and community organisations who trust PehchanTV.</p>
         </div>
         <div class="footer-cta-btns">
-          <a href="#enquiry" class="btn btn-green">Book Your Event →</a>
-          <a href="media.html" class="btn btn-outline">Watch Our Work</a>
+          <a href="/#contact" class="btn btn-green">Get In Touch →</a>
+          <a href="https://youtube.com/@PehchanTVAU" target="_blank" class="btn btn-outline">Watch Channel</a>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Main Body -->
   <div class="footer-body">
     <div class="container">
       <div class="footer-top-row">
+
+        <!-- Brand -->
         <div class="f-brand-logo">
-          <img src="76409.jpg" alt="PehchanTV" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <a href="/">
+          <img src="/assets/images/pehchantv-logo.png" alt="PehchanTV"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            </a>
           <div class="f-logo-text" style="display:none">PEHCHAN<span>TV</span></div>
           <span class="f-tagline-urdu">اپنی پہچان کو گلے لگائیں</span>
           <p class="f-brand-desc">Australia's premier Pakistani & South Asian media platform — bridging cultures, building community, and celebrating identity since 2018.</p>
           <div class="f-socials">
-            <a href="https://youtube.com/@PehchanTV" target="_blank" class="f-social" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.63 12.63 0 00-8.45 0A4.83 4.83 0 014.41 6.69C3.09 8 3 12 3 12s.09 4 1.41 5.31a4.83 4.83 0 003.77 2.75 12.63 12.63 0 008.45 0 4.83 4.83 0 003.77-2.75C21.91 16 22 12 22 12s-.09-4-1.41-5.31zM10 15.5v-7l6 3.5-6 3.5z"/></svg></a>
-            <a href="#" class="f-social" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
-            <a href="#" class="f-social" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-            <a href="#" class="f-social" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></a>
-            <a href="#" class="f-social" title="Twitter/X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            <a href="#" class="f-social" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-1.77-.33V10a7.18 7.18 0 01-4.15-1.31v5.93A5.76 5.76 0 018 20.38a5.76 5.76 0 01-5.76-5.76 5.76 5.76 0 015.76-5.76c.22 0 .43.01.64.04v3.22a2.62 2.62 0 00-.64-.08 2.62 2.62 0 00-2.62 2.62 2.62 2.62 0 002.62 2.62 2.62 2.62 0 002.62-2.62V3h3.09a4.83 4.83 0 004.83 4.84v-.15z"/></svg></a>
+            <!-- YouTube -->
+            <a href="https://youtube.com/@PehchanTVAU" target="_blank" class="f-social" title="YouTube">
+              <svg viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="
+    M50,5
+    A45,45 0 1,1 49.9,5
+    M40,30
+    L70,50
+    L40,70
+    Z
+  "/>
+</svg>
+            <!-- Instagram -->
+            <a href="https://instagram.com/pehchantv" target="_blank" class="f-social" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <!-- Facebook -->
+            <a href="https://facebook.com/pehchantvau" target="_blank" class="f-social" title="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <!-- WhatsApp -->
+            <a href="https://wa.me/61415724571" target="_blank" class="f-social" title="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </a>
+            <!-- Twitter/X -->
+            <a href="https://twitter.com/pehchantvau" target="_blank" class="f-social" title="Twitter / X">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <!-- TikTok -->
+            <a href="https://linkedin.com/company/pehchan-tv" target="_blank" class="f-social" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 
+  0-2.13 1.44-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 
+  1.66-1.85 3.42-1.85 3.65 0 4.32 2.4 4.32 
+  5.52v6.22zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 
+  2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/>
+</svg>
+</a>
           </div>
         </div>
-        <div class="f-nav-col">
-          <h6>Events</h6>
-          <ul>
-            <li><a href="#upcoming">Upcoming Events</a></li>
-            <li><a href="#services">Our Services</a></li>
-            <li><a href="#packages">Pricing Packages</a></li>
-            <li><a href="#process">How It Works</a></li>
-            <li><a href="#enquiry">Book an Event</a></li>
-            <li><a href="#enquiry">Sponsorships</a></li>
-          </ul>
-        </div>
+
+        <!-- Nav: Media -->
         <div class="f-nav-col">
           <h6>Media</h6>
           <ul>
-            <li><a href="media.html">Watch Videos</a></li>
-            <li><a href="media.html">News & Analysis</a></li>
-            <li><a href="media.html">Event Highlights</a></li>
-            <li><a href="https://youtube.com/@PehchanTV" target="_blank">YouTube ↗</a></li>
+            <li><a href="/media#catTabBar">Latest Videos</a></li>
+            <li><a href="/media#block-community-news">News & Analysis</a></li>
+            <li><a href="/media#block-interviews">Special Talks & Interviews</a></li>
+            <li><a href="/media#block-entertainment">Entertainment & Television</a></li>
+            <li><a href="/media#block-event-highlights">Event Highlights</a></li>
+            <li><a href="https://youtube.com/@PehchanTVAU" target="_blank">YouTube Channel ↗</a></li>
           </ul>
         </div>
+
+        <!-- Nav: Events -->
+        <div class="f-nav-col">
+          <h6>Events</h6>
+          <ul>
+            <li><a href="/event-management#upcoming">Upcoming Events</a></li>
+            <li><a href="/event-management#gallery">Past Events Gallery</a></li>
+            <li><a href="/event-management#packages">Pricing Packages</a></li>
+            <li><a href="/event-management#enquiry">Book Our Services</a></li>
+            <li><a href="/#contact">Sponsorships</a></li>
+          </ul>
+        </div>
+
+        <!-- Nav: Company -->
         <div class="f-nav-col">
           <h6>Company</h6>
           <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="index.html#community">Community</a></li>
-            <li><a href="index.html#contact">Advertise</a></li>
-            <li><a href="index.html#contact">Careers</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="/about-us">About Us</a></li>
+            <li><a href="/#services">Our Services</a></li>
+            <li><a href="/community">Community</a></li>
+            <li><a href="/#contact">Advertise With Us</a></li>
+            <li><a href="/careers">Careers</a></li>
+            <li><a href="/#contact">Contact</a></li>
           </ul>
         </div>
-      </div>
-    </div>
 
+      </div><!-- /footer-top-row -->
+    </div><!-- /container -->
+
+    <!-- Contact Bar -->
     <div class="footer-contact-bar">
-      <div class="f-contact-item"><div class="f-ci-icon">📍</div><div><div class="f-ci-label">Location</div><div class="f-ci-val">Sydney, New South Wales, Australia</div></div></div>
-      <div class="f-contact-item"><div class="f-ci-icon">📧</div><div><div class="f-ci-label">Events Email</div><div class="f-ci-val">events@pehchantv.com.au</div></div></div>
-      <div class="f-contact-item"><div class="f-ci-icon">📱</div><div><div class="f-ci-label">Phone / WhatsApp</div><div class="f-ci-val">+61 4XX XXX XXX</div></div></div>
+      <div class="f-contact-item">
+        <div class="f-ci-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div>
+          <div class="f-ci-label">Location</div>
+          <div class="f-ci-val">Sydney, New South Wales, Australia</div>
+        </div>
+      </div>
+      <a href="mailto:info@pehchantv.com.au">
+      <div class="f-contact-item">
+        <div class="f-ci-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div>
+          <div class="f-ci-label">Email Us</div>
+          <div class="f-ci-val">info@pehchantv.com.au</div>
+        </div>
+      </div>
+      </a>
+      <a href="tel:+61415724571">
+      <div class="f-contact-item">
+        <div class="f-ci-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+        <div>
+          <div class="f-ci-label">Phone / WhatsApp</div>
+          <div class="f-ci-val">+61 415 724 571</div>
+        </div>
+      </div>
+      </a>
     </div>
 
+    <!-- Bottom Bar -->
     <div class="container">
       <div class="footer-bottom-bar">
-        <div class="fbb-copy">© 2025 <strong>PehchanTV</strong>. All rights reserved.</div>
+        <div class="fbb-copy">© <script>document.write(new Date().getFullYear())</script> <strong>Pehchan Media Network</strong>. All rights reserved.<br>ABN: 49 638 445 253</div>
         <div class="fbb-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Advertise</a>
-          <a href="#">Sitemap</a>
+          <a href="/policies/privacy-policy/">Privacy Policy</a>
+          <a href="/policies/terms-of-use/">Terms of Use</a>
+          <a href="/policies/advertise/">Advertise</a>
+          <a href="/sitemap/">Sitemap</a>
         </div>
+        <div>
         <div class="fbb-made">Made with <span>♥</span> for the diaspora</div>
+        <div class="fbb-dev">Developed by <a href="https://wa.me/918859033391" target="_blank"><strong>SSR Developers</strong></a></div>
+        </div>
       </div>
     </div>
-  </div>
+
+  </div><!-- /footer-body -->
 </footer>
 
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
@@ -1782,10 +2191,15 @@ footer::before {
   background: var(--card);
   display: flex; align-items: center; justify-content: center;
   font-size: 7rem; position: relative; overflow: hidden; flex-shrink: 0;
+  background-size: cover; background-position: center;
 }
 .ep-hero-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(9,31,53,.95) 0%, transparent 55%);
+}
+@media (max-width: 768px) {
+  .ep-hero { aspect-ratio: 1/1; }
+  .ep-hero-overlay { background: linear-gradient(to top, rgba(9,31,53,.95) 0%, transparent 75%); }
 }
 .ep-hero-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 36px; }
 .ep-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -1942,7 +2356,6 @@ footer::before {
 
       <!-- hero -->
       <div class="ep-hero" id="epHero">
-        <div id="epHeroEmoji" style="position:relative;z-index:1;">🇵🇰</div>
         <div class="ep-hero-overlay"></div>
         <div class="ep-hero-info">
           <div class="ep-hero-tags" id="epHeroTags"></div>
@@ -2054,16 +2467,16 @@ function openEventGallery(id) {
   currentEvent = ev;
   currentPhotoIdx = 0;
 
-  document.getElementById('epHero').style.background = ev.heroBg;
+  document.getElementById('epHero').style.backgroundImage = `url(${ev.thumbnail})`;
   document.getElementById('epHeroTitle').textContent = ev.title;
 
   document.getElementById('epHeroTags').innerHTML =
     ev.tags.map(t => `<span class="ep-tag${t.solid?'':' outline'}">${t.label}</span>`).join('');
 
   document.getElementById('epHeroDate').innerHTML = `
-    <span>📅 ${ev.date}</span>
-    <span>📍 ${ev.location}</span>
-    <span>👥 ${ev.guests}</span>
+    <span><i class="fa-solid fa-calendar-days"></i> ${ev.date}</span>
+    <span><i class="fa-solid fa-location-dot"></i> ${ev.location}</span>
+    <span><i class="fa-solid fa-users"></i> ${ev.guests}</span>
   `;
 
   document.getElementById('epDesc').textContent = ev.desc;
@@ -2161,6 +2574,352 @@ function setLang(lang) {
   langSwitch.classList.remove("active");
 }
 
+</script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+const pricingSwiper = new Swiper('.pricing-grid', {
+  slidesPerView: 1,
+  spaceBetween: 20,
+  loop: true,
+
+  pagination: {
+    el: '.pricing-grid .swiper-pagination',
+    clickable: true,
+  },
+
+  breakpoints: {
+    640: {
+      slidesPerView: 2,
+    },
+    1024: {
+      slidesPerView: 3,
+    }
+  }
+});
+
+/* ══════════════════════════════════════════════════════
+   DYNAMIC SLIDER ENGINE
+   Reads media-data.json and builds a slider per category
+══════════════════════════════════════════════════════ */
+
+/* Card scroll step: one card + gap */
+const CARD_W = () => {
+  if (window.innerWidth <= 480) return window.innerWidth * 0.82;
+  if (window.innerWidth <= 768) return 278;
+  if (window.innerWidth <= 1024) return 308;
+  return 338; // 320px card + 18px gap
+};
+
+/* Track per-slider state */
+const sliderState = {}; // id → { track, dots, items }
+
+/* ── Build category tab bar ── */
+function buildTabs(categories) {
+  const inner = document.getElementById('catTabInner');
+  inner.innerHTML = '';
+
+  // "All" tab
+  const allBtn = document.createElement('button');
+  allBtn.className = 'cat-tab active';
+  allBtn.dataset.target = 'all';
+  allBtn.innerHTML = `<span class="cat-tab-icon">🎬</span> All`;
+  allBtn.addEventListener('click', () => scrollToBlock('all', allBtn));
+  inner.appendChild(allBtn);
+
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-tab';
+    btn.dataset.target = cat.id;
+    btn.innerHTML = `<span class="cat-tab-icon">${cat.icon}</span> ${cat.label}`;
+    btn.addEventListener('click', () => scrollToBlock(cat.id, btn));
+    inner.appendChild(btn);
+  });
+}
+
+/* ── Tab click: scroll to target block ── */
+function scrollToBlock(id, clickedBtn) {
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  clickedBtn.classList.add('active');
+
+  if (id === 'all') {
+    const firstBlock = document.querySelector('.slider-block');
+    if (firstBlock) {
+      const offset = document.getElementById('catTabBar').offsetHeight + 70 + 16;
+      window.scrollTo({ top: firstBlock.offsetTop - offset, behavior: 'smooth' });
+    }
+  } else {
+    const block = document.getElementById(`block-${id}`);
+    if (block) {
+      const offset = document.getElementById('catTabBar').offsetHeight + 70 + 16;
+      window.scrollTo({ top: block.offsetTop - offset, behavior: 'smooth' });
+    }
+  }
+}
+
+/* ── Build a single slider block ── */
+const allowedSliderIds = ['event-highlights'];
+function buildSliderBlock(cat, index) {
+  const block = document.createElement('div');
+  block.className = 'slider-block';
+  if (!allowedSliderIds.includes(cat.id)) {
+    block.classList.add('hidden');
+  }
+  block.id = `block-${cat.id}`;
+
+  // Alternate background via nth-child handled by CSS
+  // But we can also set inline if needed
+
+  const isEven = index % 2 === 1;
+
+  block.innerHTML = `
+    <div class="container">
+      <div class="slider-header">
+        <div class="slider-header-left">
+          <div class="slider-cat-tag">${cat.icon} ${cat.label}</div>
+          <div class="slider-title">${cat.title}</div>
+          <div class="slider-desc">${cat.description}</div>
+        </div>
+        <div class="slider-nav-btns">
+          <button class="slider-nav-btn" id="prev-${cat.id}" title="Scroll left" aria-label="Previous">‹</button>
+          <button class="slider-nav-btn" id="next-${cat.id}" title="Scroll right" aria-label="Next">›</button>
+        </div>
+      </div>
+      <div class="slider-track-wrap">
+        <div class="slider-track" id="track-${cat.id}">
+          ${cat.items.length === 0
+            ? `<div class="slider-empty">No content available in this category yet.</div>`
+            : cat.items.map((item, i) => buildCardHTML(item, cat.id, i)).join('')
+          }
+        </div>
+      </div>
+      <div class="slider-dots" id="dots-${cat.id}">
+        ${cat.items.map((_, i) =>
+          `<button class="slider-dot${i===0?' active':''}" data-idx="${i}" data-cat="${cat.id}" aria-label="Go to item ${i+1}"></button>`
+        ).join('')}
+      </div>
+    </div>
+  `;
+
+  return block;
+}
+
+/* ── Build individual embed card HTML ── */
+
+function buildCardHTML(item, catId, idx) {
+
+  const isReel = item.type === 'reel';
+  const isPost = item.type === 'post';
+  const isVideo = item.type === 'video';
+  const isSquare = item.type === 'square';
+
+  // Label
+  let typeLabel = '';
+  if (isReel) typeLabel = '🎬 Reel';
+  else if (isPost) typeLabel = '🖼️ Post';
+  else if (isVideo) typeLabel = '▶️ Video';
+  else if (isSquare) typeLabel = '🎬 Reel';
+
+  // Height
+  let height = '480';
+  if (isReel) height = '560';
+  else if (isVideo) height = '360'; // landscape video
+
+  // Icon
+  let icon = '🖼️';
+  if (isReel) icon = '🎬';
+  else if (isVideo) icon = '▶️';
+  else if (isSquare) icon = '🎬';
+
+  return `
+    <div class="embed-card" id="card-${catId}-${idx}">
+      <div class="embed-frame-wrap ${item.type}">
+        <div class="embed-placeholder" id="ph-${catId}-${idx}">
+          <div class="ph-icon">${icon}</div>
+          <div class="ph-spinner"></div>
+          <span>Loading…</span>
+        </div>
+
+        <iframe
+          src="${item.url}"
+          width="320"
+          height="${height}"
+          style="border:none;overflow:hidden"
+          scrolling="no"
+          frameborder="0"
+          allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          loading="lazy"
+          onload="hidePlaceholder('${catId}','${idx}')"
+          onerror="showEmbedError('${catId}','${idx}')"
+        ></iframe>
+
+      </div>
+
+      <div class="embed-card-info">
+        <div class="embed-card-type">${typeLabel}</div>
+        <div class="embed-card-title">${item.title}</div>
+        <div class="embed-card-caption">${item.caption}</div>
+      </div>
+    </div>
+  `;
+}
+
+/* ── Hide loading placeholder when iframe loads ── */
+function hidePlaceholder(catId, idx) {
+  const ph = document.getElementById(`ph-${catId}-${idx}`);
+  if (ph) ph.style.display = 'none';
+}
+
+/* ── Show error when iframe fails ── */
+function showEmbedError(catId, idx) {
+  const ph = document.getElementById(`ph-${catId}-${idx}`);
+  if (ph) {
+    ph.innerHTML = `
+      <div class="ph-icon">⚠️</div>
+      <span style="font-size:.8rem;color:var(--muted);padding:0 16px;text-align:center;">
+        Could not load embed.<br>Check the URL in media-data.json.
+      </span>`;
+  }
+}
+
+/* ── Wire up slider navigation ── */
+function wireSlider(cat) {
+  const track = document.getElementById(`track-${cat.id}`);
+  const prevBtn = document.getElementById(`prev-${cat.id}`);
+  const nextBtn = document.getElementById(`next-${cat.id}`);
+  const dots = document.querySelectorAll(`#dots-${cat.id} .slider-dot`);
+
+  if (!track) return;
+
+  sliderState[cat.id] = { track, dots, total: cat.items.length, current: 0 };
+
+  /* button clicks */
+  prevBtn.addEventListener('click', () => slideBy(cat.id, -1));
+  nextBtn.addEventListener('click', () => slideBy(cat.id, +1));
+
+  /* dot clicks */
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => slideTo(cat.id, parseInt(dot.dataset.idx)));
+  });
+
+  /* update button state on scroll */
+  track.addEventListener('scroll', () => {
+    const idx = Math.round(track.scrollLeft / CARD_W());
+    updateDots(cat.id, idx);
+    prevBtn.disabled = track.scrollLeft <= 4;
+    nextBtn.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+  }, { passive: true });
+
+  /* initial button state */
+  prevBtn.disabled = true;
+
+  /* touch / swipe support */
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 50) slideBy(cat.id, dx > 0 ? 1 : -1);
+  }, { passive: true });
+}
+
+function slideBy(catId, dir) {
+  const state = sliderState[catId];
+  if (!state) return;
+  const newIdx = Math.max(0, Math.min(state.total - 1, state.current + dir));
+  slideTo(catId, newIdx);
+}
+
+function slideTo(catId, idx) {
+  const state = sliderState[catId];
+  if (!state) return;
+  state.current = idx;
+  state.track.scrollTo({ left: idx * CARD_W(), behavior: 'smooth' });
+  updateDots(catId, idx);
+  document.getElementById(`prev-${catId}`).disabled = idx === 0;
+  document.getElementById(`next-${catId}`).disabled = idx >= state.total - 1;
+}
+
+function updateDots(catId, idx) {
+  const state = sliderState[catId];
+  if (!state) return;
+  state.current = idx;
+  state.dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+}
+
+/* ── Highlight active tab on scroll ── */
+function updateActiveTabOnScroll() {
+  const blocks = document.querySelectorAll('.slider-block');
+  const scrollMid = window.scrollY + window.innerHeight / 2;
+  let activeId = null;
+  blocks.forEach(block => {
+    if (block.offsetTop <= scrollMid) activeId = block.id.replace('block-', '');
+  });
+  if (activeId) {
+    document.querySelectorAll('.cat-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.target === activeId);
+    });
+  }
+}
+window.addEventListener('scroll', updateActiveTabOnScroll, { passive: true });
+
+/* ── Main: fetch JSON and render everything ── */
+async function initMediaPage() {
+  const root = document.getElementById('slidersRoot');
+  const loading = document.getElementById('slidersLoading');
+
+  try {
+    /* Fetch the JSON data file */
+    const res = await fetch('/data/media-data.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const categories = await res.json();
+
+    if (!Array.isArray(categories) || categories.length === 0) {
+      throw new Error('No categories found in media-data.json');
+    }
+
+    /* Build tabs */
+    buildTabs(categories);
+
+    /* Remove loading indicator */
+    loading.remove();
+
+    /* Build slider blocks */
+    categories.forEach((cat, i) => {
+      const block = buildSliderBlock(cat, i);
+      root.appendChild(block);
+    });
+
+    /* Wire each slider */
+    categories.forEach(cat => wireSlider(cat));
+
+    /* Show FB CTA */
+    const cta = document.getElementById('fbCtaBand');
+    cta.style.display = '';
+    revealObs.observe(cta);
+
+    /* Trigger FB SDK re-parse for any fb-post embeds */
+    if (window.FB && window.FB.XFBML) {
+      window.FB.XFBML.parse(root);
+    }
+
+  } catch (err) {
+    loading.innerHTML = `
+      <div class="sliders-error">
+        <div style="font-size:2.5rem;margin-bottom:16px;">⚠️</div>
+        <p>Could not load media content.<br>
+           Make sure <code style="color:var(--green);background:var(--card);padding:2px 8px;border-radius:4px;">media-data.json</code>
+           is in the same folder as this page and contains valid JSON.</p>
+        <button class="btn btn-outline" onclick="initMediaPage()" style="margin-top:16px;font-size:.88rem;padding:10px 22px;">
+          Retry
+        </button>
+      </div>`;
+    console.error('[PehchanTV Media]', err);
+  }
+}
+
+/* Start on DOM ready */
+document.addEventListener('DOMContentLoaded', initMediaPage);
 </script>
 </body>
 </html>
