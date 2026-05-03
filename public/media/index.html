@@ -922,6 +922,49 @@ nav {
   border-radius: 8px;
 }
 
+/* load more card */
+.load-more-card {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 260px; cursor: pointer;
+  background: var(--navy2);
+  border: 1.5px dashed rgba(46,204,64,.35);
+  transition: all .25s;
+}
+.load-more-card:hover {
+  border-color: var(--green);
+  background: rgba(46,204,64,.05);
+  transform: translateY(-4px);
+  box-shadow: var(--glow);
+}
+.lm-inner {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  pointer-events: none;
+}
+.lm-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(46,204,64,.12);
+  border: 1.5px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: var(--green);
+  transition: all .25s;
+}
+.load-more-card:hover .lm-icon {
+  background: var(--green); color: var(--navy);
+}
+.lm-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: .06em; color: var(--white);
+}
+.lm-sub { color: var(--muted); font-size: .78rem; }
+ 
+/* ellipsis between dots */
+.slider-dot-ellipsis {
+  color: var(--muted); font-size: .8rem;
+  display: flex; align-items: center;
+  padding: 0 2px; pointer-events: none;
+}
+
 /* ══════════════════════════════════════════
    YOUTUBE SUBSCRIBE BAND — exact homepage style
 ══════════════════════════════════════════ */
@@ -1179,8 +1222,8 @@ footer {
     <li><a href="/about-us">About Us</a></li>
     <li><a href="/media" class="active">Media Channel</a></li>
     <li><a href="/event-management">Event Management</a></li>
-    <li><a href="/community">Community</a></li>
-    <li><a href="/#contact">Advertise</a></li>
+    <li><a href="/articles">Articles</a></li>
+    <li><a href="/about-us#sponsors">Our Sponsors</a></li>
     <div class="nav-icons">
       <div class="lang-switch">
       <button class="icon-btn" id="langBtn"><i class="fa-solid fa-globe"></i></button>
@@ -1207,8 +1250,8 @@ footer {
   <a href="/about-us" onclick="closeMobile()">About Us</a>
   <a href="/media" onclick="closeMobile()">Media</a>
   <a href="/event-management" onclick="closeMobile()">Event Management</a>
-  <a href="/community" onclick="closeMobile()">Community</a>
-  <a href="/#contact" onclick="closeMobile()">Advertise</a>
+  <a href="/articles" onclick="closeMobile()">Articles</a>
+  <a href="/about-us#sponsors" onclick="closeMobile()">Our Sponsors</a>
   <a href="/#contact" onclick="closeMobile()" style="color:var(--green)">Get In Touch →</a>
 </div>
 </header>
@@ -1932,8 +1975,9 @@ const CARD_W = () => {
   return 338; // 320px card + 18px gap
 };
 
-/* Track per-slider state */
-const sliderState = {}; // id → { track, dots, items }
+/* ── per-slider state ── */
+const sliderState = {};
+const CARDS_PER_PAGE = 6;
 
 /* ── Build category tab bar ── */
 function buildTabs(categories) {
@@ -1984,11 +2028,6 @@ function buildSliderBlock(cat, index) {
   block.className = 'slider-block';
   block.id = `block-${cat.id}`;
 
-  // Alternate background via nth-child handled by CSS
-  // But we can also set inline if needed
-
-  const isEven = index % 2 === 1;
-
   block.innerHTML = `
     <div class="container">
       <div class="slider-header">
@@ -1998,23 +2037,16 @@ function buildSliderBlock(cat, index) {
           <div class="slider-desc">${cat.description}</div>
         </div>
         <div class="slider-nav-btns">
-          <button class="slider-nav-btn" id="prev-${cat.id}" title="Scroll left" aria-label="Previous">‹</button>
-          <button class="slider-nav-btn" id="next-${cat.id}" title="Scroll right" aria-label="Next">›</button>
+          <button class="slider-nav-btn" id="prev-${cat.id}" aria-label="Previous">‹</button>
+          <button class="slider-nav-btn" id="next-${cat.id}" aria-label="Next">›</button>
         </div>
       </div>
+
       <div class="slider-track-wrap">
-        <div class="slider-track" id="track-${cat.id}">
-          ${cat.items.length === 0
-            ? `<div class="slider-empty">No content available in this category yet.</div>`
-            : cat.items.map((item, i) => buildCardHTML(item, cat.id, i)).join('')
-          }
-        </div>
+        <div class="slider-track" id="track-${cat.id}"></div>
       </div>
-      <div class="slider-dots" id="dots-${cat.id}">
-        ${cat.items.map((_, i) =>
-          `<button class="slider-dot${i===0?' active':''}" data-idx="${i}" data-cat="${cat.id}" aria-label="Go to item ${i+1}"></button>`
-        ).join('')}
-      </div>
+
+      <div class="slider-dots" id="dots-${cat.id}"></div>
     </div>
   `;
 
@@ -2022,64 +2054,68 @@ function buildSliderBlock(cat, index) {
 }
 
 /* ── Build individual embed card HTML ── */
+const typeLabels = {
+  reel:   '🎬 Reel',
+  post:   '🖼️ Post',
+  square: '🎬 Reel',
+  video:  '🎥 Video'
+};
 
-function buildCardHTML(item, catId, idx) {
+function buildEmbedCard(item, catId, cardIdx) {
+  const card = document.createElement('div');
+  card.className = 'embed-card';
+  card.id = `card-${catId}-${cardIdx}`;
+  card.dataset.loaded = 'false';
 
-  const isReel = item.type === 'reel';
-  const isPost = item.type === 'post';
-  const isVideo = item.type === 'video';
-  const isSquare = item.type === 'square';
-
-  // Label
-  let typeLabel = '';
-  if (isReel) typeLabel = '🎬 Reel';
-  else if (isPost) typeLabel = '🖼️ Post';
-  else if (isVideo) typeLabel = '▶️ Video';
-  else if (isSquare) typeLabel = '🎬 Reel';
-
-  // Height
-  let height = '480';
-  if (isReel) height = '560';
-  else if (isVideo) height = '360'; // landscape video
-
-  // Icon
-  let icon = '🖼️';
-  if (isReel) icon = '🎬';
-  else if (isVideo) icon = '▶️';
-  else if (isSquare) icon = '🎬';
-
-  return `
-    <div class="embed-card" id="card-${catId}-${idx}">
-      <div class="embed-frame-wrap ${item.type}">
-        <div class="embed-placeholder" id="ph-${catId}-${idx}">
-          <div class="ph-icon">${icon}</div>
-          <div class="ph-spinner"></div>
-          <span>Loading…</span>
-        </div>
-
-        <iframe
-          src="${item.url}"
-          width="320"
-          height="${height}"
-          style="border:none;overflow:hidden"
-          scrolling="no"
-          frameborder="0"
-          allowfullscreen="true"
-          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          loading="lazy"
-          onload="hidePlaceholder('${catId}','${idx}')"
-          onerror="showEmbedError('${catId}','${idx}')"
-        ></iframe>
-
-      </div>
-
-      <div class="embed-card-info">
-        <div class="embed-card-type">${typeLabel}</div>
-        <div class="embed-card-title">${item.title}</div>
-        <div class="embed-card-caption">${item.caption}</div>
+  card.innerHTML = `
+    <div class="embed-frame-wrap ${item.type}" id="fw-${catId}-${cardIdx}">
+      <div class="embed-placeholder" id="ph-${catId}-${cardIdx}">
+        <div class="ph-icon">${typeLabels[item.type] || '🖼️'}</div>
+        <div class="ph-spinner"></div>
       </div>
     </div>
+    <div class="embed-card-info">
+      <div class="embed-card-type">${typeLabels[item.type] || '🖼️ Post'}</div>
+      <div class="embed-card-title">${item.title || ''}</div>
+      <div class="embed-card-caption">${item.caption || ''}</div>
+    </div>
   `;
+
+  /* inject iframe only when card enters viewport */
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting || card.dataset.loaded === 'true') return;
+
+      card.dataset.loaded = 'true';
+
+      const fw = document.getElementById(`fw-${catId}-${cardIdx}`);
+      const ph = document.getElementById(`ph-${catId}-${cardIdx}`);
+
+      const iframe = document.createElement('iframe');
+      iframe.src       = item.url;
+      iframe.width     = '320';
+      iframe.height    = item.type === 'reel' ? '560' : '480';
+      iframe.style.cssText = 'border:none;overflow:hidden;position:absolute;inset:0;width:100%;height:100%;display:block;';
+      iframe.scrolling = 'no';
+      iframe.frameBorder = '0';
+      iframe.allowFullscreen = true;
+      iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
+      iframe.onload  = () => { if (ph) ph.style.display = 'none'; };
+      iframe.onerror = () => {
+        if (ph) ph.innerHTML = `
+          <div class="ph-icon">⚠️</div>
+          <span style="font-size:.75rem;color:var(--muted);padding:0 12px;text-align:center;">
+            Could not load embed
+          </span>`;
+      };
+
+      if (fw) fw.appendChild(iframe);
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.15 });
+
+  observer.observe(card);
+  return card;
 }
 
 /* ── Hide loading placeholder when iframe loads ── */
@@ -2100,68 +2136,223 @@ function showEmbedError(catId, idx) {
   }
 }
 
+function buildLoadMoreCard(catId) {
+  const card = document.createElement('div');
+  card.className = 'embed-card load-more-card';
+  card.id = `loadmore-${catId}`;
+
+  card.innerHTML = `
+    <div class="lm-inner">
+      <div class="lm-icon">▶</div>
+      <div class="lm-text">Load More</div>
+    </div>
+  `;
+
+  card.addEventListener('click', () => loadMore(catId));
+  return card;
+}
+
+/* ════════════════════════════════════════════
+   LOAD MORE — inject next 6 cards before
+   the load more card, update dots
+════════════════════════════════════════════ */
+function loadMore(catId) {
+  const state = sliderState[catId];
+  if (!state) return;
+
+  const { track, allItems } = state;
+  const nextStart = state.loadedCount;
+  const nextEnd   = Math.min(nextStart + CARDS_PER_PAGE, allItems.length);
+
+  if (nextStart >= allItems.length) return;
+
+  /* find load more card to insert before it */
+  const lmCard = document.getElementById(`loadmore-${catId}`);
+
+  for (let i = nextStart; i < nextEnd; i++) {
+    const card = buildEmbedCard(allItems[i], catId, i);
+    track.insertBefore(card, lmCard);
+  }
+
+  state.loadedCount = nextEnd;
+  state.totalCards  = track.querySelectorAll('.embed-card:not(.load-more-card)').length;
+
+  /* hide load more card if no more items */
+  if (state.loadedCount >= allItems.length) {
+    lmCard.style.display = 'none';
+  }
+
+  /* rebuild smart dots */
+  buildSmartDots(catId);
+
+  /* scroll to first new card */
+  const newCard = document.getElementById(`card-${catId}-${nextStart}`);
+  if (newCard) {
+    track.scrollTo({
+      left: newCard.offsetLeft - track.offsetLeft,
+      behavior: 'smooth'
+    });
+  }
+}
+
+/* ════════════════════════════════════════════
+   SMART DOTS — max 5 visible
+   pattern: 1 • 2 • 3 • ... • last
+════════════════════════════════════════════ */
+function buildSmartDots(catId) {
+  const state   = sliderState[catId];
+  const dotsEl  = document.getElementById(`dots-${catId}`);
+  if (!state || !dotsEl) return;
+
+  /* total slides = loaded cards + load more card (if visible) */
+  const lmCard    = document.getElementById(`loadmore-${catId}`);
+  const hasMore   = lmCard && lmCard.style.display !== 'none';
+  const totalDots = state.totalCards + (hasMore ? 1 : 0);
+  const cur       = state.currentDot || 0;
+
+  dotsEl.innerHTML = '';
+
+  if (totalDots <= 1) return;
+
+  /* which dot indices to render */
+  const MAX_VISIBLE = 5;
+  let indices = [];
+
+  if (totalDots <= MAX_VISIBLE) {
+    /* show all */
+    indices = Array.from({ length: totalDots }, (_, i) => i);
+  } else {
+    /* always show first, last, current, and neighbors */
+    const set = new Set([0, totalDots - 1, cur]);
+    if (cur > 0) set.add(cur - 1);
+    if (cur < totalDots - 1) set.add(cur + 1);
+
+    /* fill up to MAX_VISIBLE */
+    let idx = 1;
+    while (set.size < MAX_VISIBLE && idx < totalDots - 1) {
+      set.add(idx++);
+    }
+
+    indices = Array.from(set).sort((a, b) => a - b);
+  }
+
+  /* render dots with ellipsis gaps */
+  indices.forEach((dotIdx, pos) => {
+    /* ellipsis before this dot? */
+    if (pos > 0 && dotIdx - indices[pos - 1] > 1) {
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'slider-dot-ellipsis';
+      ellipsis.textContent = '…';
+      dotsEl.appendChild(ellipsis);
+    }
+
+    const dot = document.createElement('button');
+    dot.className = 'slider-dot' + (dotIdx === cur ? ' active' : '');
+    dot.setAttribute('aria-label', `Go to slide ${dotIdx + 1}`);
+    dot.addEventListener('click', () => scrollToDotIdx(catId, dotIdx));
+    dotsEl.appendChild(dot);
+  });
+}
+
+/* scroll track to a given dot index */
+function scrollToDotIdx(catId, dotIdx) {
+  const state = sliderState[catId];
+  if (!state) return;
+
+  const cards = state.track.querySelectorAll('.embed-card');
+  const target = cards[dotIdx];
+  if (!target) return;
+
+  state.currentDot = dotIdx;
+  state.track.scrollTo({
+    left: target.offsetLeft - state.track.offsetLeft,
+    behavior: 'smooth'
+  });
+  buildSmartDots(catId);
+  updateNavBtns(catId);
+}
+
 /* ── Wire up slider navigation ── */
 function wireSlider(cat) {
-  const track = document.getElementById(`track-${cat.id}`);
+  const track   = document.getElementById(`track-${cat.id}`);
   const prevBtn = document.getElementById(`prev-${cat.id}`);
   const nextBtn = document.getElementById(`next-${cat.id}`);
-  const dots = document.querySelectorAll(`#dots-${cat.id} .slider-dot`);
-
   if (!track) return;
 
-  sliderState[cat.id] = { track, dots, total: cat.items.length, current: 0 };
+  /* init state */
+  sliderState[cat.id] = {
+    track,
+    allItems:    cat.items || [],
+    loadedCount: 0,
+    totalCards:  0,
+    currentDot:  0
+  };
 
-  /* button clicks */
-  prevBtn.addEventListener('click', () => slideBy(cat.id, -1));
-  nextBtn.addEventListener('click', () => slideBy(cat.id, +1));
+  const state = sliderState[cat.id];
 
-  /* dot clicks */
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => slideTo(cat.id, parseInt(dot.dataset.idx)));
-  });
+  /* load first batch */
+  const firstBatch = state.allItems.slice(0, CARDS_PER_PAGE);
+  firstBatch.forEach((item, i) => track.appendChild(buildEmbedCard(item, cat.id, i)));
+  state.loadedCount = firstBatch.length;
+  state.totalCards  = firstBatch.length;
 
-  /* update button state on scroll */
-  track.addEventListener('scroll', () => {
-    const idx = Math.round(track.scrollLeft / CARD_W());
-    updateDots(cat.id, idx);
-    prevBtn.disabled = track.scrollLeft <= 4;
-    nextBtn.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-  }, { passive: true });
+  /* load more card — only if more items exist */
+  if (state.allItems.length > CARDS_PER_PAGE) {
+    track.appendChild(buildLoadMoreCard(cat.id));
+  }
 
-  /* initial button state */
+  /* initial dots */
+  buildSmartDots(cat.id);
+
+  /* prev / next buttons */
+  prevBtn.addEventListener('click', () => slideByOne(cat.id, -1));
+  nextBtn.addEventListener('click', () => slideByOne(cat.id, +1));
   prevBtn.disabled = true;
 
-  /* touch / swipe support */
+  /* update dot + buttons on scroll */
+  track.addEventListener('scroll', () => {
+    const cardWidth = getCardWidth();
+    const idx = Math.round(track.scrollLeft / cardWidth);
+
+    if (idx !== state.currentDot) {
+      state.currentDot = idx;
+      buildSmartDots(cat.id);
+      updateNavBtns(cat.id);
+    }
+  }, { passive: true });
+
+  /* touch swipe */
   let touchStartX = 0;
   track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend',   e => {
+  track.addEventListener('touchend', e => {
     const dx = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(dx) > 50) slideBy(cat.id, dx > 0 ? 1 : -1);
+    if (Math.abs(dx) > 50) slideByOne(cat.id, dx > 0 ? 1 : -1);
   }, { passive: true });
 }
 
-function slideBy(catId, dir) {
+function slideByOne(catId, dir) {
   const state = sliderState[catId];
   if (!state) return;
-  const newIdx = Math.max(0, Math.min(state.total - 1, state.current + dir));
-  slideTo(catId, newIdx);
+  const cards = state.track.querySelectorAll('.embed-card');
+  const newIdx = Math.max(0, Math.min(cards.length - 1, state.currentDot + dir));
+  scrollToDotIdx(catId, newIdx);
 }
 
-function slideTo(catId, idx) {
-  const state = sliderState[catId];
-  if (!state) return;
-  state.current = idx;
-  state.track.scrollTo({ left: idx * CARD_W(), behavior: 'smooth' });
-  updateDots(catId, idx);
-  document.getElementById(`prev-${catId}`).disabled = idx === 0;
-  document.getElementById(`next-${catId}`).disabled = idx >= state.total - 1;
+function updateNavBtns(catId) {
+  const state   = sliderState[catId];
+  const prevBtn = document.getElementById(`prev-${catId}`);
+  const nextBtn = document.getElementById(`next-${catId}`);
+  if (!state || !prevBtn || !nextBtn) return;
+  prevBtn.disabled = state.track.scrollLeft <= 4;
+  nextBtn.disabled = state.track.scrollLeft + state.track.clientWidth >= state.track.scrollWidth - 4;
 }
 
-function updateDots(catId, idx) {
-  const state = sliderState[catId];
-  if (!state) return;
-  state.current = idx;
-  state.dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+function getCardWidth() {
+  const w = window.innerWidth;
+  if (w <= 480)  return w * 0.82 + 18;
+  if (w <= 768)  return 278;
+  if (w <= 1024) return 308;
+  return 338;
 }
 
 /* ── Highlight active tab on scroll ── */

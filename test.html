@@ -11,3 +11,153 @@
   <button class="btn btn-outline" id="loadMoreBtn">Load More</button>
 </div>
 </section>
+
+<div class="event-card">
+      
+      <div class="event-date">
+        <div class="event-date-day">14</div>
+        <div class="event-date-mon">August</div>
+      </div>
+      <div class="event-body">
+        <h4>Pakistan rgfgffgfgfIndependence Day Gala 2024</h4>
+        <p>PehchanTV Events presented Sydney's most spectacular Pakistan Independence Day celebration.</p>
+        <div class="event-tags">
+        </div>
+      </div>
+    </div>
+
+
+    <!--
+  ══════════════════════════════════════════════
+  FEATURED CATEGORY CARDS SNIPPET
+  ══════════════════════════════════════════════
+  1. HTML div jahan inject karna hai
+  2. JS function — fetch ke baad call karo:
+       window.mediaData = categories;
+       buildFeaturedSection();
+  ══════════════════════════════════════════════
+-->
+
+
+<!-- ── 1. HTML — jahan chahiye wahan rakho ── -->
+<div id="featuredCardsRoot"></div>
+
+
+<!-- ── 2. JS — apne existing JS mein add karo ── -->
+<script>
+function buildFeaturedSection() {
+  const root = document.getElementById('featuredCardsRoot');
+  if (!root || !window.mediaData) return;
+
+  window.mediaData.forEach(cat => {
+    /* sirf pehle 3 items */
+    const items = (cat.items || []).slice(0, 3);
+    if (!items.length) return;
+
+    /* category wrapper */
+    const wrap = document.createElement('div');
+    wrap.className = 'slider-block';               /* original class */
+    wrap.id = `featured-${cat.id}`;
+
+    /* header — same as slider header */
+    wrap.innerHTML = `
+      <div class="container">
+        <div class="slider-header">
+          <div class="slider-header-left">
+            <div class="slider-cat-tag">${cat.icon} ${cat.label}</div>
+            <div class="slider-title">${cat.title}</div>
+            <div class="slider-desc">${cat.description}</div>
+          </div>
+        </div>
+        <div class="featured-cards-col" id="fcol-${cat.id}"></div>
+      </div>
+    `;
+
+    root.appendChild(wrap);
+
+    /* build 3 cards vertically */
+    const col = wrap.querySelector(`#fcol-${cat.id}`);
+    items.forEach((item, i) => {
+      const card = buildFeaturedCard(item, cat, i);
+      col.appendChild(card);
+    });
+  });
+}
+
+/* ── build one card — same embed-card classes ── */
+function buildFeaturedCard(item, cat, idx) {
+  const typeLabels = {
+    reel:   '🎬 Reel',
+    post:   '🖼️ Post',
+    square: '⬛ Square',
+    video:  '🎥 Video'
+  };
+
+  const card = document.createElement('div');
+  card.className = 'embed-card';                   /* original class */
+  card.id = `fc-${cat.id}-${idx}`;
+
+  card.innerHTML = `
+    <div class="embed-frame-wrap ${item.type}" id="ffw-${cat.id}-${idx}">
+      <div class="embed-placeholder" id="fph-${cat.id}-${idx}">
+        <div class="ph-icon">${typeLabels[item.type] || '🖼️'}</div>
+        <div class="ph-spinner"></div>
+      </div>
+    </div>
+    <div class="embed-card-info">
+      <div class="embed-card-type">${typeLabels[item.type] || '🖼️ Post'}</div>
+      <div class="embed-card-title">${item.title || ''}</div>
+      <div class="embed-card-caption">${item.caption || ''}</div>
+    </div>
+  `;
+
+  /* IntersectionObserver — iframe sirf tab inject ho jab card viewport mein aaye */
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      const frameWrap = document.getElementById(`ffw-${cat.id}-${idx}`);
+      const ph        = document.getElementById(`fph-${cat.id}-${idx}`);
+
+      const iframe = document.createElement('iframe');
+      iframe.src         = item.url;
+      iframe.width       = '320';
+      iframe.height      = item.type === 'reel' ? '560' : '480';
+      iframe.style.cssText = 'border:none;overflow:hidden;position:absolute;inset:0;width:100%;height:100%;display:block;';
+      iframe.scrolling   = 'no';
+      iframe.frameBorder = '0';
+      iframe.allowFullscreen = true;
+      iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
+      iframe.onload  = () => { if (ph) ph.style.display = 'none'; };
+      iframe.onerror = () => { if (ph) ph.innerHTML = '<div class="ph-icon">⚠️</div>'; };
+
+      frameWrap.appendChild(iframe);
+      obs.unobserve(entry.target);  /* ek baar inject — dobara fire nahi hoga */
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(card);
+  return card;
+}
+</script>
+
+
+<!-- ── 3. CSS — vertical cards layout ── -->
+<style>
+.featured-cards-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* card full width jab vertical ho */
+.featured-cards-col .embed-card {
+  width: 100%;
+}
+
+/* frame wrap overrides for vertical layout */
+.featured-cards-col .embed-frame-wrap.reel   { aspect-ratio: 9/16; max-height: 500px; }
+.featured-cards-col .embed-frame-wrap.post   { aspect-ratio: 4/3; }
+.featured-cards-col .embed-frame-wrap.square { aspect-ratio: 1/1; }
+.featured-cards-col .embed-frame-wrap.video  { aspect-ratio: 16/9; }
+</style>
