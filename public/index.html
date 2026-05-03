@@ -2123,7 +2123,7 @@
     <textarea name="message" placeholder="Tell us about your project or enquiry…" required></textarea>
   </div>
   <div class="g-recaptcha" data-sitekey="6LdWwtcsAAAAABT5dFhQjkxLoZ4uxt8BMyU4lH17"></div>
-  <button type="submit" class="btn btn-green fade-up" style="width:100%;justify-content:center;padding:15px;">
+  <button type="submit" id="sbtn" class="btn btn-green fade-up" style="width:100%;justify-content:center;padding:15px;">
     Send Message →
   </button>
 
@@ -3666,7 +3666,16 @@ function googleTranslateElementInit() {
     try {
       await addDoc(collection(db, "contacts"), data);
 
-      handleSubmit(event);
+    const btn = document.getElementById("sbtn");
+    btn.textContent = '✓ Message Sent! We\'ll be in touch soon.';
+    btn.style.background = 'var(--green2)';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.disabled = false;
+      btn.style.background = '';
+      e.target.reset();
+    }, 4000);
       form.reset();
     } catch (err) {
       console.error(err);
