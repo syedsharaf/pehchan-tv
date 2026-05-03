@@ -2086,7 +2086,7 @@
         </div>
       </div>
       <div>
-        <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+        <form class="contact-form" id="contactForm">
 
   <div class="form-row">
     <div class="form-group fade-up">
@@ -3645,34 +3645,64 @@ function googleTranslateElementInit() {
   const form = document.getElementById("contactForm");
 
   form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const originalText = btn.textContent;
+
+  // 🔐 CAPTCHA check (agar laga hai)
+  if (typeof grecaptcha !== "undefined") {
     const captcha = grecaptcha.getResponse();
     if (!captcha) {
-    alert("Please verify captcha ⚠️");
-    return;
-}
-
-    const formData = new FormData(form);
-
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      enquiry: formData.get("enquiry"),
-      message: formData.get("message"),
-      createdAt: new Date()
-    };
-
-    try {
-      await addDoc(collection(db, "contacts"), data);
-
-      alert("Message sent ✅");
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      alert("Error ❌");
+      showMessage(form, "⚠️ Please verify captcha", "error");
+      return;
     }
-  });
+  }
+
+  // ⏳ LOADING STATE
+  btn.textContent = "Sending...";
+  btn.disabled = true;
+
+  const formData = new FormData(form);
+
+  const data = {
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    enquiry: formData.get("enquiry"),
+    message: formData.get("message"),
+    createdAt: new Date()
+  };
+
+  try {
+    // 🔥 REAL FIREBASE CALL
+    await addDoc(collection(db, "contacts"), data);
+
+    // ✅ SUCCESS
+    btn.textContent = "✓ Message Sent!";
+    showMessage(form, "We'll be in touch soon!", "success");
+
+    form.reset();
+
+    if (typeof grecaptcha !== "undefined") {
+      grecaptcha.reset();
+    }
+
+  } catch (err) {
+    console.error(err);
+
+    // ❌ ERROR
+    btn.textContent = "Try Again";
+    showMessage(form, "❌ Something went wrong. Please try again.", "error");
+  }
+
+  // 🔁 Button reset (common for both cases)
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }, 3000);
+});
 </script>
 </body>
 </html>
