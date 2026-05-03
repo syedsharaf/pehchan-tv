@@ -28,7 +28,6 @@
 
   // Form submit
   function handleSubmit(e) {
-    e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
     btn.textContent = '✓ Message Sent! We\'ll be in touch soon.';
     btn.style.background = 'var(--green2)';
