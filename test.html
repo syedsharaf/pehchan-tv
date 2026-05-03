@@ -27,79 +27,77 @@
     </div>
 
 
-    <!--
-  ══════════════════════════════════════════════
-  FEATURED CATEGORY CARDS SNIPPET
-  ══════════════════════════════════════════════
-  1. HTML div jahan inject karna hai
-  2. JS function — fetch ke baad call karo:
-       window.mediaData = categories;
-       buildFeaturedSection();
-  ══════════════════════════════════════════════
+<!--
+  ══════════════════════════════════════════════════════
+  SLIDER REBUILD SNIPPET
+  — IntersectionObserver per card (no eager iframe load)
+  — Load More as last slide inside slider
+  — Smart dots (max 5 visible, no 100 dot madness 😂)
+  ══════════════════════════════════════════════════════
+  Replace your existing buildSliderBlock(), buildCardHTML(),
+  wireSlider() with these. Everything else stays same.
+  ══════════════════════════════════════════════════════
 -->
 
-
-<!-- ── 1. HTML — jahan chahiye wahan rakho ── -->
-<div id="featuredCardsRoot"></div>
-
-
-<!-- ── 2. JS — apne existing JS mein add karo ── -->
 <script>
-function buildFeaturedSection() {
-  const root = document.getElementById('featuredCardsRoot');
-  if (!root || !window.mediaData) return;
+/* ── per-slider state ── */
+const sliderState = {};
+const CARDS_PER_PAGE = 6;
 
-  window.mediaData.forEach(cat => {
-    /* sirf pehle 3 items */
-    const items = (cat.items || []).slice(0, 3);
-    if (!items.length) return;
+/* ════════════════════════════════════════════
+   BUILD SLIDER BLOCK
+   (replaces your existing buildSliderBlock)
+════════════════════════════════════════════ */
+function buildSliderBlock(cat, index) {
+  const block = document.createElement('div');
+  block.className = 'slider-block';
+  block.id = `block-${cat.id}`;
 
-    /* category wrapper */
-    const wrap = document.createElement('div');
-    wrap.className = 'slider-block';               /* original class */
-    wrap.id = `featured-${cat.id}`;
-
-    /* header — same as slider header */
-    wrap.innerHTML = `
-      <div class="container">
-        <div class="slider-header">
-          <div class="slider-header-left">
-            <div class="slider-cat-tag">${cat.icon} ${cat.label}</div>
-            <div class="slider-title">${cat.title}</div>
-            <div class="slider-desc">${cat.description}</div>
-          </div>
+  block.innerHTML = `
+    <div class="container">
+      <div class="slider-header">
+        <div class="slider-header-left">
+          <div class="slider-cat-tag">${cat.icon} ${cat.label}</div>
+          <div class="slider-title">${cat.title}</div>
+          <div class="slider-desc">${cat.description}</div>
         </div>
-        <div class="featured-cards-col" id="fcol-${cat.id}"></div>
+        <div class="slider-nav-btns">
+          <button class="slider-nav-btn" id="prev-${cat.id}" aria-label="Previous">‹</button>
+          <button class="slider-nav-btn" id="next-${cat.id}" aria-label="Next">›</button>
+        </div>
       </div>
-    `;
 
-    root.appendChild(wrap);
+      <div class="slider-track-wrap">
+        <div class="slider-track" id="track-${cat.id}"></div>
+      </div>
 
-    /* build 3 cards vertically */
-    const col = wrap.querySelector(`#fcol-${cat.id}`);
-    items.forEach((item, i) => {
-      const card = buildFeaturedCard(item, cat, i);
-      col.appendChild(card);
-    });
-  });
+      <div class="slider-dots" id="dots-${cat.id}"></div>
+    </div>
+  `;
+
+  return block;
 }
 
-/* ── build one card — same embed-card classes ── */
-function buildFeaturedCard(item, cat, idx) {
-  const typeLabels = {
-    reel:   '🎬 Reel',
-    post:   '🖼️ Post',
-    square: '⬛ Square',
-    video:  '🎥 Video'
-  };
+/* ════════════════════════════════════════════
+   BUILD ONE EMBED CARD
+   — placeholder only, iframe via IntersectionObserver
+════════════════════════════════════════════ */
+const typeLabels = {
+  reel:   '🎬 Reel',
+  post:   '🖼️ Post',
+  square: '🎬 Reel',
+  video:  '🎥 Video'
+};
 
+function buildEmbedCard(item, catId, cardIdx) {
   const card = document.createElement('div');
-  card.className = 'embed-card';                   /* original class */
-  card.id = `fc-${cat.id}-${idx}`;
+  card.className = 'embed-card';
+  card.id = `card-${catId}-${cardIdx}`;
+  card.dataset.loaded = 'false';
 
   card.innerHTML = `
-    <div class="embed-frame-wrap ${item.type}" id="ffw-${cat.id}-${idx}">
-      <div class="embed-placeholder" id="fph-${cat.id}-${idx}">
+    <div class="embed-frame-wrap ${item.type}" id="fw-${catId}-${cardIdx}">
+      <div class="embed-placeholder" id="ph-${catId}-${cardIdx}">
         <div class="ph-icon">${typeLabels[item.type] || '🖼️'}</div>
         <div class="ph-spinner"></div>
       </div>
@@ -111,53 +109,315 @@ function buildFeaturedCard(item, cat, idx) {
     </div>
   `;
 
-  /* IntersectionObserver — iframe sirf tab inject ho jab card viewport mein aaye */
+  /* inject iframe only when card enters viewport */
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+      if (!entry.isIntersecting || card.dataset.loaded === 'true') return;
 
-      const frameWrap = document.getElementById(`ffw-${cat.id}-${idx}`);
-      const ph        = document.getElementById(`fph-${cat.id}-${idx}`);
+      card.dataset.loaded = 'true';
+
+      const fw = document.getElementById(`fw-${catId}-${cardIdx}`);
+      const ph = document.getElementById(`ph-${catId}-${cardIdx}`);
 
       const iframe = document.createElement('iframe');
-      iframe.src         = item.url;
-      iframe.width       = '320';
-      iframe.height      = item.type === 'reel' ? '560' : '480';
+      iframe.src       = item.url;
+      iframe.width     = '320';
+      iframe.height    = item.type === 'reel' ? '560' : '480';
       iframe.style.cssText = 'border:none;overflow:hidden;position:absolute;inset:0;width:100%;height:100%;display:block;';
-      iframe.scrolling   = 'no';
+      iframe.scrolling = 'no';
       iframe.frameBorder = '0';
       iframe.allowFullscreen = true;
       iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
       iframe.onload  = () => { if (ph) ph.style.display = 'none'; };
-      iframe.onerror = () => { if (ph) ph.innerHTML = '<div class="ph-icon">⚠️</div>'; };
+      iframe.onerror = () => {
+        if (ph) ph.innerHTML = `
+          <div class="ph-icon">⚠️</div>
+          <span style="font-size:.75rem;color:var(--muted);padding:0 12px;text-align:center;">
+            Could not load embed
+          </span>`;
+      };
 
-      frameWrap.appendChild(iframe);
-      obs.unobserve(entry.target);  /* ek baar inject — dobara fire nahi hoga */
+      if (fw) fw.appendChild(iframe);
+      obs.unobserve(entry.target);
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.15 });
 
   observer.observe(card);
   return card;
 }
+
+/* ════════════════════════════════════════════
+   BUILD LOAD MORE CARD
+   — last slide inside slider
+════════════════════════════════════════════ */
+function buildLoadMoreCard(catId) {
+  const card = document.createElement('div');
+  card.className = 'embed-card load-more-card';
+  card.id = `loadmore-${catId}`;
+
+  card.innerHTML = `
+    <div class="lm-inner">
+      <div class="lm-icon">▶</div>
+      <div class="lm-text">Load More</div>
+      <div class="lm-sub">Click to load next 6</div>
+    </div>
+  `;
+
+  card.addEventListener('click', () => loadMore(catId));
+  return card;
+}
+
+/* ════════════════════════════════════════════
+   LOAD MORE — inject next 6 cards before
+   the load more card, update dots
+════════════════════════════════════════════ */
+function loadMore(catId) {
+  const state = sliderState[catId];
+  if (!state) return;
+
+  const { track, allItems } = state;
+  const nextStart = state.loadedCount;
+  const nextEnd   = Math.min(nextStart + CARDS_PER_PAGE, allItems.length);
+
+  if (nextStart >= allItems.length) return;
+
+  /* find load more card to insert before it */
+  const lmCard = document.getElementById(`loadmore-${catId}`);
+
+  for (let i = nextStart; i < nextEnd; i++) {
+    const card = buildEmbedCard(allItems[i], catId, i);
+    track.insertBefore(card, lmCard);
+  }
+
+  state.loadedCount = nextEnd;
+  state.totalCards  = track.querySelectorAll('.embed-card:not(.load-more-card)').length;
+
+  /* hide load more card if no more items */
+  if (state.loadedCount >= allItems.length) {
+    lmCard.style.display = 'none';
+  }
+
+  /* rebuild smart dots */
+  buildSmartDots(catId);
+
+  /* scroll to first new card */
+  const newCard = document.getElementById(`card-${catId}-${nextStart}`);
+  if (newCard) {
+    track.scrollTo({
+      left: newCard.offsetLeft - track.offsetLeft,
+      behavior: 'smooth'
+    });
+  }
+}
+
+/* ════════════════════════════════════════════
+   SMART DOTS — max 5 visible
+   pattern: 1 • 2 • 3 • ... • last
+════════════════════════════════════════════ */
+function buildSmartDots(catId) {
+  const state   = sliderState[catId];
+  const dotsEl  = document.getElementById(`dots-${catId}`);
+  if (!state || !dotsEl) return;
+
+  /* total slides = loaded cards + load more card (if visible) */
+  const lmCard    = document.getElementById(`loadmore-${catId}`);
+  const hasMore   = lmCard && lmCard.style.display !== 'none';
+  const totalDots = state.totalCards + (hasMore ? 1 : 0);
+  const cur       = state.currentDot || 0;
+
+  dotsEl.innerHTML = '';
+
+  if (totalDots <= 1) return;
+
+  /* which dot indices to render */
+  const MAX_VISIBLE = 5;
+  let indices = [];
+
+  if (totalDots <= MAX_VISIBLE) {
+    /* show all */
+    indices = Array.from({ length: totalDots }, (_, i) => i);
+  } else {
+    /* always show first, last, current, and neighbors */
+    const set = new Set([0, totalDots - 1, cur]);
+    if (cur > 0) set.add(cur - 1);
+    if (cur < totalDots - 1) set.add(cur + 1);
+
+    /* fill up to MAX_VISIBLE */
+    let idx = 1;
+    while (set.size < MAX_VISIBLE && idx < totalDots - 1) {
+      set.add(idx++);
+    }
+
+    indices = Array.from(set).sort((a, b) => a - b);
+  }
+
+  /* render dots with ellipsis gaps */
+  indices.forEach((dotIdx, pos) => {
+    /* ellipsis before this dot? */
+    if (pos > 0 && dotIdx - indices[pos - 1] > 1) {
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'slider-dot-ellipsis';
+      ellipsis.textContent = '…';
+      dotsEl.appendChild(ellipsis);
+    }
+
+    const dot = document.createElement('button');
+    dot.className = 'slider-dot' + (dotIdx === cur ? ' active' : '');
+    dot.setAttribute('aria-label', `Go to slide ${dotIdx + 1}`);
+    dot.addEventListener('click', () => scrollToDotIdx(catId, dotIdx));
+    dotsEl.appendChild(dot);
+  });
+}
+
+/* scroll track to a given dot index */
+function scrollToDotIdx(catId, dotIdx) {
+  const state = sliderState[catId];
+  if (!state) return;
+
+  const cards = state.track.querySelectorAll('.embed-card');
+  const target = cards[dotIdx];
+  if (!target) return;
+
+  state.currentDot = dotIdx;
+  state.track.scrollTo({
+    left: target.offsetLeft - state.track.offsetLeft,
+    behavior: 'smooth'
+  });
+  buildSmartDots(catId);
+  updateNavBtns(catId);
+}
+
+/* ════════════════════════════════════════════
+   WIRE SLIDER
+   (replaces your existing wireSlider)
+════════════════════════════════════════════ */
+function wireSlider(cat) {
+  const track   = document.getElementById(`track-${cat.id}`);
+  const prevBtn = document.getElementById(`prev-${cat.id}`);
+  const nextBtn = document.getElementById(`next-${cat.id}`);
+  if (!track) return;
+
+  /* init state */
+  sliderState[cat.id] = {
+    track,
+    allItems:    cat.items || [],
+    loadedCount: 0,
+    totalCards:  0,
+    currentDot:  0
+  };
+
+  const state = sliderState[cat.id];
+
+  /* load first batch */
+  const firstBatch = state.allItems.slice(0, CARDS_PER_PAGE);
+  firstBatch.forEach((item, i) => track.appendChild(buildEmbedCard(item, cat.id, i)));
+  state.loadedCount = firstBatch.length;
+  state.totalCards  = firstBatch.length;
+
+  /* load more card — only if more items exist */
+  if (state.allItems.length > CARDS_PER_PAGE) {
+    track.appendChild(buildLoadMoreCard(cat.id));
+  }
+
+  /* initial dots */
+  buildSmartDots(cat.id);
+
+  /* prev / next buttons */
+  prevBtn.addEventListener('click', () => slideByOne(cat.id, -1));
+  nextBtn.addEventListener('click', () => slideByOne(cat.id, +1));
+  prevBtn.disabled = true;
+
+  /* update dot + buttons on scroll */
+  track.addEventListener('scroll', () => {
+    const cardWidth = getCardWidth();
+    const idx = Math.round(track.scrollLeft / cardWidth);
+
+    if (idx !== state.currentDot) {
+      state.currentDot = idx;
+      buildSmartDots(cat.id);
+      updateNavBtns(cat.id);
+    }
+  }, { passive: true });
+
+  /* touch swipe */
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 50) slideByOne(cat.id, dx > 0 ? 1 : -1);
+  }, { passive: true });
+}
+
+function slideByOne(catId, dir) {
+  const state = sliderState[catId];
+  if (!state) return;
+  const cards = state.track.querySelectorAll('.embed-card');
+  const newIdx = Math.max(0, Math.min(cards.length - 1, state.currentDot + dir));
+  scrollToDotIdx(catId, newIdx);
+}
+
+function updateNavBtns(catId) {
+  const state   = sliderState[catId];
+  const prevBtn = document.getElementById(`prev-${catId}`);
+  const nextBtn = document.getElementById(`next-${catId}`);
+  if (!state || !prevBtn || !nextBtn) return;
+  prevBtn.disabled = state.track.scrollLeft <= 4;
+  nextBtn.disabled = state.track.scrollLeft + state.track.clientWidth >= state.track.scrollWidth - 4;
+}
+
+function getCardWidth() {
+  const w = window.innerWidth;
+  if (w <= 480)  return w * 0.82 + 18;
+  if (w <= 768)  return 278;
+  if (w <= 1024) return 308;
+  return 338;
+}
+
 </script>
 
 
-<!-- ── 3. CSS — vertical cards layout ── -->
+<!-- ── CSS — load more card + ellipsis dot ── -->
 <style>
-.featured-cards-col {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+/* load more card */
+.load-more-card {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 260px; cursor: pointer;
+  background: var(--navy2);
+  border: 1.5px dashed rgba(46,204,64,.35);
+  transition: all .25s;
 }
-
-/* card full width jab vertical ho */
-.featured-cards-col .embed-card {
-  width: 100%;
+.load-more-card:hover {
+  border-color: var(--green);
+  background: rgba(46,204,64,.05);
+  transform: translateY(-4px);
+  box-shadow: var(--glow);
 }
+.lm-inner {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  pointer-events: none;
+}
+.lm-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(46,204,64,.12);
+  border: 1.5px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: var(--green);
+  transition: all .25s;
+}
+.load-more-card:hover .lm-icon {
+  background: var(--green); color: var(--navy);
+}
+.lm-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: .06em; color: var(--white);
+}
+.lm-sub { color: var(--muted); font-size: .78rem; }
 
-/* frame wrap overrides for vertical layout */
-.featured-cards-col .embed-frame-wrap.reel   { aspect-ratio: 9/16; max-height: 500px; }
-.featured-cards-col .embed-frame-wrap.post   { aspect-ratio: 4/3; }
-.featured-cards-col .embed-frame-wrap.square { aspect-ratio: 1/1; }
-.featured-cards-col .embed-frame-wrap.video  { aspect-ratio: 16/9; }
+/* ellipsis between dots */
+.slider-dot-ellipsis {
+  color: var(--muted); font-size: .8rem;
+  display: flex; align-items: center;
+  padding: 0 2px; pointer-events: none;
+}
 </style>
