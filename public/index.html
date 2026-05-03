@@ -2086,7 +2086,7 @@
         </div>
       </div>
       <div>
-        <form class="contact-form" id="contactForm">
+        <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
 
   <div class="form-row">
     <div class="form-group fade-up">
@@ -2334,7 +2334,7 @@
 </footer>
 
 <!-- popup HTML -->
-<div class="ev-popup-overlay" id="evPopupOverlay" onclick="handleOverlayClick(event)">
+<div class="ev-popup-overlay" id="evPopupOverlay">
   <div class="ev-popup" id="evPopup">
     <button class="ev-popup-close" onclick="closeEventGallery()" aria-label="Close">✕</button>
     <div class="ev-popup-body" id="evPopupBody">
@@ -3645,64 +3645,34 @@ function googleTranslateElementInit() {
   const form = document.getElementById("contactForm");
 
   form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const form = e.target;
-  const btn = form.querySelector('button[type="submit"]');
-  const originalText = btn.textContent;
-
-  // 🔐 CAPTCHA check (agar laga hai)
-  if (typeof grecaptcha !== "undefined") {
+    e.preventDefault();
     const captcha = grecaptcha.getResponse();
     if (!captcha) {
-      showMessage(form, "⚠️ Please verify captcha", "error");
-      return;
+    alert("Please verify captcha ⚠️");
+    return;
+}
+
+    const formData = new FormData(form);
+
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      enquiry: formData.get("enquiry"),
+      message: formData.get("message"),
+      createdAt: new Date()
+    };
+
+    try {
+      await addDoc(collection(db, "contacts"), data);
+
+      handleSubmit(event);
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert("Error ❌");
     }
-  }
-
-  // ⏳ LOADING STATE
-  btn.textContent = "Sending...";
-  btn.disabled = true;
-
-  const formData = new FormData(form);
-
-  const data = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    phone: formData.get("phone"),
-    enquiry: formData.get("enquiry"),
-    message: formData.get("message"),
-    createdAt: new Date()
-  };
-
-  try {
-    // 🔥 REAL FIREBASE CALL
-    await addDoc(collection(db, "contacts"), data);
-
-    // ✅ SUCCESS
-    btn.textContent = "✓ Message Sent!";
-    showMessage(form, "We'll be in touch soon!", "success");
-
-    form.reset();
-
-    if (typeof grecaptcha !== "undefined") {
-      grecaptcha.reset();
-    }
-
-  } catch (err) {
-    console.error(err);
-
-    // ❌ ERROR
-    btn.textContent = "Try Again";
-    showMessage(form, "❌ Something went wrong. Please try again.", "error");
-  }
-
-  // 🔁 Button reset (common for both cases)
-  setTimeout(() => {
-    btn.textContent = originalText;
-    btn.disabled = false;
-  }, 3000);
-});
+  });
 </script>
 </body>
 </html>
