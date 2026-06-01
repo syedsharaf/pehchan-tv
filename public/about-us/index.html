@@ -25,6 +25,11 @@
     --glow:   0 0 40px rgba(46,204,64,.22);
   }
 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
   html { scroll-behavior: smooth; }
   body {
     background: var(--navy);
@@ -100,8 +105,11 @@
   }
   .nav-links .nav-cta a::after { display: none; }
   .nav-links .nav-cta a:hover { background: var(--green2); }
+  .mob-nav-btn {
+    display: none; align-items: center; gap: 8px;
+  }
   .hamburger {
-    display: none; flex-direction: column;
+    flex-direction: column;
     cursor: pointer; border: none; background: none; padding: 4px;
   }
   .hamburger span {
@@ -133,17 +141,209 @@
     display: none; position: fixed; inset: 70px 0 0 0; z-index: 998;
     background: var(--navy2); padding: 32px 24px;
     flex-direction: column; gap: 24px;
+    overflow: auto;
   }
   .mobile-menu.open { display: flex; }
   .mobile-menu a {
     color: var(--white); text-decoration: none;
     font-size: 1.3rem; font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 16px;
   }
-  @media(max-width:820px) {
+  @media(max-width:1200px) {
     .nav-links { display: none; }
+    .mob-nav-btn { display: flex; }
     .hamburger { display: flex; }
+
   }
-  .skiptranslate {
+@media (max-width: 1200px) {
+  .icon-btn {
+    border: none !important;
+  }
+}
+
+  .search-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(3,10,20,.97);
+  backdrop-filter: blur(14px);
+  display: flex; flex-direction: column;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease;
+}
+.search-overlay.open { opacity: 1; pointer-events: all; }
+
+/* top input bar */
+.search-bar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.search-bar-icon { color: var(--green); font-size: 1.3rem; flex-shrink: 0; }
+.search-input {
+  flex: 1; background: transparent;
+  border: none; outline: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 500; color: var(--white);
+  caret-color: var(--green);
+}
+.search-input::placeholder { color: var(--muted); }
+.search-close {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--muted); font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s;
+}
+.search-close:hover { background: var(--green); color: var(--navy); border-color: var(--green); }
+
+/* meta row */
+.search-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 32px; gap: 12px; flex-wrap: wrap; flex-shrink: 0;
+}
+.search-count { color: var(--muted); font-size: .85rem; }
+.search-count strong { color: var(--green); }
+.search-cat-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.search-cat-btn {
+  padding: 5px 14px; border-radius: 30px; font-size: .78rem;
+  font-weight: 600; font-family: 'Outfit', sans-serif;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; transition: all .18s;
+}
+.search-cat-btn.active,
+.search-cat-btn:hover { background: var(--green); color: var(--navy); border-color: var(--green); }
+
+/* results scroll area */
+.search-results {
+  flex: 1; overflow-y: auto; padding: 24px 32px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) var(--card);
+}
+.search-results::-webkit-scrollbar { width: 4px; }
+.search-results::-webkit-scrollbar-track { background: var(--card); }
+.search-results::-webkit-scrollbar-thumb { background: var(--green); border-radius: 4px; }
+
+/* hint / empty states */
+.search-hint {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 260px; color: var(--muted); text-align: center; gap: 12px;
+}
+.search-hint-icon { font-size: 3rem; opacity: .3; }
+
+/* results grid */
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* result card */
+.src-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; cursor: pointer;
+  transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+.src-card:hover {
+  border-color: rgba(46,204,64,.5);
+  transform: translateY(-4px);
+  box-shadow: var(--glow);
+}
+
+/* card preview — NO iframe, just placeholder until click */
+.src-card-preview {
+  width: 100%; aspect-ratio: 16/9;
+  background: var(--navy2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+  position: relative; overflow: hidden;
+}
+.src-card-preview-icon { font-size: 2.8rem; opacity: .25; }
+.src-card-play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(46,204,64,.88);
+  opacity: 0; transition: opacity .2s;
+  font-size: 1.6rem; color: var(--navy);
+  font-weight: 700;
+}
+.src-card:hover .src-card-play { opacity: 1; }
+.src-card-type-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: var(--green); color: var(--navy);
+  font-size: .65rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 2px;
+}
+
+/* card info */
+.src-card-info { padding: 14px 16px 18px; }
+.src-card-cat {
+  font-size: .65rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--green);
+  margin-bottom: 5px;
+}
+.src-card-title {
+  font-weight: 600; font-size: .92rem;
+  color: var(--white); margin-bottom: 4px; line-height: 1.4;
+}
+.src-card-caption { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+.search-hl { color: var(--green); font-weight: 700; }
+
+/* ── iframe lightbox (shown on card click) ── */
+.src-lightbox-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(3,10,20,.96);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s;
+}
+.src-lightbox-overlay.open { opacity: 1; pointer-events: all; }
+
+.src-lightbox-box {
+  background: var(--navy2); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  width: 100%; max-width: 480px;
+  transform: scale(.95); transition: transform .25s;
+  position: relative;
+}
+.src-lightbox-overlay.open .src-lightbox-box { transform: scale(1); }
+
+.src-lightbox-close {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(5,21,38,.85); border: 1px solid var(--border);
+  color: var(--muted); font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s;
+}
+.src-lightbox-close:hover { background: var(--green); color: var(--navy); border-color: var(--green); }
+
+.src-lightbox-frame {
+  width: 100%; position: relative; background: #000;
+}
+.src-lightbox-frame.reel { aspect-ratio: 9/16; max-height: 70vh; }
+.src-lightbox-frame.post { aspect-ratio: 4/3; }
+.src-lightbox-frame.video { aspect-ratio: 16/9; }
+.src-lightbox-frame.square{ aspect-ratio: 1/1; }
+.src-lightbox-frame iframe {
+  position: absolute; inset: 0;
+  width: 100% !important; height: 100% !important;
+  border: none; display: block;
+}
+.src-lightbox-info { padding: 16px 18px; }
+.src-lightbox-title { font-weight: 600; font-size: .95rem; margin-bottom: 4px; }
+.src-lightbox-caption { color: var(--muted); font-size: .82rem; }
+
+/* responsive */
+@media(max-width: 600px) {
+  .search-bar    { padding: 16px; }
+  .search-meta   { padding: 10px 16px; }
+  .search-results{ padding: 16px; }
+  .search-grid   { grid-template-columns: 1fr; }
+}
+.skiptranslate {
   display: none;
 }
 .lang-switch {
@@ -485,10 +685,81 @@
   @media(max-width:500px) { .team-grid { grid-template-columns: 1fr; } }
 
   /* ─── PARTNER CHIPS ──────────────────────────────── */
-  .partners-strip { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
-  .partner-chip { padding: 13px 26px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-weight: 600; font-size: .9rem; display: flex; align-items: center; gap: 10px; transition: all .25s; }
-  .partner-chip:hover { border-color: var(--green); color: var(--white); transform: translateY(-2px); }
-  .partner-chip-icon { font-size: 1.4rem; }
+  .partners-marquee-wrap {
+  overflow: hidden;
+  position: relative;
+  padding: 8px 0;
+}
+
+/* fade edges — same navy2 background ke saath */
+.partners-marquee-wrap::before,
+.partners-marquee-wrap::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0;
+  width: 120px; z-index: 2;
+  pointer-events: none;
+}
+.partners-marquee-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--navy2), transparent);
+}
+.partners-marquee-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--navy2), transparent);
+}
+
+/* scrolling track */
+.partners-marquee {
+  display: flex;
+  gap: 32px;
+  width: max-content;
+  animation: marquee 42s linear infinite;
+}
+
+/* pause on hover */
+.partners-marquee-wrap:hover .partners-marquee {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* single partner item */
+.partner-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 28px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  white-space: nowrap;
+  cursor: default;
+  transition: border-color .25s, box-shadow .25s;
+
+  /* grayscale by default */
+  filter: grayscale(100%) opacity(0.55);
+  transition: filter .3s ease, border-color .3s, box-shadow .3s;
+}
+.partner-item img {
+  width: 120px;
+}
+
+.partner-item:hover {
+  filter: grayscale(0%) opacity(1);
+  border-color: var(--green);
+  box-shadow: var(--glow);
+}
+
+.partner-item-icon { font-size: 1.6rem; }
+
+.partner-item-name {
+  font-weight: 600;
+  font-size: .92rem;
+  color: var(--white);
+}
 
   /* ─── SOCIAL STRIP ─── exact homepage ─────────────── */
   .social-strip { background: var(--green); padding: 56px 0; text-align: center; }
@@ -707,7 +978,7 @@
     <li><a href="/media">Media Channel</a></li>
     <li><a href="/event-management">Event Management</a></li>
     <li><a href="/articles">Articles</a></li>
-    <li><a href="#sponsors">Our Sponsors</a></li>
+    <li><a href="/about-us#sponsors">Our Sponsors</a></li>
     <div class="nav-icons">
       <div class="lang-switch">
       <button class="icon-btn" id="langBtn"><i class="fa-solid fa-globe"></i></button>
@@ -720,13 +991,16 @@
 
       <!-- hidden google element -->
       <div id="google_translate_element"></div>
-      <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="icon-btn" onclick="openSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
     <li class="nav-cta"><a href="/#contact">Get In Touch</a></li>
   </ul>
+  <div class="mob-nav-btn">
+  <button class="icon-btn" onclick="openSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
+  </div>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
@@ -735,7 +1009,7 @@
   <a href="/media" onclick="closeMobile()">Media</a>
   <a href="/event-management" onclick="closeMobile()">Event Management</a>
   <a href="/articles" onclick="closeMobile()">Articles</a>
-  <a href="#sponsors" onclick="closeMobile()">Our Sponsors</a>
+  <a href="/about-us#sponsors" onclick="closeMobile()">Our Sponsors</a>
   <a href="/#contact" onclick="closeMobile()" style="color:var(--green)">Get In Touch →</a>
 </div>
 </header>
@@ -991,61 +1265,7 @@
         <div class="team-name">Shafaq Jaffery</div>
         <div class="team-role">Founder &amp; CEO</div>
         <div class="team-bio">
-          Journalist by training, community builder by calling. Shafaq founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.
-        </div>
-        <div class="team-links">
-          <a href="https://www.instagram.com/shafaqarifjaffery" class="team-link"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://www.facebook.com/shafaq.jaffery.3" class="team-link"><i class="fa-brands fa-facebook"></i></a>
-          <a href="https://www.twitter.com/shafaqpaa" class="team-link"><i class="fa-brands fa-twitter"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="team-card fade-up d2 swiper-slide">
-      <div class="team-avatar">
-        <img src="/assets/images/shafaq-jaffery.jpg" width="100%" alt="Shafaq JafferyTest">
-      </div>
-      <div class="team-info">
-        <div class="team-name">Shafaq Jaffery</div>
-        <div class="team-role">Founder &amp; CEO</div>
-        <div class="team-bio">
-          Journalist by training, community builder by calling. Shafaq founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.
-        </div>
-        <div class="team-links">
-          <a href="https://www.instagram.com/shafaqarifjaffery" class="team-link"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://www.facebook.com/shafaq.jaffery.3" class="team-link"><i class="fa-brands fa-facebook"></i></a>
-          <a href="https://www.twitter.com/shafaqpaa" class="team-link"><i class="fa-brands fa-twitter"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="team-card fade-up d3 swiper-slide">
-      <div class="team-avatar">
-        <img src="/assets/images/shafaq-jaffery.jpg" width="100%" alt="Shafaq Jaffery">
-      </div>
-      <div class="team-info">
-        <div class="team-name">Shafaq Jaffery</div>
-        <div class="team-role">Founder &amp; CEO</div>
-        <div class="team-bio">
-          Journalist by training, community builder by calling. Shafaq founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.
-        </div>
-        <div class="team-links">
-          <a href="https://www.instagram.com/shafaqarifjaffery" class="team-link"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://www.facebook.com/shafaq.jaffery.3" class="team-link"><i class="fa-brands fa-facebook"></i></a>
-          <a href="https://www.twitter.com/shafaqpaa" class="team-link"><i class="fa-brands fa-twitter"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="team-card fade-up d4 swiper-slide">
-      <div class="team-avatar">
-        <img src="/assets/images/shafaq-jaffery.jpg" width="100%" alt="Shafaq JafferyTest">
-      </div>
-      <div class="team-info">
-        <div class="team-name">Shafaq Jaffery</div>
-        <div class="team-role">Founder &amp; CEO</div>
-        <div class="team-bio">
-          Journalist by training, community builder by calling. Shafaq founded PehchanTV with a single camera and an unshakeable belief in the power of immigrant stories.
+          President of the Aus-Pak Women Association (APWA) and a dedicated advocate for survivors of domestic violence. She founded APWA Safe Heaven, a shelter supporting women in rebuilding their lives with safety, dignity, and independence. She is also the author of Circle of Sorrow, a powerful collection of survivor stories that reflects her commitment to women’s empowerment and resilience.
         </div>
         <div class="team-links">
           <a href="https://www.instagram.com/shafaqarifjaffery" class="team-link"><i class="fa-brands fa-instagram"></i></a>
@@ -1109,22 +1329,55 @@
 <!-- ══════ PARTNERS ══════ -->
 <section class="section-sm" style="background:var(--navy2);" id="sponsors">
   <div class="container">
-    <div style="text-align:center;margin-bottom:36px;">
-      <span class="tag fade-up">Partners</span>
+    <div style="text-align:center; margin-bottom:36px;">
+      <span class="tag fade-up">Sponsors</span>
       <h2 class="section-title fade-up d1">TRUSTED BY THE <span>COMMUNITY</span></h2>
     </div>
-    <div class="partners-strip fade-up">
-      <div class="partner-chip"><span class="partner-chip-icon">🏛️</span>Multicultural NSW</div>
-      <div class="partner-chip"><span class="partner-chip-icon">🕌</span>Islamic Council NSW</div>
-      <div class="partner-chip"><span class="partner-chip-icon">🇵🇰</span>Pakistan Association of Australia</div>
-      <div class="partner-chip"><span class="partner-chip-icon">🎓</span>UNSW Cultural Societies</div>
-      <div class="partner-chip"><span class="partner-chip-icon">💼</span>Desi Business Network</div>
-      <div class="partner-chip"><span class="partner-chip-icon">🎵</span>Aus-Pak Arts Council</div>
-      <div class="partner-chip"><span class="partner-chip-icon">📰</span>Community Media Network</div>
-      <div class="partner-chip"><span class="partner-chip-icon">🏥</span>South Asian Health Alliance</div>
+  </div>
+
+  <!-- marquee full width — container ke bahar taaki edge to edge jaye -->
+  <div class="partners-marquee-wrap">
+    <div class="partners-marquee" id="partnersMarquee">
+
+      <!-- original set -->
+      <div class="partner-item"><img src="/assets/images/apwa-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/ahsl-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/iwpg-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/southern-cross-institute-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/ccc-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/osan-ability-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/agha-mangoes-logo.png"></div>
+
+      <div class="partner-item"><img src="/assets/images/apwa-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/ahsl-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/iwpg-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/southern-cross-institute-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/ccc-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/osan-ability-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/agha-mangoes-logo.png"></div>
+
+      <div class="partner-item"><img src="/assets/images/apwa-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/ahsl-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/iwpg-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/southern-cross-institute-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/ccc-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/osan-ability-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/agha-mangoes-logo.png"></div>
+
+      <div class="partner-item"><img src="/assets/images/apwa-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/ahsl-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/iwpg-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/southern-cross-institute-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/ccc-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/osan-ability-logo.png"></div>
+      <div class="partner-item"><img src="/assets/images/agha-mangoes-logo.png"></div>
     </div>
+  </div>
+
+  <div class="container">
     <p class="fade-up" style="text-align:center;color:var(--muted);margin-top:28px;font-size:.88rem;">
-      Want to partner with PehchanTV? <a href="/#contact" style="color:var(--green);text-decoration:none;font-weight:600;">Get in touch →</a>
+      Want to partner with PehchanTV?
+      <a href="/#contact" style="color:var(--green);text-decoration:none;font-weight:600;">Get in touch →</a>
     </p>
   </div>
 </section>
@@ -1160,7 +1413,7 @@
         </div>
         <div class="footer-cta-btns">
           <a href="/#contact" class="btn btn-green">Get In Touch →</a>
-          <a href="https://youtube.com/@PehchanTVAU" target="_blank" class="btn btn-outline">Watch Channel</a>
+          <a href="/media" class="btn btn-outline">Watch Channel</a>
         </div>
       </div>
     </div>
@@ -1201,6 +1454,10 @@
             <a href="https://facebook.com/pehchantvau" target="_blank" class="f-social" title="Facebook">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             </a>
+            <!-- TikTok -->
+            <a href="https://tiktok.com/@shafaqjaffery" target="_blank" class="f-social" title="TikTok">
+              <li class="fa-brands fa-tiktok"></li>
+            </a>
             <!-- WhatsApp -->
             <a href="https://wa.me/61415724571" target="_blank" class="f-social" title="WhatsApp">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
@@ -1209,7 +1466,7 @@
             <a href="https://twitter.com/pehchantvau" target="_blank" class="f-social" title="Twitter / X">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
-            <!-- TikTok -->
+            <!-- LinkedIn -->
             <a href="https://linkedin.com/company/pehchan-tv" target="_blank" class="f-social" title="LinkedIn">
               <svg viewBox="0 0 24 24" fill="currentColor">
   <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 
@@ -1243,7 +1500,7 @@
             <li><a href="/event-management#gallery">Past Events Gallery</a></li>
             <li><a href="/event-management#packages">Pricing Packages</a></li>
             <li><a href="/event-management#enquiry">Book Our Services</a></li>
-            <li><a href="/#contact">Sponsorships</a></li>
+            <li><a href="/about-us#sponsors">Sponsorships</a></li>
           </ul>
         </div>
 
@@ -1313,6 +1570,47 @@
 </footer>
 
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- SEARCH MODAL START -->
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-bar">
+    <span class="search-bar-icon">🔍</span>
+    <input
+      class="search-input" id="searchInput"
+      type="text" placeholder="Search videos, reels…"
+      autocomplete="off" spellcheck="false"
+    >
+    <button class="search-close" id="searchCloseBtn" aria-label="Close">✕</button>
+  </div>
+
+  <div class="search-meta" id="searchMeta" style="display:none;">
+    <div class="search-count" id="searchCount"></div>
+    <div class="search-cat-filters" id="searchCatFilters"></div>
+  </div>
+
+  <div class="search-results" id="searchResults">
+    <div class="search-hint">
+      <div class="search-hint-icon">🎬</div>
+      <p>Start typing to search videos and reels</p>
+    </div>
+  </div>
+</div>
+
+<!-- iframe lightbox -->
+<div class="src-lightbox-overlay" id="srcLightbox">
+  <div class="src-lightbox-box">
+    <button class="src-lightbox-close" id="srcLightboxClose" aria-label="Close">✕</button>
+    <div class="src-lightbox-frame" id="srcLightboxFrame"></div>
+    <div class="src-lightbox-info">
+      <div class="src-lightbox-title" id="srcLightboxTitle"></div>
+      <div class="src-lightbox-caption" id="srcLightboxCaption"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH MODAL END -->
+
 <script>
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
@@ -1421,6 +1719,310 @@ scrollBtn.addEventListener("click", () => {
     behavior: "smooth"
   });
 });
+
+async function initMediaPage() {
+  try {
+    /* Fetch the JSON data file */
+    const res = await fetch('/data/media-data.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const categories = await res.json();
+    window.mediaData = categories;
+
+    if (!Array.isArray(categories) || categories.length === 0) {
+      throw new Error('No categories found in media-data.json');
+    }
+  }
+  catch (err) {
+    console.error(err);
+  }
+}
+document.addEventListener('DOMContentLoaded', initMediaPage);
+
+// SEARCH ENGINE CODE
+
+(function () {
+
+  /* ── state ── */
+  let _activeCat = 'all';
+  let _lastQuery = '';
+
+  /* ── helpers ── */
+  function esc(str) {
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /*
+    Word-boundary match:
+    query must match the START of any word in the text.
+    e.g. "paki" matches "Pakistani" ✅
+         "kistan" does NOT match "Pakistani" ❌
+  */
+  function wordStartMatch(text, query) {
+    if (!query) return false;
+    const words = text.toLowerCase().split(/\s+/);
+    const q = query.toLowerCase();
+    return words.some(w => w.startsWith(q));
+  }
+
+  /* highlight matched portion */
+  function highlight(text, query) {
+    if (!query) return esc(text);
+    const q = query.toLowerCase();
+    // split on word boundaries and highlight matching starts
+    return esc(text).replace(/(\S+)/g, word => {
+      const plain = word.toLowerCase().replace(/&amp;|&lt;|&gt;|&quot;/g, m => ({
+        '&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"'
+      })[m] || m);
+      if (plain.startsWith(q)) {
+        const hlLen = q.length;
+        return `<span class="search-hl">${word.slice(0, hlLen)}</span>${word.slice(hlLen)}`;
+      }
+      return word;
+    });
+  }
+
+  /* build flat pool from window.mediaData (+ future articleData) */
+  function buildPool() {
+    const pool = [];
+
+    (window.mediaData || []).forEach(cat => {
+      (cat.items || []).forEach(item => {
+        pool.push({
+          source:   'video',
+          catId:    cat.id,
+          catIcon:  cat.icon,
+          catLabel: cat.label,
+          item
+        });
+      });
+    });
+
+    /* future articles — uncomment when ready:
+    (window.articleData || []).forEach(cat => {
+      (cat.items || []).forEach(item => {
+        pool.push({ source:'article', catId:cat.id, catIcon:cat.icon, catLabel:cat.label, item });
+      });
+    });
+    */
+
+    return pool;
+  }
+
+  /* ── open / close ── */
+  window.openSearch = function () {
+    document.getElementById('searchOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('searchInput').focus(), 60);
+  };
+
+  function closeSearch() {
+    document.getElementById('searchOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    // clear everything
+    document.getElementById('searchInput').value = '';
+    _lastQuery = '';
+    _activeCat = 'all';
+    resetResults();
+  }
+
+  /* ── input: fires on every change including delete ── */
+  document.getElementById('searchInput').addEventListener('input', function () {
+    const q = this.value.trim();
+    _lastQuery = q;
+
+    if (!q) { resetResults(); return; }
+
+    // small debounce for typing comfort
+    clearTimeout(this._t);
+    this._t = setTimeout(() => runSearch(q), 220);
+  });
+
+  /* close button */
+  document.getElementById('searchCloseBtn').addEventListener('click', closeSearch);
+
+  /* Escape key */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('srcLightbox').classList.contains('open')) {
+        closeLightbox();
+      } else {
+        closeSearch();
+      }
+    }
+  });
+
+  /* ── main search ── */
+  function runSearch(query) {
+    const pool    = buildPool();
+    const metaEl  = document.getElementById('searchMeta');
+    const countEl = document.getElementById('searchCount');
+    const resultsEl = document.getElementById('searchResults');
+
+    /* filter by word-start match + active category */
+    function matches(entry) {
+      const { item, catId } = entry;
+      const titleMatch   = wordStartMatch(item.title   || '', query);
+      const captionMatch = wordStartMatch(item.caption || '', query);
+      const catMatch     = _activeCat === 'all' || catId === _activeCat;
+      return (titleMatch || captionMatch) && catMatch;
+    }
+
+    const matched = pool.filter(matches);
+
+    /* build category pills (count without cat filter applied) */
+    const allMatched = pool.filter(e => {
+      const { item } = e;
+      return wordStartMatch(item.title || '', query) ||
+             wordStartMatch(item.caption || '', query);
+    });
+    buildCatPills(allMatched, query);
+
+    /* count */
+    metaEl.style.display = '';
+    countEl.innerHTML = `<strong>${matched.length}</strong> result${matched.length !== 1 ? 's' : ''} for "<strong>${esc(query)}</strong>"`;
+
+    /* render */
+    if (matched.length === 0) {
+      resultsEl.innerHTML = `
+        <div class="search-hint">
+          <div class="search-hint-icon">🔍</div>
+          <p>No results for "<strong style="color:var(--white)">${esc(query)}</strong>"<br>
+          <span style="font-size:.85rem;">Try a different word</span></p>
+        </div>`;
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'search-grid';
+    matched.forEach(entry => grid.appendChild(buildCard(entry, query)));
+    resultsEl.innerHTML = '';
+    resultsEl.appendChild(grid);
+  }
+
+  /* ── category pills ── */
+  function buildCatPills(allMatched, query) {
+    const filtersEl = document.getElementById('searchCatFilters');
+    filtersEl.innerHTML = '';
+
+    /* count per cat */
+    const counts = {};
+    allMatched.forEach(({ catId, catLabel, catIcon }) => {
+      if (!counts[catId]) counts[catId] = { label: catLabel, icon: catIcon, n: 0 };
+      counts[catId].n++;
+    });
+
+    /* All pill */
+    mkPill(`All (${allMatched.length})`, 'all', filtersEl, query);
+
+    Object.entries(counts).forEach(([catId, { label, icon, n }]) => {
+      mkPill(`${icon} ${label} (${n})`, catId, filtersEl, query);
+    });
+  }
+
+  function mkPill(text, catId, container, query) {
+    const btn = document.createElement('button');
+    btn.className = 'search-cat-btn' + (_activeCat === catId ? ' active' : '');
+    btn.textContent = text;
+    btn.addEventListener('click', () => {
+      _activeCat = catId;
+      runSearch(query);
+    });
+    container.appendChild(btn);
+  }
+
+  /* ── build result card (preview only, no iframe) ── */
+  function buildCard({ catIcon, catLabel, item }, query) {
+    const card = document.createElement('div');
+    card.className = 'src-card';
+
+    const typeLabels = {
+  reel:   '🎬 Reel',
+  post:   '🖼️ Post',
+  square: '🎬 Reel',
+  video:  '🎥 Video'
+};
+
+const previewEmojis = {
+  reel:   '🎬',
+  post:   '🖼️',
+  square: '🎬',
+  video:  '🎥'
+};
+
+const typeLabel    = typeLabels[item.type]   || '🖼️ Post';
+const previewEmoji = previewEmojis[item.type] || '🖼️';
+
+    card.innerHTML = `
+      <div class="src-card-preview">
+        <div class="src-card-preview-icon">${previewEmoji}</div>
+        <div class="src-card-play">▶ Play</div>
+        <div class="src-card-type-badge">${typeLabel}</div>
+      </div>
+      <div class="src-card-info">
+        <div class="src-card-cat">${catIcon} ${catLabel}</div>
+        <div class="src-card-title">${highlight(item.title || '', query)}</div>
+        <div class="src-card-caption">${highlight(item.caption || '', query)}</div>
+      </div>
+    `;
+
+    /* click → open lightbox with iframe */
+    card.addEventListener('click', () => openLightbox(item));
+
+    return card;
+  }
+
+  /* ── lightbox ── */
+  function openLightbox(item) {
+    const overlay  = document.getElementById('srcLightbox');
+    const frameEl  = document.getElementById('srcLightboxFrame');
+    const titleEl  = document.getElementById('srcLightboxTitle');
+    const captionEl= document.getElementById('srcLightboxCaption');
+
+    frameEl.className = `src-lightbox-frame ${item.type}`;
+    frameEl.innerHTML = `
+      <iframe
+        src="${item.url}"
+        width="480"
+        height="${item.type === 'reel' ? '760' : '480'}"
+        style="border:none;overflow:hidden"
+        scrolling="no" frameborder="0" allowfullscreen="true"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      ></iframe>`;
+
+    titleEl.textContent   = item.title   || '';
+    captionEl.textContent = item.caption || '';
+
+    overlay.classList.add('open');
+  }
+
+  function closeLightbox() {
+    const overlay = document.getElementById('srcLightbox');
+    overlay.classList.remove('open');
+    // remove iframe to stop playback
+    document.getElementById('srcLightboxFrame').innerHTML = '';
+  }
+
+  document.getElementById('srcLightboxClose').addEventListener('click', closeLightbox);
+
+  /* click outside lightbox box closes it */
+  document.getElementById('srcLightbox').addEventListener('click', function (e) {
+    if (e.target === this) closeLightbox();
+  });
+
+  /* ── reset to initial hint state ── */
+  function resetResults() {
+    _activeCat = 'all';
+    document.getElementById('searchMeta').style.display = 'none';
+    document.getElementById('searchResults').innerHTML = `
+      <div class="search-hint">
+        <div class="search-hint-icon">🎬</div>
+        <p>Start typing to search videos and reels</p>
+      </div>`;
+  }
+
+})();
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -1441,10 +2043,10 @@ const teamSwiper = new Swiper('.team-grid', {
       slidesPerView: 1,
     },
     992: {
-      slidesPerView: 3,
+      slidesPerView: 2,
     },
     1200: {
-      slidesPerView: 4,
+      slidesPerView: 3,
     }
   }
 });
